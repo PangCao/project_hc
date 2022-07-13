@@ -1,0 +1,6 @@
+.layout_right > div:nth-of-type(2) {
+    border: 1px solid rgba(0, 0, 0, 0.24);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
