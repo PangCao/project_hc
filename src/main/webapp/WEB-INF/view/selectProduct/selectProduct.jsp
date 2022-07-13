@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
 
 <!-- 여기 아래 css가 계속 교체 -->
-<link rel="stylesheet" href="<c:url value="/resources/css/.css"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/select_product.css"/>">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -20,32 +20,41 @@
 		<section class="layout_right col-10 p-0" style="background-color: antiquewhite;">
 			<jsp:include page="<c:url value="/topmenu.jsp"/>"/>
 			<!-- 여기 아래부터 바디 -->
+			<!-- 1안 -->
 			<div class="select_pro">
-				<div>
-					<div class="col-12 row">
-						<label class="col-3">제품명</label>
-						<p class="col-9">x8451589-5121566-cc51522</p>
+				<div class="row">
+					<div class="col-8">
+						<div class="row">
+							<label class="col-4">제품명</label>
+							<p class="col-8">x8451589-5121566-cc51522</p>
+						</div>
+						<div class="row">
+							<label class="col-4">목표수량</label>
+							<p class="col-8">200</p>
+						</div>
+						<div class="row">
+							<label class="col-4">진행수량</label>
+							<p class="col-8">100</p>
+						</div>
+						<div class="row">
+							<label class="col-4">불량률</label>
+							<p class="col-8">0%</p>
+						</div>
+						<div class="row">
+							<label class="col-4">날짜</label>
+							<p class="col-8">2022-07-12 20:52</p>
+						</div>
 					</div>
-					<div class="col-12 row">
-						<label class="col-3">목표수량</label>
-						<p class="col-9">200</p>
-					</div>
-					<div class="col-12 row">
-						<label class="col-3">진행수량</label>
-						<p class="col-9">100</p>
-					</div>
-					<div class="col-12 row">
-						<label class="col-3">불량률</label>
-						<p class="col-9">0%</p>
-					</div>
-					<div class="col-12 row">
-						<label class="col-3">날짜</label>
-						<p class="col-9">2022-07-12 20:52</p>
-					</div>
-					<div class="d-flex justify-content-end">
-						<p>담당자 : 김현일 (1라인)</p>
+					<div class="col-4 d-flex flex-column justify-content-between">
+						<div class="d-flex justify-content-end">
+							<p>담당자 : 김현일 (1라인)</p>
+						</div>
+						<div class="d-flex justify-content-end">
+							<p class="c_btn-success">진행중</p>
+						</div>
 					</div>
 				</div>
+				<!-- 2안 -->
 				<div>
 					<div class="col-12 row">
 						<label class="col-3">제품명</label>
