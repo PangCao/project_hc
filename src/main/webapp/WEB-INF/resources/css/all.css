@@ -3,3 +3,52 @@
     margin: 0;
     padding: 0;
 }
+
+ul {
+    list-style: none;
+}
+
+
+/* 공용 좌측 메뉴바 css --------------------------------------------- start*/
+.layout_main > .layout_left > ul > li{ 
+    margin: 30px 0;
+    font-size: 20px;    
+    
+}
+
+/* 공용 좌측 메뉴바 css --------------------------------------------- end*/
+
+/* 공용 우측 메뉴바 css --------------------------------------------- start*/
+.layout_main > .layout_right {
+    width: 80%;
+}
+
+/* 공용 우측 메뉴바 css --------------------------------------------- end*/
+
+/* 공용 상단바 css --------------------------------------------- start*/
+.topmenu > div > p{
+    padding: 10px;
+    margin: 0;
+}
+
+.topmenu > div:nth-of-type(1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.topmenu > div:nth-of-type(1) > label {
+    margin: 0;
+}
+/* 공용 상단바 css --------------------------------------------- end */
+
+/* 레이아웃용 css --------------------------------------------- start*/
+body > .layout_main >.layout_left {
+    height: 100vh;
+}
+body > .layout_main > .layout_right {
+    height: 100vh;
+}
+body > .layout_main {
+    min-height: 100vh;
+}
+/* 레이아웃용 css --------------------------------------------- end */
