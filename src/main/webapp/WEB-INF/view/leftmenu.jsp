@@ -9,6 +9,17 @@
 			<li>자재입력</li>
 		</ul>
 	</li>
-	<li>상품 삭제</li>
-	<li>상품 수정</li>
+	<li>상품 삭제
+		<ul class="small">
+			<li>상품 삭제</li>
+			<li>자재 삭제</li>
+		</ul>
+	</li>
+	<li>상품 수정
+		<ul class="small">
+			<li>생산 순서 수정</li>
+			<li>상품 정보 수정</li>
+			<li>자재 정보 수정</li>
+		</ul>
+	</li>
 </ul>
