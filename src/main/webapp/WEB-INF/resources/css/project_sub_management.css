@@ -1,0 +1,22 @@
+@charset "UTF-8";
+.project_sub_management > div> div {
+    padding:0 2px;
+}
+.project_sub_management > div> div:nth-of-type(1) {
+    padding-left: 15px;
+}
+.project_sub_management > div> div:nth-last-of-type(1) {
+    padding-right: 15px;
+}
+.project_sub_management > div> div > table > tbody > tr > td{
+    border: 1px solid black;
+}
+.project_sub_management > div> div > table {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+}
+.project_sub_management > div> div > table > tbody > tr > td{
+    width: 25%;
+    height: 100px;
+}

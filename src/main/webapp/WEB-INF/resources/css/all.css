@@ -3,17 +3,74 @@
     margin: 0;
     padding: 0;
 }
+.layout_main {
+    margin: 0;
+}
 
 ul {
     list-style: none;
 }
-
+a, a:active , a:hover{
+    color: #a6afb8d7;
+    text-decoration: none;
+}
 
 /* 공용 좌측 메뉴바 css --------------------------------------------- start*/
-.layout_main > .layout_left > ul > li{ 
-    margin: 30px 0;
-    font-size: 20px;    
-    
+.layout_left > div > nav > ul > li > label{
+    color: #a6afb8d7;
+    padding: 15px;
+    font-weight: 400;
+}
+.layout_left input[type="checkbox"] {
+    display: none;
+}
+.layout_left > div > nav > ul > li > ul {
+    display: none;
+}
+.layout_left > div > nav > ul > li > #product_management:checked + label + ul {
+    display: block;
+}
+.layout_left > div > nav > ul > li > #product_management:checked + label {
+    color:#fff;
+}
+.layout_left > div > nav > ul > li >  label > i {
+    transition: all 0.3s;
+}
+.layout_left > div > nav > ul > li > #product_management:checked + label > i {
+    transform: rotateZ(90deg);
+}
+.layout_left > div > nav > ul > li > #out_management:checked + label + ul {
+    display: block;
+}
+.layout_left > div > nav > ul > li > #out_management:checked + label {
+    color: #fff;
+}
+.layout_left > div > nav > ul > li > #out_management:checked + label > i {
+    transform: rotateZ(90deg);
+}
+.layout_left > div > nav > ul > li > label:hover {
+    background-color: #2d363f;
+}
+.layout_left > div > nav > ul > li > a:hover {
+    background-color: #2d363f;
+}
+.layout_left > div > nav > ul > li > a{
+    color: #a6afb8d7;
+    padding: 15px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.layout_left > div > nav > ul > li > ul > li > a {
+    padding: 15px;
+    padding-left: 25px;
+    display: block;
+}
+.layout_left > div > nav > ul > li > ul > li > a:hover {
+    background-color: #2d363f;
+}
+.layout_left{
+    background-color: #3a4651;
 }
 
 /* 공용 좌측 메뉴바 css --------------------------------------------- end*/
@@ -26,19 +83,14 @@ ul {
 /* 공용 우측 메뉴바 css --------------------------------------------- end*/
 
 /* 공용 상단바 css --------------------------------------------- start*/
-.topmenu > div > p{
-    padding: 10px;
+.layout_right > .topmenu {
+    background-color: #d7dde4;
+}
+.layout_right > .topmenu > div > p{
+    padding: 15px 20px;
     margin: 0;
 }
 
-.topmenu > div:nth-of-type(1) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.topmenu > div:nth-of-type(1) > label {
-    margin: 0;
-}
 /* 공용 상단바 css --------------------------------------------- end */
 
 /* 레이아웃용 css --------------------------------------------- start*/

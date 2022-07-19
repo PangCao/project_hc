@@ -1,25 +1,49 @@
-<div class="d-flex justify-content-center align-items-center">
-	<div class="mt-3" style="background-color: red; width: 80%; height: 100px;"></div>
+
+<div class="sidebar-container">
+	<div class="sidebar-header d-flex justify-content-center">
+		<div style="width: 80%; height: 100px; background-color: antiquewhite;" class="mt-4 mb-5"></div>
+	</div>
+	<nav class="menu">
+		<ul class="sidebar-menu metismenu" id="sidebar-menu">
+			<li>
+				<input type="checkbox" id="product_management">
+				<label for="product_management" class="d-flex justify-content-between">
+					<div><i class="fa fa-th-large"></i> 생산관리</div>
+					<i class="fa-solid fa-angle-right"></i>
+				</label>
+				<ul class="sidebar-nav">
+					<li>
+						<a href="#"> 전체 공정 현황 </a>
+					</li>
+					<li>
+						<a href="#"> 생산 작업 지시 등록 </a>
+					</li>
+					<li>
+						<a href="#"> 생산 작업 지시 착수 </a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<input type="checkbox" id="out_management">
+				<label for="out_management" class="d-flex justify-content-between">
+					<div><i class="fa fa-bar-chart"></i> 외주관리</div>
+					<i class="fa-solid fa-angle-right"></i>
+				</label>
+				<ul class="sidebar-nav">
+					<li>
+						<a href="#"> 외주 의뢰 등록</a>
+					</li>
+					<li>
+						<a href="#"> 외주 공정 현황 </a>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a href="#" class="d-flex justify-content-between">
+					<div><i class="fa fa-table"></i> 개인정보관리</div>
+					<i class="fa-solid fa-angle-right"></i>
+				</a>
+			</li>
+		</ul>
+	</nav>
 </div>
-<ul class="mt-5 text-center">
-	<li>상품 조회</li>
-	<li>상품 입력
-		<ul class="small">
-			<li>상품입력</li>
-			<li>자재입력</li>
-		</ul>
-	</li>
-	<li>상품 삭제
-		<ul class="small">
-			<li>상품 삭제</li>
-			<li>자재 삭제</li>
-		</ul>
-	</li>
-	<li>상품 수정
-		<ul class="small">
-			<li>생산 순서 수정</li>
-			<li>상품 정보 수정</li>
-			<li>자재 정보 수정</li>
-		</ul>
-	</li>
-</ul>

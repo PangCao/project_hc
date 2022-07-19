@@ -6,8 +6,6 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
 
-<!-- 여기 아래 css가 계속 교체 -->
-<link rel="stylesheet" href="<c:url value="/resources/css/.css"/>">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
