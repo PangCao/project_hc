@@ -1,0 +1,134 @@
+@charset "UTF-8";
+.product_complete_top {
+    padding: 10px;
+}
+.product_complete_top > div > div > form > input{
+    margin: 5px;
+    padding: 2px 0;
+    padding-left: 5px;
+}
+.product_complete_top > div > div > form > div > input{
+    margin: 5px;
+    padding: 2px 0;
+}
+.product_complete_top > div > div > form > div > input[type="submit"]{
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}
+.product_complete_top > div > div > form > input[type="submit"]{
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}
+.product_complete_top {
+    position: sticky;
+    top: 54px;
+    padding-bottom: 0;
+    background-color: #fff;
+}
+.product_complete_top > div {
+    padding: 0 10px;
+}
+.product_complete_top > div > table {
+    width: 100%;
+    table-layout: fixed;
+    word-break: break-all;
+}
+.product_complete_top > div > table > tbody > tr > th{
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.349);
+    padding: 3px;
+}
+.product_complete_top > div > table > tbody > tr > th:nth-of-type(1) {
+    width: 2%;
+}
+.product_complete_top > div > table > tbody > tr > th:nth-of-type(2) {
+    width: 7%;
+}
+.product_complete_top > div > table > tbody > tr > th:nth-of-type(3) {
+    width: 7%;
+}
+.product_complete_top  div > table > tbody > tr > th:nth-of-type(4) {
+    width: 8%;
+}
+.product_complete_top > div > table > tbody > tr > th:nth-of-type(5) {
+    width: 8%;
+}
+.product_complete_top > div > table > tbody > tr > th:nth-of-type(6) {
+    width: 8%;
+}
+.product_complete_top > div > table > tbody > tr > th:nth-of-type(7) {
+    width: 35%;
+}
+.product_complete_top > div > table > tbody > tr > th:nth-of-type(8) {
+    width: 8%;
+}
+.product_complete_top > div > table > tbody > tr > th:nth-of-type(9) {
+    width: 10%;
+}
+.product_complete_top > div > table > tbody > tr > th:nth-of-type(10) {
+    width: 7%;
+}
+
+.product_complete_middle > div > table > tbody > tr:nth-of-type(1) > td{
+    border-top: none;
+}
+.product_complete_middle > div {
+    padding: 0 10px;
+}
+.product_complete_middle > div > table {
+    width: 100%;
+    table-layout: fixed;
+    word-break: break-all;
+}
+.product_complete_middle > div > table > tbody > tr > td{
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.349);
+    padding: 3px;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(1) {
+    width: 2%;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(2) {
+    width: 7%;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(3) {
+    width: 7%;
+}
+.product_complete_middle  div > table > tbody > tr > td:nth-of-type(4) {
+    width: 8%;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(5) {
+    width: 8%;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(6) {
+    width: 8%;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(7) {
+    width: 35%;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(8) {
+    width: 8%;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(9) {
+    width: 10%;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(10) {
+    width: 7%;
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(10) > input {
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}
+
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(10) > .order_btn {
+    background-color: rgba(0, 0, 255, 0.185);
+}
+.product_complete_middle > div > table > tbody > tr > td:nth-of-type(10) > .comple_btn {
+    background-color: rgba(0, 128, 0, 0.226);
+}
