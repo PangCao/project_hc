@@ -4,10 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="../resources/css/all.css">
-<link rel="stylesheet" href="">
-<link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
-<link rel="stylesheet" href="<c:url value='/resources/css/main.css'/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
+<link rel="stylesheet" href="<c:url value="/resources/css/main.css"/>">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
