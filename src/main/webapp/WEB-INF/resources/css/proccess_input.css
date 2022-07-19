@@ -1,0 +1,105 @@
+@charset "UTF-8";
+.proccess_input_top > div > div > input[type="button"]{
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}
+.proccess_input_top > div > div > select{
+    padding: 2px 20px;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+    border-radius: 2px;
+}
+.proccess_input_top > div:nth-of-type(1) {
+    margin-bottom: 10px;
+}
+
+.proccess_input_top {
+    padding: 10px;
+    position: sticky;
+    top: 54px;
+    padding-bottom: 0;
+    background-color: #fff;
+}
+.proccess_input_top > div {
+    padding: 0 10px;
+}
+.proccess_input_top > div > table {
+    width: 100%;
+    table-layout: fixed;
+    word-break: break-all;
+}
+
+
+
+.proccess_input_top > div > table > tbody > tr > th{
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.349);
+    padding: 3px;
+}
+.proccess_input_top > div > table > tbody > tr > th:nth-of-type(1) {
+    width: 2%;
+}
+.proccess_input_top > div > table > tbody > tr > th:nth-of-type(2) {
+    width: 7%;
+}
+.proccess_input_top > div > table > tbody > tr > th:nth-of-type(3) {
+    width: 7%;
+}
+.proccess_input_top  div > table > tbody > tr > th:nth-of-type(4) {
+    width: 13%;
+}
+.proccess_input_top > div > table > tbody > tr > th:nth-of-type(5) {
+    width: 13%;
+}
+.proccess_input_top > div > table > tbody > tr > th:nth-of-type(6) {
+    width: 13%;
+}
+.proccess_input_top > div > table > tbody > tr > th:nth-of-type(7) {
+    width: 35%;
+}
+.proccess_input_top > div > table > tbody > tr > th:nth-of-type(8) {
+    width: 10%;
+}
+
+.proccess_input_middle > div > table > tbody > tr:nth-of-type(1) > td{
+    border-top: none;
+}
+.proccess_input_middle > div {
+    padding: 0 10px;
+}
+.proccess_input_middle > div > table {
+    width: 100%;
+    table-layout: fixed;
+    word-break: break-all;
+}
+.proccess_input_middle > div > table > tbody > tr > td{
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.349);
+    padding: 3px;
+}
+.proccess_input_middle > div > table > tbody > tr > td:nth-of-type(1) {
+    width: 2%;
+}
+.proccess_input_middle > div > table > tbody > tr > td:nth-of-type(2) {
+    width: 7%;
+}
+.proccess_input_middle > div > table > tbody > tr > td:nth-of-type(3) {
+    width: 7%;
+}
+.proccess_input_middle  div > table > tbody > tr > td:nth-of-type(4) {
+    width: 13%;
+}
+.proccess_input_middle > div > table > tbody > tr > td:nth-of-type(5) {
+    width: 13%;
+}
+.proccess_input_middle > div > table > tbody > tr > td:nth-of-type(6) {
+    width: 13%;
+}
+.proccess_input_middle > div > table > tbody > tr > td:nth-of-type(7) {
+    width: 35%;
+}
+.proccess_input_middle > div > table > tbody > tr > td:nth-of-type(8) {
+    width: 10%;
+}

@@ -32,7 +32,7 @@
 							<div style="position: absolute; height: 100%; width: 80%; top: 0; left: 0; background-color: orange; z-index: 1;"></div>
 						</div>
 						<div>
-							<p>출고 날짜 : 2022-07-18</p>
+							<p>진수 예정일 : 2022-07-18</p>
 						</div>
 						<p>전체 공정률</p>
 						<div style="height: 7px; width: 100%; position: relative;" class="mb-3">
