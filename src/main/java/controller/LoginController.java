@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("/product_management/product_management")
+@RequestMapping("/product_management")
 public class LoginController {
+	
+	
 	
 	@PostMapping
 	public String login(LoginCommand loginCommand, HttpSession session, HttpServletResponse rep) {
 		
 		
-		return "product_management";
+		return "product_management/product_management";
 	}
 	
 	
