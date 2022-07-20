@@ -14,11 +14,11 @@
 </head>
 <body>
 	<section class="layout_main row">
-		<section class="layout_left col-2 p-0" style="background-color: aqua;">
-			<jsp:include page="<c:url value="/leftmenu.jsp"/>"/>
+		<section class="layout_left col-2 p-0">
+			<jsp:include page="/WEB-INF/view/leftmenu.jsp"/>
 		</section>
-		<section class="layout_right col-10 p-0" style="background-color: antiquewhite;">
-			<jsp:include page="<c:url value="/topmenu.jsp"/>"/>
+		<section class="layout_right col-10 p-0">
+			<jsp:include page="/WEB-INF/view/topmenu.jsp"/>
 			<!-- 여기 아래부터 바디 -->
 			<section class="out_order_input_top">
 				<div class="d-flex justify-content-between">

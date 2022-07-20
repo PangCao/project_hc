@@ -14,10 +14,10 @@
 </head>
 <body>
 	<section class="layout_main row">
-		<section class="layout_left col-2 p-0" style="background-color: aqua;">
+		<section class="layout_left col-2 p-0">
 			<jsp:include page="/WEB-INF/view/leftmenu.jsp"/>
 		</section>
-		<section class="layout_right col-10 p-0" style="background-color: antiquewhite;">
+		<section class="layout_right col-10 p-0">
 			<jsp:include page="/WEB-INF/view/topmenu.jsp"/>
 			<!-- 여기 아래부터 바디 -->
 			<section class="proccess_input_top">

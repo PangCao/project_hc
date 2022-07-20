@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
 <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
 <link rel="stylesheet" href="<c:url value='/resources/css/project_management.css'/>">
-
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -21,7 +20,7 @@
 			<!-- 여기 아래부터 바디 -->
 			<section class="project_management row m-0 d-flex justify-content-center">
 				<!-- 여기서 부터 -->
-				<a class="col-5" href="">
+				<a class="col-5" href="project_sub_management">
 					<h3 class="mb-4">PJT 명1</h3>
 					<div>
 						<P> 현재 진행 공정 : 가공</P>
@@ -40,7 +39,7 @@
 					</div>
 				</a>
 				<!-- 여기까지가 한 세트 -->
-				<a class="col-5">
+				<a class="col-5" href="project_sub_management">
 					<h3 class="mb-4">PJT 명1</h3>
 					<div>
 						<P> 현재 진행 공정 : 가공</P>
@@ -58,7 +57,7 @@
 						</div>
 					</div>
 				</a>
-				<a class="col-5">
+				<a class="col-5"  href="project_sub_management">
 					<h3 class="mb-4">PJT 명1</h3>
 					<div>
 						<p> 현재 진행 공정 : 가공</p>
@@ -76,7 +75,7 @@
 						</div>
 					</div>
 				</a>
-				<a class="col-5">
+				<a class="col-5"  href="project_sub_management">
 					<h3 class="mb-4">PJT 명1</h3>
 					<div>
 						<P> 현재 진행 공정 : 가공</P>

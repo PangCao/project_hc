@@ -27,6 +27,7 @@ public class MvcConfig implements WebMvcConfigurer{
 		registry.jsp("/WEB-INF/view/",".jsp");
 	}
 
+	//resources내 파일 경로 설정 도우미(?)
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");

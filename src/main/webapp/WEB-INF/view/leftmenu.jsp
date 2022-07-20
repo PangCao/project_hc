@@ -24,7 +24,7 @@
 						<a href="complete"> 생산 작업 지시 착수 </a>
 					</li>
 					<li>
-						<a href="#"> 생산 작업 실적 등록 </a>
+						<a href="record"> 생산 작업 실적 등록 </a>
 					</li>
 				</ul>
 			</li>
