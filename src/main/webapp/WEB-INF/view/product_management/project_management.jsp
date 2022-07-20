@@ -3,27 +3,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
-<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
-<link rel="stylesheet" href="<c:url value="/resources/css/project_management.css"/>">
+<link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
+<link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
+<link rel="stylesheet" href="<c:url value='/resources/css/project_management.css'/>">
 
-<!-- 여기 아래 css가 계속 교체 -->
-<link rel="stylesheet" href="<c:url value="/resources/css/.css"/>">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 	<section class="layout_main row">
-		<section class="layout_left col-2 p-0" style="background-color: aqua;">
-			<jsp:include page="<c:url value="/leftmenu.jsp"/>"/>
+		<section class="layout_left col-2 p-0">
+			<jsp:include page="/WEB-INF/view/leftmenu.jsp"/>
 		</section>
-		<section class="layout_right col-10 p-0" style="background-color: antiquewhite;">
-			<jsp:include page="<c:url value="/topmenu.jsp"/>"/>
+		<section class="layout_right col-10 p-0">
+			<jsp:include page="/WEB-INF/view/topmenu.jsp"/>
 			<!-- 여기 아래부터 바디 -->
 			<section class="project_management row m-0 d-flex justify-content-center">
 				<!-- 여기서 부터 -->
-				<a class="col-5">
+				<a class="col-5" href="">
 					<h3 class="mb-4">PJT 명1</h3>
 					<div>
 						<P> 현재 진행 공정 : 가공</P>
@@ -63,7 +61,7 @@
 				<a class="col-5">
 					<h3 class="mb-4">PJT 명1</h3>
 					<div>
-						<P> 현재 진행 공정 : 가공</P>
+						<p> 현재 진행 공정 : 가공</p>
 						<div style="height: 2px; width: 100%; position: relative;" class="mb-3">
 							<div style="background-color: white; height: 100%; width: 100%;"></div>
 							<div style="position: absolute; height: 100%; width: 80%; top: 0; left: 0; background-color: orange; z-index: 1;"></div>

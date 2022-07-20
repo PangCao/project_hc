@@ -4,16 +4,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
-<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
-<link rel="stylesheet" href="<c:url value="/resources/css/main.css"/>">
+<link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
+<link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
+<link rel="stylesheet" href="<c:url value='/resources/css/main.css'/>">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 	<section class="main">
 		<div class="container d-flex justify-content-center align-items-center">
-			<form action="" method="post" class="col-5">
+			<form action="product_management" method="post" class="col-5">
 				<div class="form-group">
 					<input type="text" class="form-control col-12" placeholder="사번입력">
 				</div>

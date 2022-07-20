@@ -3,8 +3,14 @@
     margin: 0;
     padding: 0;
 }
+body {
+	position: relative;
+}
 .layout_main {
     margin: 0;
+    position: sticky;
+    top:0;
+    
 }
 
 ul {
@@ -85,6 +91,8 @@ a, a:active , a:hover{
 /* 공용 상단바 css --------------------------------------------- start*/
 .layout_right > .topmenu {
     background-color: #d7dde4;
+    position: sticky;
+    top : 0;
 }
 .layout_right > .topmenu > div > p{
     padding: 15px 20px;

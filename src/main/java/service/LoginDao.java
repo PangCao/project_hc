@@ -1,6 +1,7 @@
 package service;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,8 +17,15 @@ public class LoginDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	private RowMapper<LoginCommand> loginRowMapper = new RowMapper<LoginCommand>();
-	
-	@Override
-	public LoginCommand loginCommand(ResultSet rs,)
+//	private RowMapper<LoginCommand> loginRowMapper = new RowMapper<LoginCommand>() {
+//
+//		@Override
+//		public LoginCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+//			LoginCommand loinCom = new LoginCommand(
+//					rs.getSrting("ID")
+//					);
+//			return null;
+//		}
+//		
+//	};
 }

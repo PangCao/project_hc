@@ -1,4 +1,5 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <div class="sidebar-container">
 	<div class="sidebar-header d-flex justify-content-center">
 		<div style="width: 80%; height: 100px; background-color: antiquewhite;" class="mt-4 mb-5"></div>
@@ -13,13 +14,13 @@
 				</label>
 				<ul class="sidebar-nav">
 					<li>
-						<a href="#"> 전체 공정 현황 </a>
+						<a href="management"> 전체 공정 현황 </a>
 					</li>
 					<li>
-						<a href="#"> 생산 작업 지시 등록 </a>
+						<a href="input"> 생산 작업 지시 등록 </a>
 					</li>
 					<li>
-						<a href="#"> 생산 작업 지시 착수 </a>
+						<a href="complete"> 생산 작업 지시 착수 </a>
 					</li>
 				</ul>
 			</li>
@@ -31,10 +32,10 @@
 				</label>
 				<ul class="sidebar-nav">
 					<li>
-						<a href="#"> 외주 의뢰 등록</a>
+						<a href="out_input"> 외주 의뢰 등록</a>
 					</li>
 					<li>
-						<a href="#"> 외주 공정 현황 </a>
+						<a href="out_select"> 외주 공정 현황 </a>
 					</li>
 				</ul>
 			</li>
