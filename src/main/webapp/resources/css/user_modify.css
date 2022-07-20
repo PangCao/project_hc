@@ -1,0 +1,30 @@
+@charset "UTF-8";
+.user_modify {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user_modify > form > h3 {
+    margin-bottom: 50px;
+}
+.user_modify > form > div {
+    margin: 20px 0;
+}
+.user_modify > form > div > input {
+    height: 40px;
+}
+.user_modify > form > div > div > select {
+    height: 40px;
+}
+.user_modify > form > div > label {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+.user_modify > form > div > input[type="submit"] {
+    margin-top: 50px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}
