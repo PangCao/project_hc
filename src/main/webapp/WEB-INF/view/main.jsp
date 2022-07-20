@@ -26,7 +26,7 @@
 			</form>
 		</div>
 		<div class="logo_img">
-			<div style="background-color: red; width: 100px; height: 50px;">로고이미지로 전환</div>
+			<img src="<c:url value="/resources/images/logo.png"/>" style="width: 300px;">
 		</div>
 	</section>
 </body>

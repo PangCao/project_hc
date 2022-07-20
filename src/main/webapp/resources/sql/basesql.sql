@@ -57,6 +57,7 @@ create table if not exists product_management (
     p_remark varchar(2000),
     p_regnum varchar(30),
     p_state varchar(50),
+    foreign key(p_proname) references project(pj_name),
     foreign key(p_regnum) references member(m_num)
 )default charset=utf8mb4;
 

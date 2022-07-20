@@ -1,14 +1,14 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="sidebar-container">
 	<div class="sidebar-header d-flex justify-content-center">
-		<div style="width: 80%; height: 100px; background-color: antiquewhite;" class="mt-4 mb-5"></div>
+		<img src="<c:url value="/resources/images/logo_black.png"/>" alt="" style="width: 90%;" class="mt-4 mb-5">
 	</div>
 	<nav class="menu">
 		<ul class="sidebar-menu metismenu" id="sidebar-menu">
 			<li>
 				<input type="checkbox" id="product_management">
 				<label for="product_management" class="d-flex justify-content-between">
-					<div><i class="fa fa-th-large"></i> 생산관리</div>
+					<div><i class="fa-solid fa-gears"></i> 생산관리</div>
 					<i class="fa-solid fa-angle-right"></i>
 				</label>
 				<ul class="sidebar-nav">
@@ -21,12 +21,15 @@
 					<li>
 						<a href="#"> 생산 작업 지시 착수 </a>
 					</li>
+					<li>
+						<a href="#"> 생산 작업 실적 등록 </a>
+					</li>
 				</ul>
 			</li>
 			<li>
 				<input type="checkbox" id="out_management">
 				<label for="out_management" class="d-flex justify-content-between">
-					<div><i class="fa fa-bar-chart"></i> 외주관리</div>
+					<div><i class="fa-regular fa-handshake"></i> 외주관리</div>
 					<i class="fa-solid fa-angle-right"></i>
 				</label>
 				<ul class="sidebar-nav">
@@ -40,7 +43,7 @@
 			</li>
 			<li>
 				<a href="#" class="d-flex justify-content-between">
-					<div><i class="fa fa-table"></i> 개인정보관리</div>
+					<div><i class="fa-regular fa-circle-user"></i> 개인정보관리</div>
 					<i class="fa-solid fa-angle-right"></i>
 				</a>
 			</li>
