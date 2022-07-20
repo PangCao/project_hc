@@ -1,0 +1,26 @@
+@charset "UTF-8";
+.out_input_popup {
+    width: 95vw;
+    margin: auto;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.out_input_popup > form {
+    border: 1px solid gray;
+    padding: 20px;
+    border-radius: 3px;
+}
+.out_input_popup > form > div > div {
+    margin: 20px 0;
+}
+.out_input_popup > form > div > div > select{
+    height: 32px;
+}
+.out_input_popup > form > div > div > input[type="submit"] {
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}
