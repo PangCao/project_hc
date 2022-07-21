@@ -117,6 +117,9 @@ p {
     position: relative;
     cursor: pointer;
 }
+.layout_right > .topmenu > div > a:nth-last-of-type(1){
+	margin-right:40px;
+}
 .layout_right > .topmenu > div > a:hover{
 	color : #a6afb8d7;
 }

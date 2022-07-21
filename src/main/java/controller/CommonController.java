@@ -49,4 +49,10 @@ public class CommonController {
 		public String user_authentication() {
 			return "user_setting/user_modify";
 		}
+		
+		//공지사항쓰기
+	    @RequestMapping("/notice_write")
+	    public String notice_write() {
+	        return "board/notice_write";
+	    }
 }

@@ -13,6 +13,7 @@ public class MemberDao {
 	
 	private JdbcTemplate jt;
 	
+<<<<<<< HEAD:src/main/java/service/MemberDao.java
 	public MemberDao(DataSource dataSource) {
 		this.jt = new JdbcTemplate(dataSource);
 	}

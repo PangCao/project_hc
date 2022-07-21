@@ -1,0 +1,18 @@
+@charset "UTF-8";
+.projectpopup {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.projectpopup > form > div{
+    margin: 20px 0;
+}
+.projectpopup > form > div > input[type="submit"] {
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}

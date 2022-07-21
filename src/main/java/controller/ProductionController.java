@@ -2,10 +2,21 @@ package controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 //생산관리
 @Controller
 public class ProductionController {
+	
+	@RequestMapping("project_input")
+	public String project_input(@RequestParam String name, @RequestParam String date) {
+		return "redirect:product_management";
+	}
+	
+	@RequestMapping("/projectpopup")
+	public String projectpopup() {
+		return "product_management/projectpopup";
+	}
 	
 	//전체 공정 현황
 	@RequestMapping("/product_management")

@@ -17,7 +17,7 @@ public class AppConfig {
 	public DataSource dataSource() {
 		DataSource ds = new DataSource();
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
-		ds.setUrl("jdbc:mtsql://localhost/Project_hc?characterEncoding=utf8&useSSL=false");
+		ds.setUrl("jdbc:mtsql://localhost/hcproject?characterEncoding=utf8&useSSL=false");
 		ds.setUsername("root");
 		ds.setPassword("1234");
 		return ds;
