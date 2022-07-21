@@ -1,0 +1,36 @@
+@charset "UTF-8";
+.mainpage > div:nth-of-type(2) > div > div > table > tbody > tr > th{
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+.mainpage > div:nth-of-type(2) > div > div > div {
+    margin-bottom: 10px;
+}
+.mainpage > div:nth-of-type(2) > div > div > div > a{
+    font-size: 25px;
+    color: black;
+    transition: all 0.2s;
+    position: relative;
+}
+.mainpage > div:nth-of-type(2) > div > div > div > a::before{
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 2px;
+    background-color: black;
+    bottom: -3px;
+    left: 50%;
+    transition: all 0.2s;
+}
+.mainpage > div:nth-of-type(2) > div > div > div > a:hover::before{
+    width: 100%;
+    left: 0;
+}
+.mainpage > div:nth-of-type(2) > div > div > div > div > a{
+    color: #2125293a;
+    transition: all 0.2s;
+    font-size: 20px;
+}
+.mainpage > div:nth-of-type(2) > div > div > div > div > a:hover{
+    color: #212529;
+}

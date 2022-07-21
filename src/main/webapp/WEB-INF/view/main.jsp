@@ -13,7 +13,7 @@
 <body>
 	<section class="main">
 		<div class="container d-flex justify-content-center align-items-center">
-			<form action="product_management" method="post" class="col-5">
+			<form action="login" method="post" class="col-5">
 				<div class="form-group">
 					<input type="text" class="form-control col-12" placeholder="사번입력">
 				</div>

@@ -9,6 +9,18 @@
 	<nav class="menu">
 		<ul class="sidebar-menu metismenu" id="sidebar-menu">
 			<li>
+				<a href="mainpage" class="d-flex justify-content-between">
+					<div><i class="fa-solid fa-house"></i> 메인페이지</div>
+					<i class="fa-solid fa-angle-right"></i>
+				</a>
+			</li>
+			<li>
+				<a href="notice" class="d-flex justify-content-between">
+					<div><i class="fa-solid fa-circle-exclamation"></i> 공지사항</div>
+					<i class="fa-solid fa-angle-right"></i>
+				</a>
+			</li>
+			<li>
 				<input type="checkbox" id="product_management">
 				<label for="product_management" class="d-flex justify-content-between">
 					<div><i class="fa-solid fa-gears"></i> 생산관리</div>
@@ -43,6 +55,12 @@
 						<a href="out_select"> 외주 공정 현황 </a>
 					</li>
 				</ul>
+			</li>
+			<li>
+				<a href="issue" class="d-flex justify-content-between">
+					<div><i class="fa-solid fa-triangle-exclamation"></i> 이슈관리</div>
+					<i class="fa-solid fa-angle-right"></i>
+				</a>
 			</li>
 			<li>
 				<a href="user_authentication" class="d-flex justify-content-between">

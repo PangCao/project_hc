@@ -32,7 +32,7 @@
 						</select>
 					</div>
 					<div class="col-6 d-flex align-items-end flex-column">
-						<input type="button" value="등록">
+						<input type="button" value="등록" onclick="inputpopup()">
 					</div>
 				</div>
 				<div class="p-0">
@@ -75,9 +75,15 @@
 				<p>&lt; 1 2 3 &gt;</p>
 			</div>
 		</section>
-			
-			
-		</section>
 	</section>
 </body>
+<script type="text/javascript">
+	function inputpopup() {
+		let popwidth = 1000;
+		let popheight = 700;
+		let popx = (window.screen.width / 2) - (popwidth / 2);
+		let popy = (window.screen.height / 2) - (popheight / 2);
+		window.open("input_popup","inputpop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
+	}
+</script>
 </html>

@@ -1,0 +1,27 @@
+@charset "UTF-8";
+.notice > h2 {
+    margin-bottom: 20px;
+}
+.notice > form {
+    margin: 20px 0;
+}
+.notice > form > input{
+    height: 35px;
+}
+.notice > form > input[type="submit"]{
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}
+.notice > div > table > tbody > tr > th {
+    border-top: 2px solid grey;
+    border-bottom: 2px solid grey;
+}
+.notice > div:nth-last-of-type(1) > input {
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+    margin: 20px 0;
+} 

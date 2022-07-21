@@ -4,8 +4,9 @@
     padding: 20px;
     border-radius: 5px;
     margin: 30px 15px;
-    background-color: gray;
+    background-color: #d9ecff;
     transition: all 0.3s;
+    color:black;
 }
 .project_management > a:hover {
     background-color: rgba(0, 51, 255, 0.034);

@@ -1,0 +1,122 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
+<link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
+<!-- 여기 아래 css가 계속 교체 -->
+<link rel="stylesheet" href="<c:url value='/resources/css/notice.css'/>">
+<script src="https://kit.fontawesome.com/42c64699fb.js" crossorigin="anonymous"></script>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<section class="layout_main row">
+		<section class="layout_left col-2 p-0">
+			<jsp:include page="/WEB-INF/view/leftmenu.jsp"/>
+		</section>
+		<section class="layout_right col-10 p-0">
+			<jsp:include page="/WEB-INF/view/topmenu.jsp"/>
+			<!-- 여기 아래부터 바디 -->
+			<section class="notice">
+				<h2 class="col-6 ml-5 mt-5">공지사항</h2>
+				<form  action="" method="post" class="col-12 d-flex justify-content-end">
+					<input type="text" name="" id="" class="col-3">
+					<input type="submit" value="검색" class="col-1 ml-2">
+				</form>
+				<div class="col-12">
+					<table class="col-12 table table-hover text-center">
+						<tbody>
+							<tr>
+								<th class="col-1">NO</th>
+								<th class="col-6">제목</th>
+								<th class="col-2">등록자</th>
+								<th class="col-2">등록일</th>
+								<th class="col-1">조회수</th>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>안전공지사항</td>
+								<td>김사장</td>
+								<td>2022/07/21</td>
+								<td>0</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="d-flex justify-content-end col-12">
+					<input type="button" value="공지사항쓰기">
+				</div>
+			</section>
+			<div class="col-12 d-flex justify-content-center">
+				<p>&lt;1 2 3&gt;</p>
+			</div>
+		</section>
+	</section>
+</body>
+</html>

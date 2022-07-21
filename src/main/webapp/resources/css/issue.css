@@ -1,0 +1,26 @@
+@charset "UTF-8";
+.issue > h2 {
+    margin-bottom: 20px;
+}
+.issue > div > div{
+    margin: 20px 0;
+}
+.issue > div > div > form > div > input{
+    height: 35px;
+    margin: 5px 0;
+}
+.issue > div > div > div > form > input{
+    height: 35px;
+    margin: 5px 0;
+}
+.issue > div > div > div > form > select{
+    height: 35px;
+    margin: 5px 0;
+}
+.issue > form > input{
+    height: 35px;
+}
+.issue > div > table > tbody > tr > th {
+    border-top: 2px solid grey;
+    border-bottom: 2px solid grey;
+}

@@ -37,15 +37,25 @@ public class LeftController {
 		return "product_management/product_complete";
 	}
 	
+	@RequestMapping("/notice")
+	public String notice() {
+		return "board/notice";
+	}
+	
+	@RequestMapping("/issue")
+	public String issue() {
+		return "board/issue";
+	}
+	
 	//외주 관리
 	@RequestMapping("/out_input")//외주 의뢰 등록
 	public String out_input(){
-		return "product_management/product_complete";
+		return "out_product_management/out_order_input";
 	}
 	
 	@RequestMapping("/out_select")//외주 공정 현황
 	public String out_select(){
-		return "product_management/product_complete";
+		return "out_product_management/out_order_select";
 	}
 	
 	//개인정보 관리

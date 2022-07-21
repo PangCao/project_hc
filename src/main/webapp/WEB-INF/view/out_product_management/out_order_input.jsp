@@ -31,7 +31,7 @@
 								<input type="submit" value="조회">
 							</div>
 							<div>
-								<input type="button" value="등록">
+								<input type="button" value="등록" onclick="inputpopup()">
 							</div>
 						</form>
 					</div>
@@ -126,4 +126,13 @@
 		</section>
 	</section>
 </body>
+<script type="text/javascript">
+	function inputpopup() {
+		let popwidth = 1000;
+		let popheight = 400;
+		let popx = (window.screen.width / 2) - (popwidth / 2);
+		let popy = (window.screen.height / 2) - (popheight / 2);
+		window.open("out_input_popup","out_inputpop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
+	}
+</script>
 </html>
