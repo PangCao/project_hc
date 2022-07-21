@@ -3,14 +3,8 @@
     margin: 0;
     padding: 0;
 }
-body {
-	position: relative;
-}
 .layout_main {
     margin: 0;
-    position: sticky;
-    top:0;
-    
 }
 
 ul {
@@ -20,12 +14,22 @@ a, a:active , a:hover{
     color: #a6afb8d7;
     text-decoration: none;
 }
-
+p {
+	margin: 0;
+}
 /* 공용 좌측 메뉴바 css --------------------------------------------- start*/
+.layout_left {
+    z-index: 9999;
+    position: sticky;
+    top: 0;
+    left: 0;
+}
 .layout_left > div > nav > ul > li > label{
     color: #a6afb8d7;
     padding: 15px;
     font-weight: 400;
+    transition: all 0.2s;
+    margin: 0;
 }
 .layout_left input[type="checkbox"] {
     display: none;
@@ -65,12 +69,14 @@ a, a:active , a:hover{
     padding: 15px;
     font-weight: 400;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
 .layout_left > div > nav > ul > li > ul > li > a {
     padding: 15px;
     padding-left: 25px;
     display: block;
+    transition: all 0.2s;
 }
 .layout_left > div > nav > ul > li > ul > li > a:hover {
     background-color: #2d363f;
@@ -89,14 +95,45 @@ a, a:active , a:hover{
 /* 공용 우측 메뉴바 css --------------------------------------------- end*/
 
 /* 공용 상단바 css --------------------------------------------- start*/
+.topmenu {
+    z-index: 9999;
+    position: sticky;
+    top: 0;
+    right: 0;
+}
 .layout_right > .topmenu {
     background-color: #d7dde4;
-    position: sticky;
-    top : 0;
 }
+
 .layout_right > .topmenu > div > p{
     padding: 15px 20px;
     margin: 0;
+}
+.layout_right > .topmenu > div > a{
+    padding: 15px 20px;
+    margin: 0;
+    color: black;
+    transition: all 0.2s;
+    position: relative;
+    cursor: pointer;
+}
+.layout_right > .topmenu > div > a:hover{
+	color : #a6afb8d7;
+}
+
+.layout_right > .topmenu > div > a:after{
+	content: "";
+	width: 0;
+	height: 2px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+	background: rgba(0, 0, 0, 0.418);	
+    transition: all 0.2s;
+}
+.layout_right > .topmenu > div > a:hover::after{
+    width: 100%;
+    left: 0;
 }
 
 /* 공용 상단바 css --------------------------------------------- end */
@@ -106,7 +143,7 @@ body > .layout_main >.layout_left {
     height: 100vh;
 }
 body > .layout_main > .layout_right {
-    height: 100vh;
+    min-height: 100vh;
 }
 body > .layout_main {
     min-height: 100vh;

@@ -3,9 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
-
+<link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value="/resources/css/project_sub_management.css"/>">
 <head>
@@ -26,109 +25,117 @@
 				</div>
 				<div class="row m-0">
 					<div class="col-3">
-						<table>
-							<tbody>
-								<tr>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">1</td>
-									<td>2</td>
-									<td>3</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">4</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>6</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">7</td>
-									<td>8</td>
-								</tr>
-								<tr>
-									<td>9</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">10</td>
-									<td>11</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">12</td>
-								</tr>
-							</tbody>
-						</table>
+						<a href="project_detail">
+							<table>
+								<tbody>
+									<tr>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">1</td>
+										<td>2</td>
+										<td>3</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">4</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>6</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">7</td>
+										<td>8</td>
+									</tr>
+									<tr>
+										<td>9</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">10</td>
+										<td>11</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">12</td>
+									</tr>
+								</tbody>
+							</table>
+						</a>
 						<div class="d-flex justify-content-center">
 							<p>&lt; A &gt;</p>
 						</div>
 					</div>
 					<div class="col-3">
-						<table>
-							<tbody>
-								<tr>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">1</td>
-									<td>2</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">3</td>
-									<td>4</td>
-								</tr>
-								<tr>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">5</td>
-									<td>6</td>
-									<td>7</td>
-									<td>8</td>
-								</tr>
-								<tr>
-									<td>9</td>
-									<td>10</td>
-									<td>11</td>
-									<td>12</td>
-								</tr>
-							</tbody>
-						</table>
+						<a href="project_detail">
+							<table>
+								<tbody>
+									<tr>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">1</td>
+										<td>2</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">3</td>
+										<td>4</td>
+									</tr>
+									<tr>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">5</td>
+										<td>6</td>
+										<td>7</td>
+										<td>8</td>
+									</tr>
+									<tr>
+										<td>9</td>
+										<td>10</td>
+										<td>11</td>
+										<td>12</td>
+									</tr>
+								</tbody>
+							</table>
+						</a>
 						<div class="d-flex justify-content-center">
 							<p>&lt; B &gt;</p>
 						</div>
 					</div>
 					<div class="col-3">
-						<table>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>2</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">3</td>
-									<td>4</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>6</td>
-									<td>7</td>
-									<td>8</td>
-								</tr>
-								<tr>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">9</td>
-									<td>10</td>
-									<td>11</td>
-									<td>12</td>
-								</tr>
-							</tbody>
-						</table>
+						<a href="project_detail">
+							<table>
+								<tbody>
+									<tr>
+										<td>1</td>
+										<td>2</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">3</td>
+										<td>4</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>6</td>
+										<td>7</td>
+										<td>8</td>
+									</tr>
+									<tr>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">9</td>
+										<td>10</td>
+										<td>11</td>
+										<td>12</td>
+									</tr>
+								</tbody>
+							</table>
+						</a>
 						<div class="d-flex justify-content-center">
 							<p>&lt; C &gt;</p>
 						</div>
 					</div>
 					<div class="col-3">
-						<table>
-							<tbody>
-								<tr>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">1</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">2</td>
-									<td>3</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">4</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>6</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">7</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">8</td>
-								</tr>
-								<tr>
-									<td>9</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">10</td>
-									<td style="background-color: rgba(255, 0, 0, 0.322);">11</td>
-									<td>12</td>
-								</tr>
-							</tbody>
-						</table>
+						<a href="project_detail">
+							<table>
+								<tbody>
+									<tr>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">1</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">2</td>
+										<td>3</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">4</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>6</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">7</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">8</td>
+									</tr>
+									<tr>
+										<td>9</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">10</td>
+										<td style="background-color: rgba(255, 0, 0, 0.322);">11</td>
+										<td>12</td>
+									</tr>
+								</tbody>
+							</table>
+						</a>
 						<div class="d-flex justify-content-center">
 							<p>&lt; D &gt;</p>
 						</div>

@@ -11,11 +11,16 @@ public class LeftController {
 	public String sub(){
 		return "product_management/project_sub_management";
 	}
-	
-	@RequestMapping("/management")//전체 공정 현황
-	public String management(){
-		return "product_management/project_management";
+	@RequestMapping("/project_detail")//생산 작업 실적 등록
+	public String detail(){
+		return "product_management/project_detail";
 	}
+	
+	// LoginController와 중복된 경로설정(리턴값이 같음)
+//	@RequestMapping("/management")//전체 공정 현황
+//	public String management(){
+//		return "product_management/project_management";
+//	}
 	
 	@RequestMapping("/input")//생산 작업 지시 등록
 	public String input(){
@@ -41,5 +46,11 @@ public class LeftController {
 	@RequestMapping("/out_select")//외주 공정 현황
 	public String out_select(){
 		return "product_management/product_complete";
+	}
+	
+	//개인정보 관리
+	@RequestMapping("/user_modify")
+	public String user_authentication() {
+		return "user_setting/user_modify";
 	}
 }

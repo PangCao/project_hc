@@ -3,9 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
-
+<link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value="/resources/css/product_complete.css"/>">
 <head>

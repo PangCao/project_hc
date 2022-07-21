@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://kit.fontawesome.com/42c64699fb.js" crossorigin="anonymous"></script>
 <div class="sidebar-container">
 	<div class="sidebar-header d-flex justify-content-center">
 		<img src="<c:url value="/resources/images/logo_black.png"/>" alt="" style="width: 90%;" class="mt-4 mb-5">
@@ -15,7 +16,7 @@
 				</label>
 				<ul class="sidebar-nav">
 					<li>
-						<a href="management"> 전체 공정 현황 </a>
+						<a href="product_management"> 전체 공정 현황 </a>
 					</li>
 					<li>
 						<a href="input"> 생산 작업 지시 등록 </a>
@@ -44,7 +45,7 @@
 				</ul>
 			</li>
 			<li>
-				<a href="#" class="d-flex justify-content-between">
+				<a href="user_authentication" class="d-flex justify-content-between">
 					<div><i class="fa-regular fa-circle-user"></i> 개인정보관리</div>
 					<i class="fa-solid fa-angle-right"></i>
 				</a>

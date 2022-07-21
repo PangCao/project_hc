@@ -1,6 +1,9 @@
 package config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -20,6 +23,7 @@ public class MvcConfig implements WebMvcConfigurer{
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/main").setViewName("main");
+		registry.addViewController("/user_authentication").setViewName("user_setting/user_authentication");
 	}
 
 	@Override
@@ -32,4 +36,5 @@ public class MvcConfig implements WebMvcConfigurer{
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
+	
 }

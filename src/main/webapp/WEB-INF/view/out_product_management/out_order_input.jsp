@@ -3,9 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
-
+<link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value="/resources/css/out_order_input.css"/>">
 <head>
@@ -124,8 +123,6 @@
 			<div class="d-flex justify-content-center mt-5">
 				<p>&lt; 1 2 3 &gt;</p>
 			</div>
-			
-			
 		</section>
 	</section>
 </body>

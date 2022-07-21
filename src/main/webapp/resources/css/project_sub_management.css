@@ -8,15 +8,21 @@
 .project_sub_management > div> div:nth-last-of-type(1) {
     padding-right: 15px;
 }
-.project_sub_management > div> div > table > tbody > tr > td{
+.project_sub_management > div> div > a > table > tbody > tr > td{
     border: 1px solid black;
 }
-.project_sub_management > div> div > table {
+.project_sub_management > div> div > a > table {
     width: 100%;
     margin: 0;
     text-align: center;
+    opacity: 0.8;
+    transition : all 0.3s;
 }
-.project_sub_management > div> div > table > tbody > tr > td{
+.project_sub_management > div> div > a > table:hover {
+	opacity: 1;
+	color: black;
+}
+.project_sub_management > div> div > a > table > tbody > tr > td{
     width: 25%;
     height: 100px;
 }

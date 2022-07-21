@@ -3,8 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
 <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
+<link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
 <link rel="stylesheet" href="<c:url value='/resources/css/project_management.css'/>">
 <head>
 <meta charset="UTF-8">
