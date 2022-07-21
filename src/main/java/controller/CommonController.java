@@ -7,13 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import command.MemberCommand;
+import service.MemberDao;
 //공통 컨트롤
 @Controller
 public class CommonController {
+		
 	
 		// 로그인
 		@RequestMapping("/login")
-		public String login(MemberCommand loginCommand, HttpSession session, HttpServletResponse rep) {
+		public String login(MemberCommand MC, HttpSession session, HttpServletResponse rep) {
+			
 			return "mainpage";
 		}
 		

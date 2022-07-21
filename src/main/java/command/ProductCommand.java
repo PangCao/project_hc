@@ -2,22 +2,22 @@ package command;
 
 public class ProductCommand {
 	
-	private String p_num; //db id값
+	private int p_num; //db id값
 	private String p_proname; //프로젝트명
 	private String p_tasknumber; //작업번호
 	private String p_processnumber; //공정번호
 	private String p_regdate; //등록일
 	private String p_startdate; //착수일
 	private String p_compledate; //완료일
-	private String p_remarkid; //특이사항
+	private int p_remarkid; //특이사항 아이디
 	private String p_regnum; //등록자
 	private String p_state; //결재상태
 	
 	
-	public String getP_num() {
+	public int getP_num() {
 		return p_num;
 	}
-	public void setP_num(String p_num) {
+	public void setP_num(int p_num) {
 		this.p_num = p_num;
 	}
 	public String getP_proname() {
@@ -56,10 +56,10 @@ public class ProductCommand {
 	public void setP_compledate(String p_compledate) {
 		this.p_compledate = p_compledate;
 	}
-	public String getP_remarkid() {
+	public int getP_remarkid() {
 		return p_remarkid;
 	}
-	public void setP_remarkid(String p_remarkid) {
+	public void setP_remarkid(int p_remarkid) {
 		this.p_remarkid = p_remarkid;
 	}
 	public String getP_regnum() {

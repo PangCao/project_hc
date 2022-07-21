@@ -9,12 +9,12 @@ import org.springframework.jdbc.core.RowMapper;
 
 import command.MemberCommand;
 
-public class LoginDao {
+public class MemberDao {
 	
-	private JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jt;
 	
-	public LoginDao(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	public MemberDao(DataSource dataSource) {
+		this.jt = new JdbcTemplate(dataSource);
 	}
 	
 //	private RowMapper<LoginCommand> loginRowMapper = new RowMapper<LoginCommand>() {

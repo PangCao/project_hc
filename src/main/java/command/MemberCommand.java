@@ -1,13 +1,14 @@
 package command;
 
+//회원정보
 public class MemberCommand {
 	
 	private String m_num; //사원번호
-	private String m_password;
-	private String m_name;
-	private String m_position;
-	private String m_department;
-	private String m_tel;
+	private String m_password; //비밀번호
+	private String m_name; //이름
+	private String m_position; //직책
+	private String m_department; //부서
+	private String m_tel; //연락처
 	
 	
 	public String getM_num() {

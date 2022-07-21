@@ -2,13 +2,12 @@ package command;
 
 public class ProjectCommand {
 	
-	private String pj_id;
-	private String pj_name;
-	private String pj_regdate;
-	private String pj_eta;
-	private String pj_task;
-	private String pj_progress;
-	
+	private String pj_id; //프로젝트 id
+	private String pj_name; //프로젝트명
+	private String pj_regdate; //프로젝트 등록일
+	private String pj_eta; //프로젝트 종료 예정일
+	private String pj_task; //현재 작업
+	private float pj_progress; //진행률
 	
 	public String getPj_id() {
 		return pj_id;
@@ -40,12 +39,10 @@ public class ProjectCommand {
 	public void setPj_task(String pj_task) {
 		this.pj_task = pj_task;
 	}
-	public String getPj_progress() {
+	public float getPj_progress() {
 		return pj_progress;
 	}
-	public void setPj_progress(String pj_progress) {
+	public void setPj_progress(float pj_progress) {
 		this.pj_progress = pj_progress;
 	}
-	
-	
 }
