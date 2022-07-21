@@ -42,6 +42,11 @@ public class LeftController {
 		return "board/notice";
 	}
 	
+	@RequestMapping("/notice_write")
+	public String notice_write() {
+		return "board/notice_write";
+	}
+	
 	@RequestMapping("/issue")
 	public String issue() {
 		return "board/issue";
