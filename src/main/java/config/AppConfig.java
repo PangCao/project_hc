@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import controller.LoginCommand;
+import command.MemberCommand;
+import service.LoginDao;
 
 @Configuration
 @EnableTransactionManagement
@@ -22,9 +23,13 @@ public class AppConfig {
 		return ds;
 	}
 	
+	public LoginDao loginDao() {
+		return new LoginDao(dataSource());
+	}
+	
 	@Bean
-	public LoginCommand loginCommand() {
-		return new LoginCommand();
+	public MemberCommand loginCommand() {
+		return new MemberCommand();
 	}
 	
 }
