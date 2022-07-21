@@ -1,4 +1,3 @@
-@charset "UTF-8";
 .project_management > a {
     border: 1px solid transparent;
     padding: 20px;
@@ -10,4 +9,10 @@
 }
 .project_management > a:hover {
     background-color: rgba(0, 51, 255, 0.034);
+}
+.project_management > .comple {
+    background-color: #d9ffdc8f;
+}
+.project_management > .comple:hover {
+    background-color: #f7ffd9ce;
 }
