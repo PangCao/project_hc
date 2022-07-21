@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import controller.LoginCommand;
+import command.MemberCommand;
+import service.LoginDao;
 
 @Configuration
 @EnableTransactionManagement
@@ -16,15 +17,19 @@ public class AppConfig {
 	public DataSource dataSource() {
 		DataSource ds = new DataSource();
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
-		ds.setUrl("jdbc:mtsql://localhost/Project_hc?characterEncoding=utf8&useSSL=false");
+		ds.setUrl("jdbc:mtsql://localhost/hcproject?characterEncoding=utf8&useSSL=false");
 		ds.setUsername("root");
 		ds.setPassword("1234");
 		return ds;
 	}
 	
+	public LoginDao loginDao() {
+		return new LoginDao(dataSource());
+	}
+	
 	@Bean
-	public LoginCommand loginCommand() {
-		return new LoginCommand();
+	public MemberCommand loginCommand() {
+		return new MemberCommand();
 	}
 	
 }

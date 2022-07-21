@@ -2,7 +2,7 @@ create database hcproject;
 
 use hcproject;
 
-create table if not exists member(
+create table if not exists member( 
 	m_num varchar(30) primary key,
 	m_password varchar(30) not null,
     m_name varchar(30) not null,
@@ -15,10 +15,12 @@ insert into member values ('202207020001', '1234', '김현일', '사장', '사�
 insert into member values ('202207020002', '1234', '이창기', '고문', '연구개발부', '010-1111-1111');
 insert into member values ('202207020003', '1234', '김사원', '사원', '생산관리부', '010-3333-3333');
 insert into member values ('202207020004', '1234', '김부장', '부장', '생산관리부','010-4444-4444');
+insert into member values ('202207020005', '1234', '최여진', '사원', '인사부' , '010-5555-5555');
 
 create table if not exists task (
 	t_name varchar(30) primary key
 );
+
 insert into task values 
 	('가공'),
     ('소조립'),

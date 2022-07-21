@@ -3,25 +3,25 @@ package config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import controller.LeftController;
-import controller.LoginController;
-import controller.TopController;
+import controller.CommonController;
+import controller.ProductionController;
+import controller.OutsourcingController;
 
 @Configuration
 public class ControllerConfig {
 	
 	@Bean
-	public LoginController loginController() {
-		return new LoginController();
+	public CommonController loginController() {
+		return new CommonController();
 	}
 	
 	@Bean
-	public LeftController leftController() {
-		return new LeftController();
+	public ProductionController leftController() {
+		return new ProductionController();
 	}
 	
 	@Bean
-	public TopController topController() {
-		return new TopController();
+	public OutsourcingController topController() {
+		return new OutsourcingController();
 	}
 }
