@@ -110,7 +110,7 @@
 					</table>
 				</div>
 				<div class="d-flex justify-content-end col-12">
-					<input type="button" value="공지사항쓰기">
+					<input type="button" value="공지사항쓰기" onclick="location.href='notice_write'">
 				</div>
 			</section>
 			<div class="col-12 d-flex justify-content-center">

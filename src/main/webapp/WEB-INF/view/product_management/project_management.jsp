@@ -20,13 +20,13 @@
 			<!-- 여기 아래부터 바디 -->
 			<section class="project_management row m-0 d-flex justify-content-center">
 				<!-- 여기서 부터 -->
-				<a class="col-5" href="project_sub_management">
+				<a class="col-5 comple" href="#" onclick="project_input()">
 					<h3 class="mb-4">PJT 명1</h3>
 					<div>
-						<P> 현재 진행 공정 : 가공</P>
+						<P> 현재 진행 공정 : 진수</P>
 						<div style="height: 2px; width: 100%; position: relative;" class="mb-3">
 							<div style="background-color: white; height: 100%; width: 100%;"></div>
-							<div style="position: absolute; height: 100%; width: 80%; top: 0; left: 0; background-color: orange; z-index: 1;"></div>
+							<div style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; background-color: green; z-index: 1;"></div>
 						</div>
 						<div>
 							<p>진수 예정일 : 2022-07-18</p>
@@ -34,7 +34,7 @@
 						<p>전체 공정률</p>
 						<div style="height: 7px; width: 100%; position: relative;" class="mb-3">
 							<div style="background-color: white; height: 100%; width: 100%;"></div>
-							<div style="position: absolute; height: 100%; width: 60%; top: 0; left: 0; background-color: blue; z-index: 1;"></div>
+							<div style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; background-color: green; z-index: 1;"></div>
 						</div>
 					</div>
 				</a>
@@ -100,4 +100,15 @@
 		</section>
 	</section>
 </body>
+<script type="text/javascript">
+	function project_input() {
+		if (confirm('프로젝트를 등록하시겠습니까?')) {
+			let popwidth = 700;
+			let popheight = 250;
+			let popx = (window.screen.width / 2) - (popwidth / 2);
+			let popy = (window.screen.height / 2) - (popheight / 2);
+			window.open("projectpopup","projectpopup","status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
+		}
+	}
+</script>
 </html>
