@@ -64,10 +64,15 @@ create table if not exists notice(
     n_content varchar(2000),
     n_anthor varchar(30),
     n_date datetime,
-    n_view int default 0
-);
-alter table notice change n_titme varchar(100) n_title;
-insert into notice (n_title) value ();
+    n_view int default 0,
+    n_anthor_id varchar(30),
+    foreign key(n_anthor_id) references member(m_num)
+)default charset=utf8mb4;
+
+select * from notice;
+
+insert into notice (n_title, n_content, n_anthor, n_date) value ('title1','title content','titleanthor','2022-07-22');
+
 
 create table if not exists product_management (
 	p_num int auto_increment primary key,

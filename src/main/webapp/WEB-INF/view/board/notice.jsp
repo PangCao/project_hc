@@ -42,8 +42,8 @@
 			<!-- 여기 아래부터 바디 -->
 			<section class="notice">
 				<h2 class="col-6 ml-5 mt-5">공지사항</h2>
-				<form  action="" method="post" class="col-12 d-flex justify-content-end">
-					<input type="text" name="" id="" class="col-3">
+				<form  action="notice" method="post" class="col-12 d-flex justify-content-end">
+					<input type="text" class="col-3" name="search_title">
 					<input type="submit" value="검색" class="col-1 ml-2">
 				</form>
 				<div class="col-12">
@@ -62,13 +62,17 @@
 							for(int i = 0; i < noticelist.size(); i++) {
 								NoticeCommand dto = noticelist.get(i);
 					%>
+							
 							<tr>
+								
 								<td><%= pagecnt -= 1%></td>
-								<td><%= dto.getN_title() %></td>
+								<td><a href="notice_view?n_id=<%=dto.getN_id()%>"><%= dto.getN_title() %></a></td>
 								<td><%= dto.getN_anthor() %></td>
 								<td><%= dto.getN_date() %></td>
 								<td><%= dto.getN_view() %></td>
+								
 							</tr>
+							
 					<%
 							}
 						}

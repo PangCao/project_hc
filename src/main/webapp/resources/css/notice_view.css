@@ -1,0 +1,28 @@
+@charset "UTF-8";
+.notice_view > div > div:nth-of-type(4) {
+    height: 55vh;
+}
+.notice_view > div> div > input {
+    margin: 0 10px;
+    padding: 5px 40px;
+    outline: none;
+    border-width: 1px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.notice_view > div > div > .delete_btn {
+    background-color: #c823331a;
+    border-color: #bd2130;
+    outline: none;
+    border-width: 1px;
+    border-radius: 3px;
+}
+.notice_view > div > div > .list_btn {
+    outline: none;
+    border-width: 1px;
+    border-radius: 3px;
+}
+.notice_view > div > div:nth-last-of-type(1) {
+    padding: 20px 0;
+    margin-bottom: 20px;
+}

@@ -25,3 +25,7 @@
     border-color: rgb(185, 185, 185);
     margin: 20px 0;
 } 
+.notice > div > table > tbody > tr > td > a, .notice > div > table > tbody > tr > td > a:hover{
+	color: black;
+	text-decoration: none; 
+}
