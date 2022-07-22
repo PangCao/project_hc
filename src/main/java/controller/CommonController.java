@@ -13,18 +13,27 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import command.MemberCommand;
 import command.NoticeCommand;
 import service.BoardDao;
+import service.MemberDao;
 //공통 컨트롤
 @Controller
 public class CommonController {
 	
 	@Autowired
 	private BoardDao dao;
+	@Autowired
+	private MemberDao memdao;
 	
 	// 로그인
 	@RequestMapping("/login")
-	public String login(MemberCommand MC, HttpSession session) {
-		
-		return "redirect:mainpage";
+	public String login(MemberCommand MC, HttpSession session, Model model) {
+		boolean res = memdao.memberlist(MC,session);
+		if(res) {
+			return "redirect:mainpage";
+		}
+		else {
+			model.addAttribute("error","아이디 및 비밀번호를 입력해주세요");
+			return "main";
+		}
 	}
 	
 	//로그아웃

@@ -43,7 +43,7 @@ public class BoardDao {
 				dto.setN_view(rs.getInt("n_view"));			
 				return dto;
 			}});
-		return result.isEmpty()? null : result;
+		return result.isEmpty()? null : result; //isEmpty()메서드를 통해 result값이 비었는지 안비었는지 확인함
 	}
 	
 	public Integer totalpage(String category, String search_title) {
