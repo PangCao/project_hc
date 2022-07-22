@@ -57,7 +57,7 @@
 								<th class="col-1">조회수</th>
 							</tr>
 					<%
-						int pagecnt = noticetotal - (noticepage-1)*10 + 1;
+						int pagecnt = noticetotal - (noticepage-1)*5 + 1;
 						if (noticelist != null) {
 							for(int i = 0; i < noticelist.size(); i++) {
 								NoticeCommand dto = noticelist.get(i);

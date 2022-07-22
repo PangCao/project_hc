@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import service.CommonDao;
+import service.BoardDao;
 import service.MemberDao;
 
 @Configuration
@@ -29,7 +29,8 @@ public class AppConfig {
 	}
 	
 	@Bean
-	public CommonDao boardDao() {
-		return new CommonDao(dataSource());
-	}	
+	public BoardDao boardDao() {
+		return new BoardDao(dataSource());
+	}
+	
 }

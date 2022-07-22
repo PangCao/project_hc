@@ -13,11 +13,11 @@ import org.springframework.jdbc.core.RowMapper;
 
 import command.NoticeCommand;
 
-public class CommonDao {
+public class BoardDao {
 
 	private JdbcTemplate jt;
 	
-	public CommonDao(DataSource dataSource) {
+	public BoardDao(DataSource dataSource) {
 		this.jt = new JdbcTemplate(dataSource);
 	}
 	
@@ -25,10 +25,10 @@ public class CommonDao {
 		int searchPage = (noticepage - 1) * cnt;
 		String sql=null;
 		if (search_title != null && !search_title.equals("")) {
-			sql = "select * from notice where n_title like '%"+search_title+"%' order by n_id desc limit "+searchPage+", "+cnt;
+			sql = "select * from notice where n_title like '%"+search_title+"%' limit "+searchPage+", "+cnt;
 		}
 		else {
-			sql = "select * from notice order by n_id desc limit "+searchPage+", "+cnt;
+			sql = "select * from notice limit "+searchPage+", "+cnt;
 		}
 		List<NoticeCommand> result = jt.query(sql, new RowMapper<NoticeCommand>() {
 
@@ -76,7 +76,6 @@ public class CommonDao {
 				dto.setN_anthor(rs.getString("n_anthor"));
 				dto.setN_date(rs.getString("n_date").substring(0, 10));
 				dto.setN_view(rs.getInt("n_view"));	
-				dto.setAnthor_id(rs.getString("n_anthor_id"));
 				return dto;
 			}}, n_id);
 		return result.isEmpty()? null:result.get(0);
@@ -116,10 +115,8 @@ public class CommonDao {
 	}
 	
 	public void notice_input(NoticeCommand noticeCommand) {
-		String sql = "insert into notice(n_title, n_content, n_anthor, n_date, n_anthor_id) values (?,?,?,?,?)";
-		jt.update(sql, noticeCommand.getN_title(), noticeCommand.getN_content(), noticeCommand.getN_anthor(), LocalDateTime.now(), noticeCommand.getAnthor_id());
+		String sql = "insert into notice(n_title, n_content, n_anthor, n_date) values (?,?,?,?)";
+		jt.update(sql, noticeCommand.getN_title(), noticeCommand.getN_content(), noticeCommand.getN_anthor(), LocalDateTime.now());
 	}
-	
-	
 	//이슈 만들어야 함(현일이꺼)
 }

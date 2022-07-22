@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
 <%@ page import="command.NoticeCommand" %>
-<%@ page import="command.MemberCommand" %>
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
@@ -18,7 +17,6 @@
 <%
 	NoticeCommand noticeCommand = (NoticeCommand)request.getAttribute("notice_detail");
 	HashMap<String, Integer> noticemap = (HashMap<String, Integer>)request.getAttribute("paging");
-	MemberCommand memberCommand = (MemberCommand)session.getAttribute("member");
 %>
 </head>
 <body>
@@ -78,7 +76,7 @@
 						<input type="button" value="목록" class="list_btn" onclick="location.href='notice'">
 				<%
 					// 세션 처리 후 변경해야 하는 코드
-					if (noticeCommand.getAnthor_id() != null && noticeCommand.getAnthor_id().equals(memberCommand.getM_num()) ){
+					if (noticeCommand.getAnthor_id() != null && noticeCommand.getAnthor_id().equals("admin") ){
 				%>
 						<input type="button" value="삭제" class="delete_btn" onclick="n_delete()">
 				<%

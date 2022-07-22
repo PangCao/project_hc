@@ -12,15 +12,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import command.MemberCommand;
 import command.NoticeCommand;
-import service.CommonDao;
+import service.BoardDao;
 import service.MemberDao;
 //공통 컨트롤
 @Controller
 public class CommonController {
 	
 	@Autowired
-	private CommonDao dao;
-	
+	private BoardDao dao;
 	@Autowired
 	private MemberDao memdao;
 	
@@ -69,11 +68,17 @@ public class CommonController {
 		return "board/issue";
 	}
 	
+	//개인정보 관리
+	@RequestMapping("/user_modify")
+	public String user_authentication() {
+		return "user_setting/user_modify";
+	}
+	
 	//공지사항쓰기
     @RequestMapping("/notice_write_input")
-    public String notice_write(@ModelAttribute NoticeCommand noticeCommand) {
+    public String notice_write(@ModelAttribute NoticeCommand noticeCommand, HttpSession session) {
     	dao.notice_input(noticeCommand);
-        return "redirect:notice";
+        return "board/notice";
     }
     
     //공지사항상세페이지
@@ -92,6 +97,4 @@ public class CommonController {
     	ra.addFlashAttribute("delete", "true");
     	return "redirect:notice";
     }
-    
-   
 }

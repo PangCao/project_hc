@@ -11,23 +11,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<%
-	String error = (String)request.getAttribute("error");
-	if (error != null && error.equals("1")) {
-%>
-	<script type="text/javascript">
-		alert("비밀번호가 일치하지 않습니다.");
-	</script>
-<%
-	}
-	else if (error != null && error.equals("2")) {
-%>
-	<script type="text/javascript">
-		alert("개인정보가 정상적으로 변경되었습니다.");
-	</script>
-<%
-	}
-%>
 </head>
 <body>
 	<section class="layout_main row">
@@ -43,7 +26,7 @@
 						<label class="col-12">비밀번호 재입력</label>
 					</div>
 					<div class="col-12">
-						<input type="password" class="col-12" name="password">
+						<input type="password" class="col-12">
 					</div>
 					<div class="col-12">
 						<input type="submit" value="확인" class="col-12">
