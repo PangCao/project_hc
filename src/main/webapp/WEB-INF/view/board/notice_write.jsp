@@ -23,21 +23,21 @@
 						<section class="notice_write">
 				<h2 class="col-6 ml-5 mt-5">공지사항</h2>
 				<div>
-					<form action="notice" method="post">
+					<form action="notice_write_input" method="post" name="noticeWriteForm">
 						<div class="col-12 row">
 							<label class="col-2">제목</label>
-							<input type="text" class="col-10">
+							<input type="text" class="col-10" name="n_title">
 						</div>
 						<div class="col-12 row">
 							<label class="col-2">작성자</label>
-							<input type="text" class="col-10" value="김사장" disabled>
+							<input type="text" class="col-10" value="김사장" disabled name="n_anthor">
 						</div>
 						<div class="col-12 row">
 							<label class="col-2">내용</label>
-							<textarea name="" id="" class="col-10" style="resize: none;"></textarea>
+							<textarea name="n_content"class="col-10" style="resize: none;"></textarea>
 						</div>
 						<div class="d-flex justify-content-end col-12">
-							<input type="submit" value="작성">
+							<input type="button" value="작성" onclick="notice_write()">
 						</div>
 					</form>
 				</div>
@@ -45,4 +45,11 @@
 		</section>
 	</section>
 </body>
+<script type="text/javascript">
+	function notice_write() {
+		if (confirm('공지사항을 작성하시겠습니까?')) {
+			document.noticeWriteForm.submit();	
+		}
+	}
+</script>
 </html>

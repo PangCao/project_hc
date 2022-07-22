@@ -5,10 +5,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import command.MemberCommand;
+import command.NoticeCommand;
 import service.BoardDao;
 import service.MemberDao;
 //공통 컨트롤
@@ -42,20 +45,20 @@ public class CommonController {
 	//메인 페이지
 	@RequestMapping("/mainpage")
 	public String mainpage(@RequestParam(defaultValue = "1") int noticepage, @RequestParam(defaultValue = "1") int remarkpage, Model model) {
-		model.addAttribute("noticelist", dao.noticeView(noticepage, 5));
+		model.addAttribute("noticelist", dao.noticeView(noticepage, null, 5));
 		model.addAttribute("noticepage", (Integer)noticepage);
 		model.addAttribute("remarkpage", (Integer)remarkpage);
-		model.addAttribute("noticetotal", dao.totalpage("notice"));
-		model.addAttribute("remarktotal", dao.totalpage("remark"));
+		model.addAttribute("noticetotal", dao.totalpage("notice", null));
+		model.addAttribute("remarktotal", dao.totalpage("remark", null));
 		return "mainpage";
 	}
 	
 	//공지사항
 	@RequestMapping("/notice")
-	public String notice(@RequestParam(defaultValue = "1") int noticepage, Model model) {
-		model.addAttribute("noticelist", dao.noticeView(noticepage, 10));
+	public String notice(@RequestParam(defaultValue = "1") int noticepage, @RequestParam(required = false) String search_title, Model model) {
+		model.addAttribute("noticelist", dao.noticeView(noticepage, search_title, 10));
 		model.addAttribute("noticepage", (Integer)noticepage);
-		model.addAttribute("noticetotal", dao.totalpage("notice"));
+		model.addAttribute("noticetotal", dao.totalpage("notice", search_title));
 		return "board/notice";
 	}
 	
@@ -72,8 +75,26 @@ public class CommonController {
 	}
 	
 	//공지사항쓰기
-    @RequestMapping("/notice_write")
-    public String notice_write() {
-        return "board/notice_write";
+    @RequestMapping("/notice_write_input")
+    public String notice_write(@ModelAttribute NoticeCommand noticeCommand, HttpSession session) {
+    	dao.notice_input(noticeCommand);
+        return "board/notice";
+    }
+    
+    //공지사항상세페이지
+    @RequestMapping("/notice_view")
+    public String notice_view(@RequestParam int n_id, Model model) {
+    	dao.notice_viewUp(n_id);
+    	model.addAttribute("notice_detail", dao.noticeDetail(n_id));
+    	model.addAttribute("paging", dao.noticepaging(n_id));
+    	return "board/notice_view";
+    }
+    
+    //공지사항 게시물 삭제
+    @RequestMapping("/notice_delete")
+    public String notice_delete(@RequestParam int n_id, RedirectAttributes ra) {
+    	dao.notice_del(n_id);
+    	ra.addFlashAttribute("delete", "true");
+    	return "redirect:notice";
     }
 }
