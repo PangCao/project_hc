@@ -4,8 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import controller.CommonController;
-import controller.ProductionController;
 import controller.OutsourcingController;
+import controller.ProductionController;
+import controller.UserController;
 
 @Configuration
 public class ControllerConfig {
@@ -23,5 +24,10 @@ public class ControllerConfig {
 	@Bean
 	public OutsourcingController topController() {
 		return new OutsourcingController();
+	}
+	
+	@Bean
+	public UserController userController() {
+		return new UserController();
 	}
 }
