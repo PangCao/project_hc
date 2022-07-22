@@ -1,15 +1,22 @@
 package controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import service.ManagementDao;
 
 //생산관리
 @Controller
 public class ProductionController {
 	
+	@Autowired
+	private ManagementDao mgDao;
+	
 	@RequestMapping("project_input")
 	public String project_input(@RequestParam String name, @RequestParam String date) {
+		mgDao.setProject(name, date);
 		return "redirect:product_management";
 	}
 	

@@ -20,6 +20,7 @@ public class MemberDao {
 		this.jt = new JdbcTemplate(dataSource);
 	}
 	
+	//로그인
 	public boolean memberlist(MemberCommand memcom, HttpSession session){
 		if(memcom != null) {
 			
@@ -41,5 +42,10 @@ public class MemberDao {
 			}
 		}
 		return false;
+	}
+	
+	//로그아웃
+	public void logout(HttpSession session) {
+		session.invalidate();
 	}
 }

@@ -38,7 +38,8 @@ public class CommonController {
 	
 	//로그아웃
 	@RequestMapping("/logout")
-	public String logout() {
+	public String logout(HttpSession session) {
+		memdao.logout(session);
 		return "main";
 	}
 	
@@ -65,6 +66,7 @@ public class CommonController {
 	//이슈관리
 	@RequestMapping("/issue")
 	public String issue() {
+		
 		return "board/issue";
 	}
 	
