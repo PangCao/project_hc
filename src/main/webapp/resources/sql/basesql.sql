@@ -60,12 +60,14 @@ create table if not exists remark(
 
 create table if not exists notice(
 	n_id int primary key auto_increment,
-    n_titme varchar(100) not null,
+    n_title varchar(100) not null,
     n_content varchar(2000),
     n_anthor varchar(30),
     n_date datetime,
     n_view int default 0
 );
+alter table notice change n_titme varchar(100) n_title;
+insert into notice (n_title) value ();
 
 create table if not exists product_management (
 	p_num int auto_increment primary key,

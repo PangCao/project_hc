@@ -1,14 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.*" %>
+<%@ page import="command.NoticeCommand" %>
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
 <link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value='/resources/css/mainpage.css'/>">
+<script type="text/javascript" src="<c:url value='/resources/js/common.js'/>"/>
 <script src="https://kit.fontawesome.com/42c64699fb.js" crossorigin="anonymous"></script>
 <head>
+<%
+	ArrayList<NoticeCommand> noticelist = (ArrayList<NoticeCommand>)request.getAttribute("noticelist");
+	int noticepage = (Integer)request.getAttribute("noticepage");
+	int remarkpage = (Integer)request.getAttribute("remarkpage");
+	int noticetotal = (Integer)request.getAttribute("noticetotal");
+	int remarktotal = (Integer)request.getAttribute("remarktotal");
+	
+%>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -91,12 +102,36 @@
 							<div class="d-flex justify-content-between align-items-center">
 								<a href="notice">공지사항</a>
 								<div>
-									<a href="">
+									<%
+										if (noticepage == 1) {
+									%>
+									<a href="#" onclick="firstpage()">
 										<i class="fa-solid fa-circle-arrow-left mr-3"></i>
 									</a>
-									<a href="">
+									<%
+										}
+										else {
+									%>
+									<a href="mainpage?noticepage=<%=noticepage-1 %>&remarkpage=<%=remarkpage%>">
+										<i class="fa-solid fa-circle-arrow-left mr-3"></i>
+									</a>
+									<%
+										}
+										if (noticepage * 5 >= noticetotal) {
+									%>
+									<a href="#" onclick="lastpage()">
 										<i class="fa-solid fa-circle-arrow-right"></i>
 									</a>
+									<%
+										}
+										else {
+									%>
+									<a href="mainpage?noticepage=<%=noticepage+1 %>&remarkpage=<%=remarkpage%>">
+										<i class="fa-solid fa-circle-arrow-right"></i>
+									</a>
+									<%
+										}
+									%>
 								</div>
 							</div>
 							<table class="table table-hover text-center">
@@ -107,36 +142,29 @@
 										<th>등록자</th>
 										<th>등록시간</th>
 									</tr>
+							<%
+								if (noticelist != null) {
+									int pagecnt = noticetotal - (noticepage-1) * 5 + 1;
+									for(int i = 0; i < noticelist.size(); i++) {
+										NoticeCommand dto = noticelist.get(i);
+							%>
 									<tr>
-										<td class="col-1">1</td>
-										<td class="col-5">안전사고예방</td>
-										<td class="col-3">김부장</td>
-										<td class="col-3">2022/07/21</td>
+										<td class="col-1"><%= pagecnt -= 1 %></td>
+										<td class="col-5"><%= dto.getN_title()%></td>
+										<td class="col-3"><%= dto.getN_anthor()%></td>
+										<td class="col-3"><%= dto.getN_date()%></td>
 									</tr>
+							<%
+									}
+								}
+								else {
+							%>
 									<tr>
-										<td class="col-1">2</td>
-										<td class="col-5">안전사고예방</td>
-										<td class="col-3">김부장</td>
-										<td class="col-3">2022/07/21</td>
+										<td colspan="4" class="text-center">등록된 공지사항이 없습니다.</td>
 									</tr>
-									<tr>
-										<td class="col-1">3</td>
-										<td class="col-5">안전사고예방</td>
-										<td class="col-3">김부장</td>
-										<td class="col-3">2022/07/21</td>
-									</tr>
-									<tr>
-										<td class="col-1">4</td>
-										<td class="col-5">안전사고예방</td>
-										<td class="col-3">김부장</td>
-										<td class="col-3">2022/07/21</td>
-									</tr>
-									<tr>
-										<td class="col-1">5</td>
-										<td class="col-5">안전사고예방</td>
-										<td class="col-3">김부장</td>
-										<td class="col-3">2022/07/21</td>
-									</tr>
+							<%
+								}
+							%>
 								</tbody>
 							</table>
 						</div>
