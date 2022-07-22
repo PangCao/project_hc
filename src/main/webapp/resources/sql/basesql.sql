@@ -11,11 +11,15 @@ create table if not exists member(
     m_tel varchar(50)
 )default charset=utf8mb4;
 
-insert into member values ('202207020001', '1234', '김현일', '사장', '사장실', '010-2222-2222');
+select *from member;
+
+insert into member values ('202207020001', '1234', '김현일', '사장', '사장', '010-2222-2222');
 insert into member values ('202207020002', '1234', '이창기', '고문', '연구개발부', '010-1111-1111');
 insert into member values ('202207020003', '1234', '김사원', '사원', '생산관리부', '010-3333-3333');
 insert into member values ('202207020004', '1234', '김부장', '부장', '생산관리부','010-4444-4444');
 insert into member values ('202207020005', '1234', '최여진', '사원', '인사부' , '010-5555-5555');
+
+drop 
 
 create table if not exists task (
 	t_name varchar(30) primary key
@@ -64,15 +68,10 @@ create table if not exists notice(
     n_content varchar(2000),
     n_anthor varchar(30),
     n_date datetime,
-    n_view int default 0,
-    n_anthor_id varchar(30),
-    foreign key(n_anthor_id) references member(m_num)
-)default charset=utf8mb4;
-
-select * from notice;
-
-insert into notice (n_title, n_content, n_anthor, n_date) value ('title1','title content','titleanthor','2022-07-22');
-
+    n_view int default 0
+);
+alter table notice change n_titme varchar(100) n_title;
+insert into notice (n_title) value ();
 
 create table if not exists product_management (
 	p_num int auto_increment primary key,

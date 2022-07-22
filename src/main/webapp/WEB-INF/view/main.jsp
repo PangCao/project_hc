@@ -11,7 +11,12 @@
 <title>Insert title here</title>
 	<%
 		request.setCharacterEncoding("utf8");
-		String error = (String)request.getAttribute("error"); //Model에 들어가있는 값이 Object타입으로 되어있기 때문에 케스팅해야한다.
+	
+		String error = "";
+		
+		if((String)request.getAttribute("error")!=null&(String)request.getAttribute("error")!=""){
+			error = (String)request.getAttribute("error"); //Model에 들어가있는 값이 Object타입으로 되어있기 때문에 케스팅해야한다.
+		}
 	%>
 </head>
 <body>
@@ -35,7 +40,10 @@
 	</section>
 </body>
 <script type="text/javascript">
-	var error = '<%= error %>'; /* request의 값을 출력하여 스크립트 변수에 대입 */
-	alert(error);
+	var er = '<%= error %>'; /* request의 값을 출력하여 스크립트 변수에 대입 */
+	
+	if(er != null&er != ""){
+		alert(er);	
+	}
 </script>
 </html>
