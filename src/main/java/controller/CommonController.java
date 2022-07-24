@@ -5,21 +5,20 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import command.MemberCommand;
 import command.NoticeCommand;
-import service.BoardDao;
+import service.CommonDao;
 import service.MemberDao;
 //공통 컨트롤
 @Controller
 public class CommonController {
 	
 	@Autowired
-	private BoardDao dao;
+	private CommonDao dao;
 	@Autowired
 	private MemberDao memdao;
 	
@@ -78,9 +77,9 @@ public class CommonController {
 	
 	//공지사항쓰기
     @RequestMapping("/notice_write_input")
-    public String notice_write(@ModelAttribute NoticeCommand noticeCommand, HttpSession session) {
+    public String notice_write(NoticeCommand noticeCommand) {
     	dao.notice_input(noticeCommand);
-        return "board/notice";
+        return "redirect:notice";
     }
     
     //공지사항상세페이지

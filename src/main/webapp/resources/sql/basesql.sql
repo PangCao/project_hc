@@ -19,11 +19,9 @@ insert into member values ('202207020003', '1234', '김사원', '사원', '생�
 insert into member values ('202207020004', '1234', '김부장', '부장', '생산관리부','010-4444-4444');
 insert into member values ('202207020005', '1234', '최여진', '사원', '인사부' , '010-5555-5555');
 
-drop 
-
 create table if not exists task (
 	t_name varchar(30) primary key
-);
+)default charset=utf8mb4;
 
 insert into task values 
 	('가공'),
@@ -42,7 +40,7 @@ create table if not exists project (
     pj_name varchar(50),
     pj_regdate datetime,
     pj_eta datetime,
-    pj_task varchar(50),
+    pj_task varchar(30),
     pj_progress float default 0.0,
     foreign key(pj_task) references task(t_name)
 )default charset=utf8mb4;
@@ -50,7 +48,7 @@ create table if not exists project (
 insert into project values ('PJT-2022-0001', '유조선-01', '2022-07-20 14:37:10', '2023-12-31 11:59:59', '가공', '0.12');
 insert into project values ('PJT-2022-0002', '여객선-01', '2022-07-19 14:37:10', '2024-12-31 11:59:59', '가공', '0.01');
 insert into project values ('PJT-2022-0003', '컨테이너선-01', '2022-07-21 14:37:10', '2025-12-31 11:59:59', '가공', '0.9');
-insert into project values ('PJT-2022-0004', '쇄빙유조선-01', '2022-07-24 14:37:10', '2024-02-10:12:59', '가공', '0.2');
+insert into project values ('PJT-2022-0004', '쇄빙유조선-01', '2022-07-24 14:37:10', '2024-02-10 10:12:59', '가공', '0.2');
 
 create table if not exists remark(
 	r_id int primary key auto_increment,
@@ -69,9 +67,7 @@ create table if not exists notice(
     n_anthor varchar(30),
     n_date datetime,
     n_view int default 0
-);
-alter table notice change n_titme varchar(100) n_title;
-insert into notice (n_title) value ();
+)default charset=utf8mb4;
 
 create table if not exists product_management (
 	p_num int auto_increment primary key,
