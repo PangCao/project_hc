@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value='/resources/css/notice.css'/>">
-<script type="text/javascript" src="<c:url value='/resources/js/common.js'/>"/>
+<script type="text/javascript" src="<c:url value='/resources/js/common.js'/>"></script>
 <script src="https://kit.fontawesome.com/42c64699fb.js" crossorigin="anonymous"></script>
 <head>
 <meta charset="UTF-8">
@@ -29,6 +29,9 @@
 	}
 	if (noticetotal % 10 == 0) {
 		max -= 1;
+	}
+	if (noticetotal == 0) {
+		max = 1;
 	}
 %>
 </head>

@@ -82,6 +82,8 @@
 						<input type="button" value="삭제" class="delete_btn" onclick="n_delete()">
 				<%
 					}
+					System.out.println(noticeCommand.getAnthor_id());
+					System.out.println(memberCommand.getM_num());
 				%>
 					</div>
 				</div>

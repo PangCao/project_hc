@@ -45,6 +45,8 @@ create table if not exists project (
     foreign key(pj_task) references task(t_name)
 )default charset=utf8mb4;
 
+select distinct pj_id, pj_name from project;
+
 insert into project values ('PJT-2022-0001', '유조선-01', '2022-07-20 14:37:10', '2023-12-31 11:59:59', '가공', '0.12');
 insert into project values ('PJT-2022-0002', '여객선-01', '2022-07-19 14:37:10', '2024-12-31 11:59:59', '가공', '0.01');
 insert into project values ('PJT-2022-0003', '컨테이너선-01', '2022-07-21 14:37:10', '2025-12-31 11:59:59', '가공', '0.9');
@@ -66,8 +68,12 @@ create table if not exists notice(
     n_content varchar(2000),
     n_anthor varchar(30),
     n_date datetime,
-    n_view int default 0
+    n_view int default 0,
+    n_anthor_id varchar(30),
+    foreign key(n_anthor_id) references member(m_num)
 )default charset=utf8mb4;
+
+select * from notice;
 
 create table if not exists product_management (
 	p_num int auto_increment primary key,
@@ -83,18 +89,67 @@ create table if not exists product_management (
     foreign key(p_remarkid) references remark(r_id)
 )default charset=utf8mb4;
 
+create table if not exists out_company_list (
+	o_id int primary key auto_increment,
+    o_name varchar(50),
+    o_task varchar(30),
+    foreign key(o_task) references task(t_name)
+)default charset=utf8mb4;
+
+select * from notice;
+
+insert into out_company_list(o_name, o_task) values ('OutCompany', '가공');
+insert into out_company_list(o_name, o_task) values ('OutCom', '가공');
+insert into out_company_list(o_name, o_task) values ('Outpany', '가공');
+insert into out_company_list(o_name, o_task) values ('Company', '소조립');
+insert into out_company_list(o_name, o_task) values ('OCompany', '대조립');
+insert into out_company_list(o_name, o_task) values ('aaCompany', '선행의장');
+insert into out_company_list(o_name, o_task) values ('bbqCompany', '블럭도장');
+select * from out_company_list;
+
+create table if not exists out_company_progress (
+	ocp_id int primary key auto_increment,
+    ocp_comid int,
+    ocp_ordernum int,
+    ocp_name varchar(50),
+    ocp_progress varchar(30),
+    foreign key(ocp_comid) references out_company_list(o_id)
+)default charset=utf8mb4;
+
+insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values (1, 1, 'OutCompany', '의뢰수락대기');
+insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values (1, 2, 'OutCompany', '의뢰수락대기');
+insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values (1, 1, 'OutCompany', '의뢰수락대기');
+insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values (1, 2, 'OutCompany', '의뢰수락대기');
+insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values (1, 3, 'OutCompany', '의뢰수락대기');
+insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values (1, 1, 'OutCompany', '의뢰수락대기');
+
+select * from out_company_progress;
+
 create table if not exists out_product_management (
 	op_num int auto_increment primary key,
     op_ordernumber varchar(40),
-    op_proname varchar(50),
-    op_comname varchar(50),
+    op_proid varchar(30),
+    op_comid int,
     op_regdate datetime,
     op_productname varchar(50),
     op_productstandard varchar(50),
     op_unit int,
     op_price int,
     op_regnum varchar(30),
-    foreign key(op_regnum) references member(m_num)
+    foreign key(op_regnum) references member(m_num),
+    foreign key(op_proid) references project(pj_id),
+    foreign key(op_comid) references out_company_list(o_id)
 )default charset=utf8mb4;
 
+drop table out_product_management;
+
+insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values
+('OT-001', 'PJT-2022-0001', 2, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020001");
+insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values
+('OT-002', 'PJT-2022-0002', 1, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020003");
+insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values
+('OT-001', 'PJT-2022-0003', 3, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020002");
+
 select * from out_product_management;
+
+

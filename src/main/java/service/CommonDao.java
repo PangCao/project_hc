@@ -42,7 +42,6 @@ public class CommonDao {
 				dto.setN_date(rs.getString("n_date").substring(0, 10));
 				dto.setN_view(rs.getInt("n_view"));			
 				dto.setAnthor_id(rs.getString("n_anthor_id"));
-
 				return dto;
 			}});
 		return result.isEmpty()? null : result; //isEmpty()메서드를 통해 result값이 비었는지 안비었는지 확인함
@@ -78,6 +77,7 @@ public class CommonDao {
 				dto.setN_anthor(rs.getString("n_anthor"));
 				dto.setN_date(rs.getString("n_date").substring(0, 10));
 				dto.setN_view(rs.getInt("n_view"));	
+				dto.setAnthor_id(rs.getString("n_anthor_id"));
 				return dto;
 			}}, n_id);
 		return result.isEmpty()? null:result.get(0);
