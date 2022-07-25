@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value='/resources/css/notice.css'/>">
-<script type="text/javascript" src="<c:url value='/resources/js/common.js'/>"/>
+<script type="text/javascript" src="<c:url value='/resources/js/common.js'/>"></script>
 <script src="https://kit.fontawesome.com/42c64699fb.js" crossorigin="anonymous"></script>
 <head>
 <meta charset="UTF-8">
@@ -88,7 +88,7 @@
 					</table>
 				</div>
 				<div class="d-flex justify-content-end col-12">
-					<input type="button" value="공지사항쓰기" onclick="location.href='notice_write'">
+					<input type="button" value="공지사항 작성" onclick="location.href='notice_write'">
 				</div>
 			</section>
 			<div class="col-12 d-flex justify-content-center">

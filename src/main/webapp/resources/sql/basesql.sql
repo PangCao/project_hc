@@ -57,16 +57,20 @@ create table if not exists remark(
     r_anthor varchar(30),
     r_date datetime,
     r_view int default 0,
-    r_class varchar(50) not null
+    r_class varchar(50) not null,
+    r_anthor_id varchar(30),
+    foreign key(r_anthor_id) references member(m_num)
 )default charset=utf8mb4;
 
 create table if not exists notice(
-	n_id int primary key auto_increment,
+   n_id int primary key auto_increment,
     n_title varchar(100) not null,
     n_content varchar(2000),
     n_anthor varchar(30),
     n_date datetime,
-    n_view int default 0
+    n_view int default 0,
+    n_anthor_id varchar(30),
+    foreign key(n_anthor_id) references member(m_num)
 )default charset=utf8mb4;
 
 create table if not exists product_management (
@@ -86,7 +90,7 @@ create table if not exists product_management (
 create table if not exists out_product_management (
 	op_num int auto_increment primary key,
     op_ordernumber varchar(40),
-    op_proname varchar(50),
+    op_op_proid varchar(50),
     op_comname varchar(50),
     op_regdate datetime,
     op_productname varchar(50),
@@ -97,4 +101,4 @@ create table if not exists out_product_management (
     foreign key(op_regnum) references member(m_num)
 )default charset=utf8mb4;
 
-select * from out_product_management;
+select * from remark;

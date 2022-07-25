@@ -24,6 +24,7 @@ public class MvcConfig implements WebMvcConfigurer{
 		registry.addViewController("/input_popup").setViewName("product_management/input_popup");
 		registry.addViewController("/out_input_popup").setViewName("out_product_management/out_input_popup");
 		registry.addViewController("/notice_write").setViewName("board/notice_write");
+		registry.addViewController("/issue_write").setViewName("board/issue_write");
 	}
 
 	@Override

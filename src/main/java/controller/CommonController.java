@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import command.MemberCommand;
 import command.NoticeCommand;
+import command.RemarkCommand;
 import service.CommonDao;
 import service.MemberDao;
 //공통 컨트롤
@@ -53,7 +54,7 @@ public class CommonController {
 		return "mainpage";
 	}
 	
-	//공지사항
+	//공지사항 페이지
 	@RequestMapping("/notice")
 	public String notice(@RequestParam(defaultValue = "1") int noticepage, @RequestParam(required = false) String search_title, Model model) {
 		model.addAttribute("noticelist", dao.noticeView(noticepage, search_title, 10));
@@ -62,21 +63,14 @@ public class CommonController {
 		return "board/notice";
 	}
 	
-	//이슈관리
-	@RequestMapping("/issue")
-	public String issue() {
-		
-		return "board/issue";
-	}
-	
-	//공지사항쓰기
+	//공지사항 작성 등록
     @RequestMapping("/notice_write_input")
     public String notice_write(NoticeCommand noticeCommand) {
     	dao.notice_input(noticeCommand);
         return "redirect:notice";
     }
     
-    //공지사항상세페이지
+    //공지사항 상세 뷰 페이지
     @RequestMapping("/notice_view")
     public String notice_view(@RequestParam int n_id, Model model) {
     	dao.notice_viewUp(n_id);
@@ -91,5 +85,38 @@ public class CommonController {
     	dao.notice_del(n_id);
     	ra.addFlashAttribute("delete", "true");
     	return "redirect:notice";
+    }
+    
+    //이슈관리 페이지
+  	@RequestMapping("/issue")
+  	public String issue(@RequestParam(defaultValue = "1") int issuepage,@RequestParam(required = false) String search_title, @RequestParam(required = false) String r_class, Model model) {
+  		model.addAttribute("issuelist", dao.issueView(issuepage,search_title,r_class,10));
+  		model.addAttribute("issuepage", (Integer)issuepage);
+  		model.addAttribute("issuetotal", dao.totalpage("issue", search_title));
+  		return "board/issue";
+  	}
+  	
+  	//이슈 작성 등록
+    @RequestMapping("/issue_write_input")
+    public String issue_write(RemarkCommand remarkCommand, HttpSession session) {
+    	dao.issue_input(remarkCommand, session);
+        return "redirect:issue";
+    }
+    
+    //이슈 상세 뷰 페이지
+    @RequestMapping("/issue_view")
+    public String issue_view(@RequestParam int r_id, Model model) {
+    	dao.issue_viewUp(r_id);
+    	model.addAttribute("issue_detail", dao.issueDetail(r_id));
+    	model.addAttribute("paging", dao.issuepaging(r_id));
+    	return "board/issue_view";
+    }
+    
+    //이슈 게시물 삭제
+    @RequestMapping("/issue_delete")
+    public String issue_delete(@RequestParam int n_id, RedirectAttributes ra) {
+    	dao.issue_del(n_id);
+    	ra.addFlashAttribute("delete", "true");
+    	return "redirect:issue";
     }
 }
