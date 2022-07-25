@@ -14,4 +14,5 @@ public class NoticeCommand {
 	private int n_view; //조회수
 	private String anthor_id; //등록자 아이디
 
+
 }

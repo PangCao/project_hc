@@ -69,12 +69,6 @@ public class CommonController {
 		return "board/issue";
 	}
 	
-	//개인정보 관리
-	@RequestMapping("/user_modify")
-	public String user_authentication() {
-		return "user_setting/user_modify";
-	}
-	
 	//공지사항쓰기
     @RequestMapping("/notice_write_input")
     public String notice_write(NoticeCommand noticeCommand) {

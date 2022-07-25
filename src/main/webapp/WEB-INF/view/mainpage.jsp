@@ -150,7 +150,7 @@
 							%>
 									<tr>
 										<td class="col-1"><%= pagecnt -= 1 %></td>
-										<td class="col-5"><%= dto.getN_title()%></td>
+										<td class="col-5"><a href="notice_view?n_id=<%=dto.getN_id()%>" style="color:black;"><%= dto.getN_title()%></a></td>
 										<td class="col-3"><%= dto.getN_anthor()%></td>
 										<td class="col-3"><%= dto.getN_date()%></td>
 									</tr>

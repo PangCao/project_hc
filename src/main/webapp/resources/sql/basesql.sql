@@ -96,3 +96,5 @@ create table if not exists out_product_management (
     op_regnum varchar(30),
     foreign key(op_regnum) references member(m_num)
 )default charset=utf8mb4;
+
+select * from out_product_management;

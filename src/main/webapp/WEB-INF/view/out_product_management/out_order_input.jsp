@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.*" %>
+<%@ page import="command.OutProductCommand" %>
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
@@ -10,6 +12,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%
+	ArrayList<OutProductCommand> outlist = (ArrayList<OutProductCommand>)request.getAttribute("outlist");
+%>
 </head>
 <body>
 	<section class="layout_main row">
@@ -77,45 +82,26 @@
 				<div>
 					<table>
 						<tbody>
+						<%
+							for(int i = 0; i < outlist.size(); i++) {
+								OutProductCommand command = outlist.get(i);
+						%>
 							<tr>
-								<td>1</td>
-								<td>O010011</td>
-								<td>PJT-01</td>
-								<td>Out Company</td>
-								<td>2022/07/21<br>09:04:10</td>
-								<td>xxx-001</td>
-								<td>xxxl-10</td>
-								<td>1,000</td>
-								<td>10,000</td>
-								<td>10,000,000</td>
-								<td>김현일</td>
+								<td><%= i+1 %></td>
+								<td><%= command.getOp_ordernumber() %></td>
+								<td><%= command.getOp_proname() %></td>
+								<td><%= command.getOp_comname() %></td>
+								<td><%= command.getOp_regdate().substring(0, 10) %><br><%= command.getOp_regdate().substring(10) %></td>
+								<td><%= command.getOp_productname() %></td>
+								<td><%= command.getOp_productstandard() %></td>
+								<td><%= command.getOp_unit() %></td>
+								<td><%= command.getOp_price() %></td>
+								<td><%= command.getOp_unit()*command.getOp_price() %></td>
+								<td><%= command.getAnthor_name() %></td>
 							</tr>
-							<tr>
-								<td>1</td>
-								<td>O010011</td>
-								<td>PJT-01</td>
-								<td>Out Company</td>
-								<td>2022/07/21<br>09:04:10</td>
-								<td>xxx-001</td>
-								<td>xxxl-10</td>
-								<td>1,000</td>
-								<td>10,000</td>
-								<td>10,000,000</td>
-								<td>김현일</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>O010011</td>
-								<td>PJT-01</td>
-								<td>Out Company</td>
-								<td>2022/07/21<br>09:04:10</td>
-								<td>xxx-001</td>
-								<td>xxxl-10</td>
-								<td>1,000</td>
-								<td>10,000</td>
-								<td>10,000,000</td>
-								<td>김현일</td>
-							</tr>
+						<%
+							}
+						%>
 						</tbody>
 					</table>
 				</div>

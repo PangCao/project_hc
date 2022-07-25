@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import service.CommonDao;
 import service.ManagementDao;
 import service.MemberDao;
+import service.OutsourcingDao;
 
 @Configuration
 @EnableTransactionManagement
@@ -37,6 +38,11 @@ public class AppConfig {
 	@Bean
 	public ManagementDao managementDao() {
 		return new ManagementDao(dataSource());
+	}
+	
+	@Bean
+	public OutsourcingDao outsourcingDao() {
+		return new OutsourcingDao(dataSource());
 	}
 	
 }

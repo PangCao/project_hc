@@ -31,6 +31,9 @@ p {
     transition: all 0.2s;
     margin: 0;
 }
+.layout_left > div > nav > ul > li > label:hover{
+	cursor: pointer;
+}
 .layout_left input[type="checkbox"] {
     display: none;
 }
