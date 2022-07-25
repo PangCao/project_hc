@@ -1,0 +1,19 @@
+@charset "UTF-8";
+.issue_write > h2 {
+    margin: 40px 0;
+}
+.issue_write > div {
+    padding: 0 20px;
+}
+.issue_write > div > form > div{
+    margin: 15px 0;
+}
+.issue_write > div > form > div > textarea {
+    height: 50vh;
+}
+.issue_write > div > form > div:nth-last-of-type(1) > input {
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}

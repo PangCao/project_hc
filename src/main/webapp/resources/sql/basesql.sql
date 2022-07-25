@@ -59,11 +59,13 @@ create table if not exists remark(
     r_anthor varchar(30),
     r_date datetime,
     r_view int default 0,
-    r_class varchar(50) not null
+    r_class varchar(50) not null,
+    r_anthor_id varchar(30),
+    foreign key(r_anthor_id) references member(m_num)
 )default charset=utf8mb4;
 
 create table if not exists notice(
-	n_id int primary key auto_increment,
+   n_id int primary key auto_increment,
     n_title varchar(100) not null,
     n_content varchar(2000),
     n_anthor varchar(30),
@@ -151,5 +153,3 @@ insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdat
 ('OT-001', 'PJT-2022-0003', 3, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020002");
 
 select * from out_product_management;
-
-
