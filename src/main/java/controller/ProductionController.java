@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import command.ProductCommand;
 import command.RemarkCommand;
@@ -59,11 +60,12 @@ public class ProductionController {
 	
 	//생산 작업 지시 등록
 	@RequestMapping("/input")
-	public String input(@RequestParam(required=false) String stat, Model model){
+	public String input(@RequestParam(required=false) String stat, @RequestParam(defaultValue = "1") int page, Model model){
 		model.addAttribute("projectlist", dao.projectlist());
 		model.addAttribute("stat", stat);
-		model.addAttribute("productlist", dao.productlist());
+		model.addAttribute("productlist", dao.productlist("input"));
 		model.addAttribute("membermap", dao.membermap());
+		model.addAttribute("paging",  dao.paging(dao.totalpage(), page));
 		
 		return "product_management/process_input";
 	}
@@ -77,15 +79,23 @@ public class ProductionController {
 	
 	//생산 작업 지시 착수
 	@RequestMapping("/complete")
-	public String complete(Model model){
+	public String complete(@RequestParam(required=false) String stat, Model model){
 		model.addAttribute("pagechk", "complete");
+		model.addAttribute("productlist", dao.productlist("complete"));
+		model.addAttribute("memberMap",dao.membermap());
+		model.addAttribute("stat", model.getAttribute("stat"));
+		model.addAttribute("projectlist", dao.projectlist());
 		return "product_management/product_complete";
 	}
 	
 	//생산 작업 실적 등록
 	@RequestMapping("/record")
-	public String record(Model model){
+	public String record(@RequestParam(required=false) String stat, Model model){
 		model.addAttribute("pagechk", "record");
+		model.addAttribute("productlist", dao.productlist("record"));
+		model.addAttribute("memberMap",dao.membermap());
+		model.addAttribute("stat", model.getAttribute("stat"));
+		model.addAttribute("projectlist", dao.projectlist());
 		return "product_management/product_complete";
 	}
 	
@@ -95,4 +105,17 @@ public class ProductionController {
 		return "product_management/issuepopup";
 	}
 
+	@RequestMapping("/startdate_input")
+	public String startdate(@RequestParam int product_id, RedirectAttributes ra) {
+		dao.startdate_update(product_id);
+		ra.addFlashAttribute("stat", "1");
+		return "redirect:complete";
+	}
+	
+	@RequestMapping("/comple_input")
+	public String compledate(@RequestParam int product_id, RedirectAttributes ra) {
+		dao.compledate_update(product_id);
+		ra.addFlashAttribute("stat", "2");
+		return "redirect:record";
+	}
 }

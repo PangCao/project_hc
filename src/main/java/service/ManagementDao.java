@@ -103,8 +103,17 @@ public class ManagementDao {
 		jt.update(sql, command.getP_proname(), command.getP_tasknumber(), processnumber, LocalDateTime.now(), remarkId, userInfo.getM_num() , "결재 대기");
 	}
 	
-	public List<ProductCommand> productlist() {
-		String sql = "select * from product_management";
+	public List<ProductCommand> productlist(String category) {
+		String sql = null;
+		if (category.equals("input")) {
+			sql = "select * from product_management";
+		}
+		else if (category.equals("complete")) {
+			sql = "select * from product_management where p_startdate is null and p_compledate is null";
+		}
+		else {
+			sql = "select * from product_management where p_startdate is not null";
+		}
 		List<ProductCommand> result = jt.query(sql, new RowMapper<ProductCommand>() {
 
 			@Override
@@ -119,6 +128,7 @@ public class ManagementDao {
 				command.setP_compledate(rs.getString("p_compledate") == null ? "-" : rs.getString("p_compledate"));
 				command.setP_remarkid(rs.getString("p_remarkid"));
 				command.setP_regnum(rs.getString("p_regnum"));
+				command.setP_state(rs.getString("p_state"));
 				return command;
 			}});
 		return result;
@@ -165,4 +175,45 @@ public class ManagementDao {
 		return remarklist;
 	}
 	
+	public Integer totalpage() {
+		String sql = "select count(*) from product_management";
+		Integer result = jt.queryForObject(sql, Integer.class);
+
+		return result;
+	}
+	
+	public Map<String, Integer> paging(Integer totalpage, int page) {
+		Map<String, Integer> result = new HashMap<String, Integer>();
+		int max = 5;
+		int min = 0;
+		if (page > 3) {
+			min = page - 3;
+			max = page + 2;
+		}
+		if (max > totalpage/10 +1) {
+			max = totalpage/10 + 1;
+		}		
+		if (totalpage % 10 == 0) {
+			max -= 1;
+		}
+		if (totalpage == 0) {
+			max = 1;
+		}
+		result.put("max", max);
+		result.put("min", min);
+		result.put("total", totalpage);
+		result.put("page", page);
+		
+		return result;
+	}
+	
+	public void startdate_update(int product_id) {
+		String sql = "update product_management set p_startdate=? where p_num=?";
+		jt.update(sql, LocalDateTime.now(), product_id);
+	}
+	
+	public void compledate_update(int product_id) {
+		String sql = "update product_management set p_compledate=? where p_num=?";
+		jt.update(sql, LocalDateTime.now(), product_id);
+	}
 }

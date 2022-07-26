@@ -148,8 +148,6 @@ create table if not exists out_product_management (
     foreign key(op_comid) references out_company_list(o_id)
 )default charset=utf8mb4;
 
-drop table out_product_management;
-
 insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values
 ('OT-001', 'PJT-2022-0001', 2, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020001");
 insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values

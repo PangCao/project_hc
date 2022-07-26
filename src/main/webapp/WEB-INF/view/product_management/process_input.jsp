@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value='/resources/css/process_input.css'/>">
+<script type="text/javascript" src="<c:url value='/resources/js/common.js'/>"></script>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -17,6 +18,7 @@
 	String stat = (String)request.getAttribute("stat");
 	ArrayList<ProductCommand> productlist = (ArrayList<ProductCommand>)request.getAttribute("productlist");
 	Map<String, String> memberMap = (HashMap<String, String>)request.getAttribute("membermap");
+	Map<String, Integer> paging = (HashMap<String, Integer>)request.getAttribute("paging");
 	if (stat != null && stat.equals("2")) {
 %>
 <script type="text/javascript">
@@ -103,7 +105,7 @@
 								<td><%= command.getP_regdate() %></td>
 								<td><%= command.getP_startdate() %></td>
 								<td><%= command.getP_compledate() %></td>
-								<td>이슈가 총 <a href="#" onclick="issueup<%=i%>()" style="color:red;"><%= command.getP_remarkid().split(",").length %></a>개 존재합니다.</td>
+								<td>이슈가 총 <a href="#" onclick="issueup<%=i%>()" style="color:red;"><%= command.getP_remarkid() != null? command.getP_remarkid().split(",").length:0 %></a>개 존재합니다.</td>
 								<td><%= memberMap.get(command.getP_regnum()) %></td>
 							</tr>
 							<script type="text/javascript">
@@ -124,7 +126,40 @@
 			</section>
 
 			<div class="d-flex justify-content-center mt-5">
-				<p>&lt; 1 2 3 &gt;</p>
+				<%
+					if(paging.get("page") == 1){	
+				%>
+					<a href="#" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+				<%
+					}
+					else {
+				%>
+					<a href="input?page=<%=paging.get("page")-1%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+				<%
+					}
+					for(int i = paging.get("min"); i < paging.get("max"); i++){
+						if (paging.get("page")-1 == i) {
+				%>
+					<a href="input?page=<%=i+1%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
+				<%
+						}
+						else {
+				%>
+					<a href="input?page=<%=i+1%>"><%=i+1%></a>&nbsp;&nbsp;
+				<%
+						}
+					}
+					if (paging.get("page") * 10 >= paging.get("total")) {
+				%>
+					<a href="#" onclick="lastpage()"><i class="fa-solid fa-angle-right"></i></a>
+				<%
+					}
+					else {
+				%>
+					<a href="input?page=<%=paging.get("page")+1%>"><i class="fa-solid fa-angle-right"></i></a>
+				<%
+					}
+				%>
 			</div>
 		</section>
 	</section>
