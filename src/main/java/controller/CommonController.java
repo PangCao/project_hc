@@ -1,5 +1,7 @@
 package controller;
 
+import java.time.LocalDate;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,11 +90,22 @@ public class CommonController {
     }
     
     //이슈관리 페이지
-  	@RequestMapping("/issue")
-  	public String issue(@RequestParam(defaultValue = "1") int issuepage,@RequestParam(required = false) String search_title, @RequestParam(required = false) String r_class, Model model) {
-  		model.addAttribute("issuelist", dao.issueView(issuepage,search_title,r_class,10));
+  	@RequestMapping("/issue") // required = false는 null값을 받아도 된다는 설정
+  	public String issue(@RequestParam(defaultValue = "1") int issuepage,
+  			@RequestParam(required = false) String search_title, 
+  			@RequestParam(required = false) String r_class, 
+  			@RequestParam(required = false) String sdate,
+  			@RequestParam(required = false) String fdate,
+  			Model model) {
+  		model.addAttribute("sdate",sdate);
+  		model.addAttribute("fdate",fdate);
+  		if(fdate != null && !fdate.equals("null")) {
+	         fdate = String.valueOf(LocalDate.parse(fdate).plusDays(1));   
+	      }
+  		model.addAttribute("issuelist", dao.issueView(issuepage,search_title,r_class,sdate,fdate,10));
   		model.addAttribute("issuepage", (Integer)issuepage);
   		model.addAttribute("issuetotal", dao.totalpage("issue", search_title));
+  		model.addAttribute("r_class",r_class);
   		return "board/issue";
   	}
   	
@@ -114,8 +127,8 @@ public class CommonController {
     
     //이슈 게시물 삭제
     @RequestMapping("/issue_delete")
-    public String issue_delete(@RequestParam int n_id, RedirectAttributes ra) {
-    	dao.issue_del(n_id);
+    public String issue_delete(@RequestParam int r_id, RedirectAttributes ra) {
+    	dao.issue_del(r_id);
     	ra.addFlashAttribute("delete", "true");
     	return "redirect:issue";
     }

@@ -33,6 +33,10 @@
 	if (issuetotal == 0) {
 	      max = 1;
 	   }
+
+	String rc = (String)request.getAttribute("r_class");
+	String sdate = (String)request.getAttribute("sdate");
+	String fdate = (String)request.getAttribute("fdate");
 %>
 </head>
 <body>
@@ -49,23 +53,89 @@
 					<div class="col-5">
 						<form action="" class="col-12">
 							<div style="width: 100%;">
-								<input type="date" style="width: 50%;">
+							<%
+							if(sdate != null){
+							%>
+								<input type="date" name=sdate id="sdate" value="<%=sdate %>" style="width: 50%;">
+							<%
+							}else{
+							%>
+								<input type="date" name=sdate id="sdate" style="width: 50%;">
+							<%
+							}
+							%>
 							</div>
 							<div style="width: 100%;">
-								<input type="date" style="width: 50%;">
-								<input type="submit" value="검색" onclick="" class="col-3">
+							<%
+							if(fdate != null){
+							%>
+								<input type="date" name=fdate id="fdate" value="<%=fdate %>" style="width: 50%;">
+							<%
+							}else{
+							%>
+								<input type="date" name=fdate id="fdate" style="width: 50%;">
+							<%
+							}
+							%>
+								<input type="submit" value="검색" onclick="SearchDate()" class="col-3">
 							</div>
 						</form>
 					</div>
 					<div class="col-4 d-flex">
 						<div class="col-12 p-0">
-							<form action="issue" method="post" class="col-12 p-0 d-flex justify-content-end">
+							<form action="" method="post" class="col-12 p-0 d-flex justify-content-end">
 								<select name="r_class" id="r_class" onchange="r_class_input()" class="col-8 text-center">
-									<option value="">== 심각도 선택 ==</option>
-									<option value="INFO">INFO</option>
-									<option value="CARE">CARE</option>
-									<option value="WARN">WARN</option>
-									<option value="DANGER">DANGER</option>
+								<%
+										if(rc !=null && rc.equals("")){
+								%>
+											<option value="" selected>== 심각도 선택 ==</option>
+										<%
+										}else{
+										%>
+											<option value="" >== 심각도 선택 ==</option>
+										<%
+										}
+										
+										if(rc !=null && rc.equals("INFO")){
+										%>
+											<option value="INFO" selected>INFO</option>
+										<%
+										}else{
+										%>
+											<option value="INFO" >INFO</option>
+										<%
+										}
+										
+										if(rc !=null && rc.equals("CARE")){
+										%>
+										<option value="CARE"selected>CARE</option>
+										<%
+										}else{
+										%>
+											<option value="CARE" >CARE</option>
+										<%
+										}
+										
+										if(rc !=null && rc.equals("WARN")){
+										%>
+											<option value="WARN" selected>WARN</option>
+										<%
+										}else{
+										%>
+											<option value="WARN" >WARN</option>
+										<%
+										}
+										
+										if(rc !=null && rc.equals("DANGER")){
+										%>
+											<option value="DANGER" selected>DANGER</option>
+										<%
+										}else{
+										%>
+											<option value="DANGER" >DANGER</option>
+										<%
+										}
+								%>
 								</select>
 								<span class="col-4 ml-2"></span>
 							</form>
@@ -116,7 +186,9 @@
 					</table>
 				</div>
 				<div class="d-flex justify-content-end col-12">
-					<input type="button" value="이슈 작성" onclick="location.href='issue_write'">
+					<div class="d-flex justify-content-end col-2">
+						<input type="button" value="이슈 작성" onclick="location.href='issue_write'">
+					</div>
 				</div>
 			</section>
 			<div class="col-12 d-flex justify-content-center">
@@ -126,7 +198,7 @@
 					<a href="#" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
-					else {//페이징 처리 해야함
+					else {
 				%>
 					<a href="issue?issuepage=<%=issuepage-1%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
@@ -153,6 +225,7 @@
 					<a href="issue?issuepage=<%=issuepage+1%>"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
+					
 				%>
 			</div>			
 		</section>
@@ -160,8 +233,14 @@
 </body>
 <script type="text/javascript">
 	function r_class_input(){
-		let r_class = document.getElementById("r_class").value;
-		location.href="issue?r_class="+r_class;
+		let rclass = document.getElementById("r_class").value;
+		location.href="issue?r_class="+rclass;
+	}
+	
+	function SearchDate(){
+		let sdate = document.getElementById("sdate").value;
+		let fdate = document.getElementById("fdate").value;
+		location.href="issue?sdate="+sdate+"&fdate="+fdate;
 	}
 </script>
 </html>

@@ -166,17 +166,23 @@ public class CommonDao {
 	}
 	
 	//이슈 검색
-	public List<RemarkCommand> issueView(int issuepage, String search_title, String r_class, int cnt) {
+	public List<RemarkCommand> issueView(int issuepage, String search_title, String r_class,String sdate,String fdate, int cnt) {
 		int searchPage = (issuepage - 1) * cnt;
 		String sql=null;
 		if (search_title != null && !search_title.equals("")) {
 			// r_titledp search_title이 포함되는 값들을 가져옴                         //정렬 r_id 기준 /desc:내림차순, age:오름차순
 			sql = "select * from remark where r_title like '%"+search_title+"%' order by r_id desc limit "+searchPage+", "+cnt;
 		}
-		if(r_class != null && !r_class.equals("")){
+		else if(r_class != null && !r_class.equals(""))
+		{
 			sql = "select * from remark where r_class='"+r_class+"' order by r_id desc limit "+searchPage+", "+cnt;
 		}
-		else {
+		else if(sdate != null && !sdate.equals("") && fdate != null && !fdate.equals(""))
+		{
+			sql = "select * from remark where r_date between '"+sdate+"' and '"+fdate+"' order by r_id desc limit "+searchPage+", "+cnt;
+		}
+		else
+		{
 			sql = "select * from remark order by r_id desc limit "+searchPage+", "+cnt;
 		}
 		
@@ -193,7 +199,6 @@ public class CommonDao {
 				dto.setR_view(rs.getInt("r_view"));
 				dto.setR_class(rs.getString("r_class"));
 				dto.setR_anthor_id(rs.getString("r_anthor_id"));
-
 				return dto;
 			}});
 		return result.isEmpty()? null : result; //isEmpty()메서드를 통해 result값이 비었는지 안비었는지 확인함
@@ -212,7 +217,8 @@ public class CommonDao {
 				dto.setR_content(rs.getString("r_content"));
 				dto.setR_anthor(rs.getString("r_anthor"));
 				dto.setR_date(rs.getString("r_date").substring(0, 10));
-				dto.setR_view(rs.getInt("r_view"));	
+				dto.setR_view(rs.getInt("r_view"));
+				dto.setR_anthor_id(rs.getString("r_anthor_id"));
 				return dto;
 			}}, r_id);
 		return result.isEmpty()? null:result.get(0);
