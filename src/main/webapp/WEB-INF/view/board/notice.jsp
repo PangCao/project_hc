@@ -16,23 +16,7 @@
 <title>Insert title here</title>
 <%
 	ArrayList<NoticeCommand> noticelist = (ArrayList<NoticeCommand>)request.getAttribute("noticelist");
-	int noticepage = (Integer)request.getAttribute("noticepage");
-	int noticetotal = (Integer)request.getAttribute("noticetotal");
-	int min = 0;
-	int max = 5;
-	if (noticepage > 3) {
-		min= noticepage - 2;
-		max = noticepage + 3;
-	}
-	if (max > (noticetotal / 10) + 1) {
-		max = (noticetotal / 10) + 1;
-	}
-	if (noticetotal % 10 == 0) {
-		max -= 1;
-	}
-	if (noticetotal == 0) {
-		max = 1;
-	}
+	Map<String, Integer> paging = (HashMap<String, Integer>)request.getAttribute("paging");
 %>
 </head>
 <body>
@@ -60,22 +44,17 @@
 								<th class="col-1">조회수</th>
 							</tr>
 					<%
-						int pagecnt = noticetotal - (noticepage-1)* 10 + 1;
 						if (noticelist != null) {
 							for(int i = 0; i < noticelist.size(); i++) {
 								NoticeCommand dto = noticelist.get(i);
 					%>
-							
 							<tr>
-								
-								<td><%= pagecnt -= 1%></td>
+								<td><%= paging.get("totalpage") - (paging.get("page")-1)* 10 - i%></td>
 								<td><a href="notice_view?n_id=<%=dto.getN_id()%>"><%= dto.getN_title() %></a></td>
 								<td><%= dto.getN_anthor() %></td>
 								<td><%= dto.getN_date() %></td>
 								<td><%= dto.getN_view() %></td>
-								
 							</tr>
-							
 					<%
 							}
 						}
@@ -96,18 +75,18 @@
 			</section>
 			<div class="col-12 d-flex justify-content-center">
 				<%
-					if(noticepage == 1){	
+					if(paging.get("page") == 1){	
 				%>
 					<a href="#" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
 					else {//페이징 처리 해야함
 				%>
-					<a href="notice?noticepage=<%=noticepage-1%>" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+					<a href="notice?noticepage=<%=paging.get("page")-1%>" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
-					for(int i = min; i < max; i++){
-						if (noticepage-1 == i) {
+					for(int i = paging.get("min"); i < paging.get("max"); i++){
+						if (paging.get("page")-1 == i) {
 				%>
 					<a href="notice?noticepage=<%=i+1%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
 				<%
@@ -118,14 +97,14 @@
 				<%
 						}
 					}
-					if (noticepage * 10 >= noticetotal) {
+					if (paging.get("page") * 10 >= paging.get("totalpage")) {
 				%>
 					<a href="#" onclick="lastpage()"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 					else {
 				%>
-					<a href="notice?noticepage=<%=noticepage+1%>"><i class="fa-solid fa-angle-right"></i></a>
+					<a href="notice?noticepage=<%=paging.get("page")+1%>"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 				%>

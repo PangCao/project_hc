@@ -24,6 +24,7 @@ public class OutsourcingDao {
 		this.jt = new JdbcTemplate(dataSource);
 	}
 	
+	// 외주 목록을 출력하는 메서드(조건에 따라 다른 sql문을 사용함)
 	public List<OutProductCommand> outlist(Map<String, Object> requestValues) {
 		int page = requestValues.get("page") == null ? 1 : Integer.valueOf((String)requestValues.get("page"));
 		page = (page - 1) * 10;
@@ -115,6 +116,7 @@ public class OutsourcingDao {
 		return 	result;
 	}
 	
+	// 프로젝트 이름을 조회해서 command에 set하는 메서드
 	public void project_name_select(List<OutProductCommand> outlist) {
 		String sql = null;
 		
@@ -127,6 +129,7 @@ public class OutsourcingDao {
 		}
 	}
 	
+	// 작성자를 조회해서 command에 set하는 메서드
 	public void author_select(List<OutProductCommand> outlist) {
 		String sql = null;
 		
@@ -139,6 +142,7 @@ public class OutsourcingDao {
 		}
 	}
 	
+	// 조건에 따라 출력해야할 총 게시물의 수를 받아오는 메서드
 	public Integer totalpage(Map<String, Object> requestValues) {
 		String project_id = (String)requestValues.get("project_id");
 		String sql = null;
@@ -180,6 +184,7 @@ public class OutsourcingDao {
 		return result;
 	}
 	
+	// 페이징 처리를 위한 메서드
 	public Map<String, Integer> pageConut(int totalpage, Map<String, Object> requestValues) {
 		int page = requestValues.get("page") == null ? 1 : Integer.valueOf((String)requestValues.get("page"));
 		int min = 0;
@@ -209,6 +214,8 @@ public class OutsourcingDao {
 		return result;
 	}
 	
+	
+	// 프로젝트의 id와 name 값을 command객체에 넣어서 List로 반환하는 메서드
 	public List<ProjectCommand> projectlist() {
 		String sql = "select * from project";
 		
@@ -225,22 +232,10 @@ public class OutsourcingDao {
 		return result;
 	}
 	
-	public List<ProjectCommand> project_name_id_select() {
-		String sql = "select distinct pj_id, pj_name from project";
-		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
-
-			@Override
-			public ProjectCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ProjectCommand command = new ProjectCommand();
-				command.setPj_name(rs.getString("pj_name"));
-				command.setPj_id(rs.getString("pj_id"));
-				return command;
-			}});
-		return result;
-	}
-	
+	// 외주 업체 리스트 조회
 	public List<OutCompanyListCommand> out_com_list(Model model) {
 		String sql = "select * from out_company_list";
+		
 		List<OutCompanyListCommand> result = jt.query(sql, new RowMapper<OutCompanyListCommand>() {
 
 			@Override
@@ -255,9 +250,11 @@ public class OutsourcingDao {
 		return result;
 	}
 	
+	// 외주 회사 id와 이름을 맵으로 만들어주는 메서드
 	public Map<String, String> commap() {
 		String sql = "select * from out_company_list";
 		Map<String, String> resultmap = new HashMap<String, String>();
+		
 		jt.query(sql, new RowMapper<Object>() {
 
 			@Override
@@ -269,8 +266,10 @@ public class OutsourcingDao {
 		return resultmap;
 	}
 	
+	// 외주 등록을 하는 메서드로 out_product_management와 out_company_progress 테이블에 같이 등록
 	public void out_input(OutProductCommand command, Map<String, String> commap) {
 		String sql = "insert into out_product_management (op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values (?,?,?,?,?,?,?,?,?)";
+		
 		jt.update(sql, command.getOp_ordernumber(), command.getOp_proid(), command.getOp_comid(), LocalDateTime.now(), command.getOp_productname(), command.getOp_productstandard(), command.getOp_unit(), command.getOp_price(), command.getOp_regnum());
 		
 		sql = "select op_num from out_product_management order by op_num desc";
@@ -288,9 +287,11 @@ public class OutsourcingDao {
 		jt.update(sql, command.getOp_comid(), max.get(0), commap.get(String.valueOf(command.getOp_comid())), "의뢰수락대기");		
 	}
 	
+	// 외주 업체의 주문번호와 진행상황을 맵으로 만들어주는 메서드
 	public Map<String, String> order_check() {
 		String sql = "select * from out_company_progress";
 		Map<String, String> result = new HashMap<String, String>();
+		
 		jt.query(sql, new RowMapper<Object>() {
 
 			@Override
@@ -298,6 +299,7 @@ public class OutsourcingDao {
 				result.put(String.valueOf(rs.getInt("ocp_ordernum")), rs.getString("ocp_progress"));
 				return null;
 			}});
+		
 		return result;
 	}
 }

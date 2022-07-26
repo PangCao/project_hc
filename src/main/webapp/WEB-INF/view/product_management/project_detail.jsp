@@ -7,6 +7,12 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value="/resources/css/search.css"/>">
+<style>
+.all_product {
+	background-color: rgb(0, 175, 23);
+    color: white !important;
+}
+</style>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -399,4 +405,7 @@
 		</section>
 	</section>
 </body>
+<script type="text/javascript">
+	document.getElementById('product_management').checked=true;
+</script>
 </html>

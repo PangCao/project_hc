@@ -91,6 +91,8 @@ create table if not exists product_management (
     foreign key(p_remarkid) references remark(r_id)
 )default charset=utf8mb4;
 
+select * from project;
+
 create table if not exists out_company_list (
 	o_id int primary key auto_increment,
     o_name varchar(50),

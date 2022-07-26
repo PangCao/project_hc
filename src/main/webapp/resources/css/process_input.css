@@ -30,9 +30,6 @@
     table-layout: fixed;
     word-break: break-all;
 }
-
-
-
 .proccess_input_top > div > table > tbody > tr > th{
     text-align: center;
     border: 1px solid rgba(0, 0, 0, 0.349);
@@ -102,4 +99,13 @@
 }
 .proccess_input_middle > div > table > tbody > tr > td:nth-of-type(8) {
     width: 10%;
+}
+
+.order_product {
+   	background-color: rgb(0, 175, 23);
+    color: white !important;
+}
+.order_product:hover {
+   	background-color: rgb(0, 175, 23) !important;
+    color: white !important;
 }

@@ -136,6 +136,34 @@ public class CommonDao {
 		jt.update(sql, noticeCommand.getN_title(), noticeCommand.getN_content(), noticeCommand.getN_anthor(), LocalDateTime.now(), noticeCommand.getAnthor_id());
 	}
 	
+	//공지사항 페이징
+	public Map<String, Integer> pageConut(int totalpage, int page) {
+		int min = 0;
+		int max = 5;
+		if (page > 3) {
+			min = page - 3;
+			max = page + 2;
+		}
+		if (max > (totalpage / 10) + 1) {
+			max = (totalpage / 10) + 1;
+		}
+		if (totalpage % 10 == 0) {
+			max -= 1;
+		}
+		if (totalpage == 0) {
+			max = 1;
+		}
+		if (max < 5) {
+			min = 0;
+		}
+		Map<String, Integer> result = new HashMap<String, Integer>();
+	
+		result.put("max", max);
+		result.put("min", min);
+		result.put("totalpage", totalpage);
+		result.put("page", page);
+		return result;
+	}
 	
 	//이슈 검색
 	public List<RemarkCommand> issueView(int issuepage, String search_title, String r_class, int cnt) {

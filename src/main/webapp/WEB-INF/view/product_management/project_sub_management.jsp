@@ -148,4 +148,7 @@
 		</section>
 	</section>
 </body>
+<script type="text/javascript">
+	document.getElementById('product_management').checked=true;
+</script>
 </html>

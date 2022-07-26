@@ -121,5 +121,6 @@
 		
 		document.outForm.submit();		
 	}
+	document.getElementById('out_management').checked=true;
 </script>
 </html>

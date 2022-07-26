@@ -8,6 +8,36 @@
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value="/resources/css/product_complete.css"/>">
 <head>
+<%
+	String pagechk = (String)request.getAttribute("pagechk");
+	if (pagechk.equals("complete")) {
+%>
+<style type="text/css">
+.complete_product {
+	background-color: rgb(0, 175, 23);
+    color: white !important;
+}
+.complete_product:hover {
+	background-color: rgb(0, 175, 23) !important;
+    color: white !important;
+}
+</style>
+<%
+	} else{
+%>
+<style type="text/css">
+.record_product {
+	background-color: rgb(0, 175, 23);
+    color: white !important;
+}
+.record_product:hover {
+	background-color: rgb(0, 175, 23) !important;
+    color: white !important;
+}
+</style>
+<%
+	}
+%>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -125,4 +155,7 @@
 		</section>
 	</section>
 </body>
+<script type="text/javascript">
+	document.getElementById('product_management').checked=true;
+</script>
 </html>

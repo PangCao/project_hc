@@ -85,5 +85,6 @@
 		let popy = (window.screen.height / 2) - (popheight / 2);
 		window.open("input_popup","inputpop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
 	}
+	document.getElementById('product_management').checked=true;
 </script>
 </html>

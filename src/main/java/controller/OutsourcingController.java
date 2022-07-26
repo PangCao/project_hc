@@ -59,12 +59,15 @@ public class OutsourcingController {
 		return "out_product_management/out_order_select";
 	}
 	
+	//외주 등록 팝업이동
 	@RequestMapping("/out_input_popup")
 	public String out_input_popup(Model model) {
-		model.addAttribute("projectlist", dao.project_name_id_select());
+		model.addAttribute("projectlist", dao.projectlist());
 		model.addAttribute("comlist", dao.out_com_list(model));
 		return "out_product_management/out_input_popup";
 	}
+	
+	//외주 등록 프로세스
 	@RequestMapping("/out_input_popup_input")
 	public String out_input_popup_input(OutProductCommand command, Model model) {
 		dao.out_input(command, dao.commap());

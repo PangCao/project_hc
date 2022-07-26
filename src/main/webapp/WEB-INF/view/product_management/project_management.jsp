@@ -110,5 +110,7 @@
 			window.open("projectpopup","projectpopup","status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
 		}
 	}
+	document.getElementById('product_management').checked=true;
+
 </script>
 </html>

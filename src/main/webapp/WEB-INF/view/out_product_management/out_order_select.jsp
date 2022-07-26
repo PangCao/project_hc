@@ -23,6 +23,8 @@
 	ArrayList<OutCompanyListCommand> comlist = (ArrayList<OutCompanyListCommand>)request.getAttribute("comlist");
 	Map<String, String> comMap = (HashMap<String, String>)request.getAttribute("commap");
 	Map<String, String> orderchk = (HashMap<String, String>)request.getAttribute("orderchk");
+	String StartDate = (String)request.getAttribute("startDate");
+	String EndDate = (String)request.getAttribute("endDate");
 %>
 </head>
 <body>
@@ -38,17 +40,17 @@
 					<div class="col-6">
 						<form action="out_select?page=1" method="post" name="dateForm">
 							<div class="col-12 pl-0">
-								<input type="date" class="col-7" name="startdate" id="startdate">
+								<input type="date" class="col-7" name="startdate" id="startdate" value="<%=StartDate%>">
 							</div>
 							<div class="col-12 pl-0">
-								<input type="date" class="col-7" name="enddate" id="enddate">
-								<input type="submit" value="조회" onclick="project_date_search()">
+								<input type="date" class="col-7" name="enddate" id="enddate" value="<%=EndDate%>">
+								<input type="button" value="조회" onclick="project_date_search()">
 							</div>
 						</form>
 					</div>
 					<div class="col-4 d-flex align-items-end flex-column justify-content-end">
 						<div style="width: 100%;" class="d-flex justify-content-end">
-							<select name="" id="" class="col-10">
+							<select name="" id="" class="col-10" onchange="project_search(this)">
 						<%
 							if (request.getAttribute("project_id") == null) {
 						%>
@@ -187,11 +189,16 @@ function project_date_search() {
 		alert('조회 종료일을 입력해주세요.');
 		return false;
 	}
+	if (new Date(s_date.value) > new Date(e_date.value)) {
+		alert('조회 시작일보다 종료일이 빠른 날짜일 수 없습니다.');
+		return false;
+	}
 	document.dateForm.submit();
 }
 function project_search(obj) {
 	console.log(obj.value);
-	location.href="out_input?page=1&project_id="+obj.value;
+	location.href="out_select?page=1&project_id="+obj.value;
 }
+document.getElementById('out_management').checked=true;
 </script>
 </html>

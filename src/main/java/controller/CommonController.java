@@ -59,7 +59,7 @@ public class CommonController {
 	public String notice(@RequestParam(defaultValue = "1") int noticepage, @RequestParam(required = false) String search_title, Model model) {
 		model.addAttribute("noticelist", dao.noticeView(noticepage, search_title, 10));
 		model.addAttribute("noticepage", (Integer)noticepage);
-		model.addAttribute("noticetotal", dao.totalpage("notice", search_title));
+		model.addAttribute("paging", dao.pageConut(dao.totalpage("notice", search_title), noticepage));
 		return "board/notice";
 	}
 	

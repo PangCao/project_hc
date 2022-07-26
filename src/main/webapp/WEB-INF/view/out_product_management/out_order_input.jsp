@@ -24,6 +24,8 @@
 	String project_id = (String)request.getAttribute("project_id");
 	ArrayList<OutCompanyListCommand> comlist = (ArrayList<OutCompanyListCommand>)request.getAttribute("comlist");
 	Map<String, String> comMap = (HashMap<String, String>)request.getAttribute("commap");
+	String StartDate = (String)request.getAttribute("startDate");
+	String EndDate = (String)request.getAttribute("endDate");
 	String stat = (String)request.getAttribute("stat");
 	if (stat != null && stat.equals("1")) {
 %>
@@ -47,10 +49,10 @@
 					<div class="col-6">
 						<form action="out_input?page=1" method="post" name="dateForm">
 							<div class="col-12 pl-0">
-								<input type="date" class="col-7" name="startdate" id="startdate">
+								<input type="date" class="col-7" name="startdate" id="startdate" value="<%=StartDate %>">
 							</div>
 							<div class="col-12 pl-0">
-								<input type="date" class="col-7" name="enddate" id="enddate">
+								<input type="date" class="col-7" name="enddate" id="enddate" value="<%=EndDate%>">
 								<input type="button" value="조회" onclick="project_date_search()">
 							</div>
 							<div>
@@ -199,6 +201,10 @@
 			alert('조회 종료일을 입력해주세요.');
 			return false;
 		}
+		if (new Date(s_date.value) > new Date(e_date.value)) {
+			alert('조회 시작일보다 종료일이 빠른 날짜일 수 없습니다.');
+			return false;
+		}
 		document.dateForm.submit();
 	}
 	function project_search(obj) {
@@ -212,5 +218,6 @@
 		let popy = (window.screen.height / 2) - (popheight / 2);
 		window.open("out_input_popup","out_inputpop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
 	}
+	document.getElementById('out_management').checked=true;
 </script>
 </html>

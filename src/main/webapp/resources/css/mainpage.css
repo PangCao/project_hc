@@ -34,3 +34,11 @@
 .mainpage > div:nth-of-type(2) > div > div > div > div > a:hover{
     color: #212529;
 }
+.home_page {
+	background-color: rgb(0, 175, 23);
+    color: white !important;
+}
+.home_page:hover {
+	background-color: rgb(0, 175, 23) !important;
+    color: white !important;
+}

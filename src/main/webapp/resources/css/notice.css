@@ -29,3 +29,11 @@
 	color: black;
 	text-decoration: none; 
 }
+.notice_page {
+   	background-color: rgb(0, 175, 23);
+    color: white !important;
+}
+.notice_page:hover {
+   	background-color: rgb(0, 175, 23) !important;
+    color: white !important;
+}
