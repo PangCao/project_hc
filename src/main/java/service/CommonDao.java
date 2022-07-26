@@ -146,7 +146,7 @@ public class CommonDao {
 			sql = "select * from remark where r_title like '%"+search_title+"%' order by r_id desc limit "+searchPage+", "+cnt;
 		}
 		if(r_class != null && !r_class.equals("")){
-			sql = "select * from remark where r_class="+r_class+" order by r_id desc limit"+searchPage+","+cnt;
+			sql = "select * from remark where r_class='"+r_class+"' order by r_id desc limit "+searchPage+", "+cnt;
 		}
 		else {
 			sql = "select * from remark order by r_id desc limit "+searchPage+", "+cnt;

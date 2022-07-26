@@ -61,7 +61,7 @@
 						<div class="col-12 p-0">
 							<form action="issue" method="post" class="col-12 p-0 d-flex justify-content-end">
 								<select name="r_class" id="r_class" onchange="r_class_input()" class="col-8 text-center">
-									<option value="" disabled selected>== 심각도 선택 ==</option>
+									<option value="">== 심각도 선택 ==</option>
 									<option value="INFO">INFO</option>
 									<option value="CARE">CARE</option>
 									<option value="WARN">WARN</option>
