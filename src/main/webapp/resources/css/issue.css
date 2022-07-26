@@ -25,7 +25,8 @@
     border-bottom: 2px solid grey;
 }
 
-.issue > div:nth-last-of-type(1) > input {
+.issue > div > div:nth-last-of-type(1) > input,
+.issue > div > div:nth-last-of-type(2) > input {
     padding: 2px 20px;
     background-color: #d7dde4;
     border-width: 1px;

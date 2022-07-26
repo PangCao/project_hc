@@ -31,7 +31,7 @@
 			<!-- 여기 아래부터 바디 -->
 			<section class="issue_view">
 				<div class="col-12 pt-4 pl-4">
-					<h2>공지사항</h2>
+					<h2>이슈 보고서</h2>
 				</div>
 				<div class="col-12 mt-5">
 					<hr>

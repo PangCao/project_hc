@@ -25,7 +25,7 @@
 			<jsp:include page="/WEB-INF/view/topmenu.jsp"/>
 			<!-- 여기 아래부터 바디 -->
 						<section class="issue_write">
-				<h2 class="col-6 ml-5 mt-5">이슈 작성</h2>
+				<h2 class="col-6 ml-5 mt-5">이슈 보고서 작성</h2>
 				<div>
 					<form action="issue_write_input" method="post" name="issueWriteForm">
 						<div class="col-12 row">
