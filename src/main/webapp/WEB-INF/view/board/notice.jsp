@@ -80,9 +80,9 @@
 					<a href="#" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
-					else {//페이징 처리 해야함
+					else {
 				%>
-					<a href="notice?noticepage=<%=paging.get("page")-1%>" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+					<a href="notice?noticepage=<%=paging.get("page")-1%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
 					for(int i = paging.get("min"); i < paging.get("max"); i++){

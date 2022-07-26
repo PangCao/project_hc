@@ -64,6 +64,7 @@ create table if not exists remark(
     foreign key(r_anthor_id) references member(m_num)
 )default charset=utf8mb4;
 
+
 create table if not exists notice(
    n_id int primary key auto_increment,
     n_title varchar(100) not null,
@@ -81,15 +82,17 @@ create table if not exists product_management (
 	p_num int auto_increment primary key,
     p_proname varchar(50) not null,
     p_tasknumber varchar(50),
-    p_proccessnumber varchar(50),
+    p_processnumber varchar(50),
     p_regdate datetime,
     p_startdate datetime,
     p_compledate datetime,
-    p_remarkid int,
+    p_remarkid varchar(200),
     p_regnum varchar(30),
-    p_state varchar(50),
-    foreign key(p_remarkid) references remark(r_id)
+    p_state varchar(50)
 )default charset=utf8mb4;
+
+select * from product_management;
+
 
 select * from project;
 

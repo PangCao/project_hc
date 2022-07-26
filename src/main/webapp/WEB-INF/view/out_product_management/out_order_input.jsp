@@ -47,7 +47,7 @@
 			<section class="out_order_input_top">
 				<div class="d-flex justify-content-between">
 					<div class="col-6">
-						<form action="out_input?page=1" method="post" name="dateForm">
+						<form action="out_input?page=1&project_id=<%=project_id %>" method="post" name="dateForm">
 							<div class="col-12 pl-0">
 								<input type="date" class="col-7" name="startdate" id="startdate" value="<%=StartDate %>">
 							</div>
@@ -205,10 +205,10 @@
 			alert('조회 시작일보다 종료일이 빠른 날짜일 수 없습니다.');
 			return false;
 		}
+		
 		document.dateForm.submit();
 	}
 	function project_search(obj) {
-		console.log(obj.value);
 		location.href="out_input?page=1&project_id="+obj.value;
 	}
 	function inputpopup() {

@@ -7,6 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%
+	String stat =  (String)request.getAttribute("stat");
+	if (stat.equals("1")) {
+%>
 <script type="text/javascript">
 	function a() {
 	window.close();
@@ -15,5 +19,19 @@
 	setTimeout(a(), 3000);
 </script>
 
+<%
+	}
+	else if(stat.equals("2")) {
+%>
+<script type="text/javascript">
+	function a() {
+	window.close();
+	opener.location.replace("input?stat=2");
+	}
+	setTimeout(a(), 3000);
+</script>
+<%
+	}
+%>
 </body>
 </html>

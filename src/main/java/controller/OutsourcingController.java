@@ -71,6 +71,7 @@ public class OutsourcingController {
 	@RequestMapping("/out_input_popup_input")
 	public String out_input_popup_input(OutProductCommand command, Model model) {
 		dao.out_input(command, dao.commap());
-		return "out_product_management/closepopup";
+		model.addAttribute("stat", "1");
+		return "closepopup";
 	}
 }

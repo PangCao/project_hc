@@ -2,6 +2,7 @@ package service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -35,12 +36,37 @@ public class OutsourcingDao {
 		List<OutProductCommand> result = null;
 		String startDate = (String)requestValues.get("startdate");
 		String endDate = (String)requestValues.get("enddate");
+		if (endDate != null && !endDate.equals("null")) {
+			endDate = String.valueOf(LocalDate.parse(endDate).plusDays(1));	
+		}
 		
-		if (project_id != null && !project_id.equals("null") && !project_id.equals("all")) {
-			if (comname != null && !comname.equals("null")) {
+		if (project_id != null && !project_id.equals("null") && !project_id.equals("all") && startDate != null && endDate != null && !startDate.equals("null") && !endDate.equals("null")) {
+			sql = "select * from out_product_management where op_proid=? and op_regdate between ? and ?";
+			
+			result = jt.query(sql, new RowMapper<OutProductCommand>() {
+
+				@Override
+				public OutProductCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+					OutProductCommand command = new OutProductCommand();
+					command.setOp_num(rs.getInt("op_num"));
+					command.setOp_ordernumber(rs.getString("op_ordernumber"));
+					command.setOp_proid(rs.getString("op_proid"));
+					command.setOp_comid(rs.getInt("op_comid"));
+					command.setOp_regdate(rs.getString("op_regdate"));
+					command.setOp_productname(rs.getString("op_productname"));
+					command.setOp_productstandard(rs.getString("op_productstandard"));
+					command.setOp_unit(rs.getInt("op_unit"));
+					command.setOp_price(rs.getInt("op_price"));
+					command.setOp_regnum(rs.getString("op_regnum"));
+					return command;
+				}}, project_id, startDate, endDate);
+		}
+		
+		else if (project_id != null && !project_id.equals("null") && !project_id.equals("all")) {
+			if (comname != null && !comname.equals("null") && !comname.equals("")) {
 				sql = "select * from out_product_management where op_proid = ? and op_comname like '%"+comname+"%' limit "+page+", 10";
 			}
-			else if (productname != null && !productname.equals("null")) {
+			else if (productname != null && !productname.equals("null") && !productname.equals("")) {
 				sql = "select * from out_product_management where op_proid = ? and op_productname like '%"+productname+"%' limit "+page+", 10";
 			}
 			else {
@@ -86,10 +112,10 @@ public class OutsourcingDao {
 				}}, startDate, endDate);
 		}
 		else {
-			if (comname != null && !comname.equals("null")) {
+			if (comname != null && !comname.equals("null") && !comname.equals("")) {
 				sql = "select * from out_product_management where op_comname like '%"+comname+"%' limit "+page+", 10";
 			}
-			else if (productname != null && !productname.equals("null")){
+			else if (productname != null && !productname.equals("null") && !productname.equals("")){
 				sql = "select * from out_product_management where op_productname like '%"+productname+"%' limit "+page+", 10";
 			}
 			else {
@@ -151,12 +177,20 @@ public class OutsourcingDao {
 		String productname = (String)requestValues.get("productname");
 		String startDate = (String)requestValues.get("startdate");
 		String endDate = (String)requestValues.get("enddate");
-		
-		if (project_id != null && !project_id.equals("null") && !project_id.equals("all")) {
-			if (comname != null && !comname.equals("null")) {
+		if (endDate != null && !endDate.equals("null")) {
+			endDate = String.valueOf(LocalDate.parse(endDate).plusDays(1));
+		}
+			
+		if (project_id != null && !project_id.equals("null") && !project_id.equals("all") && startDate != null && endDate != null && !startDate.equals("null") && !endDate.equals("null")) {
+			sql = "select count(*) from out_product_management where op_proid=? and op_regdate between ? and ?";
+			
+			result = jt.queryForObject(sql, Integer.class, project_id, startDate, endDate);
+		}
+		else if (project_id != null && !project_id.equals("null") && !project_id.equals("all")) {
+			if (comname != null && !comname.equals("null") && !comname.equals("")) {
 				sql = "select count(*) from out_product_management where op_proid=? and op_comname like '%"+comname+"%'";
 			}
-			else if (productname != null && !productname.equals("null")){
+			else if (productname != null && !productname.equals("null") && !productname.equals("")){
 				sql = "select count(*) from out_product_management where op_proid=? and op_productname like '%"+productname+"%'";
 			}
 			else {
@@ -169,10 +203,10 @@ public class OutsourcingDao {
 			result = jt.queryForObject(sql, Integer.class, startDate, endDate);
 		}
 		else {
-			if (comname != null && !comname.equals("null")) {
+			if (comname != null && !comname.equals("null") && !comname.equals("")) {
 				sql = "select count(*) from out_product_management where op_comname like '%"+comname+"%'";
 			}
-			else if (productname != null && !productname.equals("null")){
+			else if (productname != null && !productname.equals("null") && !productname.equals("")){
 				sql = "select count(*) from out_product_management where op_productname like '%"+productname+"%'";
 			}
 			else {

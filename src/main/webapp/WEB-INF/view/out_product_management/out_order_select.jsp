@@ -38,7 +38,7 @@
 			<section class="out_order_select_top">
 				<div class="d-flex justify-content-between align-items-end">
 					<div class="col-6">
-						<form action="out_select?page=1" method="post" name="dateForm">
+						<form action="out_select?page=1&project_id=<%=project_id %>" method="post" name="dateForm">
 							<div class="col-12 pl-0">
 								<input type="date" class="col-7" name="startdate" id="startdate" value="<%=StartDate%>">
 							</div>

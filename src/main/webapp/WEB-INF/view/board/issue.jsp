@@ -128,7 +128,7 @@
 					}
 					else {//페이징 처리 해야함
 				%>
-					<a href="issue?issuepage=<%=issuepage-1%>" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+					<a href="issue?issuepage=<%=issuepage-1%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
 					for(int i = min; i < max; i++){

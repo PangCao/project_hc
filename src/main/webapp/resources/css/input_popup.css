@@ -16,27 +16,27 @@ body {
     justify-content: center;
     align-items: center;   
 }
-.input_popup > div{
+.input_popup > form{
     width: 100%;
 }
-.input_popup > div > div > div > div{
+.input_popup > form > div > div > div{
     display: flex;
     margin-bottom: 15px;
 }
-.input_popup > div > div > div > div > div {
+.input_popup > form > div > div > div > div {
     width: 50%;
     display: flex;
     justify-content: space-between;
 }
-.input_popup > div > div:nth-last-of-type(1) {
+.input_popup > form > div:nth-last-of-type(1) {
     margin-top: 10px;
 }
-.input_popup > div > div:nth-last-of-type(1) > input[type="submit"]{
+.input_popup > form > div:nth-last-of-type(1) > input[type="submit"]{
     padding: 2px 20px;
     background-color: #d7dde4;
     border-width: 1px;
     border-color: rgb(185, 185, 185);
 }
-.input_popup > div > div:nth-of-type(2) > div:nth-of-type(2) >textarea{
+.input_popup > form > div:nth-of-type(2) > div:nth-of-type(2) >textarea{
     height: 300px;
 }
