@@ -22,6 +22,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import command.MemberCommand;
 import command.ProductCommand;
 import command.ProjectCommand;
+import command.ProjectCreateCommand;
 import command.RemarkCommand;
 
 public class ManagementDao {
@@ -215,5 +216,16 @@ public class ManagementDao {
 	public void compledate_update(int product_id) {
 		String sql = "update product_management set p_compledate=? where p_num=?";
 		jt.update(sql, LocalDateTime.now(), product_id);
+	public void  ProjectCreate(String name){
+		String sql = "insert into projectcreate (pc_namevalues) value(?)";
+		jt.query(sql, new RowMapper<ProjectCreateCommand>() {
+
+			@Override
+			public ProjectCreateCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProjectCreateCommand command = new ProjectCreateCommand();
+				command.setPc_name(rs.getString("name"));
+				return null;
+			}
+		},name);		
 	}
 }
