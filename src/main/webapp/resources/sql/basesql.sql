@@ -3,8 +3,8 @@ create database hcproject;
 use hcproject;
 
 create table if not exists member( 
-	m_num varchar(30) primary key,
-	m_password varchar(30) not null,
+   m_num varchar(30) primary key,
+   m_password varchar(30) not null,
     m_name varchar(30) not null,
     m_position varchar(30),
     m_department varchar(30),
@@ -20,11 +20,11 @@ insert into member values ('202207020004', '1234', '김부장', '부장', '생�
 insert into member values ('202207020005', '1234', '최여진', '사원', '인사부' , '010-5555-5555');
 
 create table if not exists task (
-	t_name varchar(30) primary key
+   t_name varchar(30) primary key
 )default charset=utf8mb4;
 
 insert into task values 
-	('가공'),
+   ('가공'),
     ('소조립'),
     ('대조립'),
     ('선행의장'),
@@ -36,7 +36,7 @@ insert into task values
     ('진수');
 
 create table if not exists project (
-	pj_id varchar(30) primary key,
+   pj_id varchar(30) primary key,
     pj_name varchar(50),
     pj_regdate datetime,
     pj_eta datetime,
@@ -53,7 +53,7 @@ insert into project values ('PJT-2022-0003', '컨테이너선-01', '2022-07-21 1
 insert into project values ('PJT-2022-0004', '쇄빙유조선-01', '2022-07-24 14:37:10', '2024-02-10 10:12:59', '가공', '0.2');
 
 create table if not exists remark(
-	r_id int primary key auto_increment,
+   r_id int primary key auto_increment,
     r_title varchar(100) not null,
     r_content varchar(2000),
     r_anthor varchar(30),
@@ -79,7 +79,7 @@ create table if not exists notice(
 select * from notice;
 
 create table if not exists product_management (
-	p_num int auto_increment primary key,
+   p_num int auto_increment primary key,
     p_proname varchar(50) not null,
     p_tasknumber varchar(50),
     p_processnumber varchar(50),
@@ -97,7 +97,7 @@ select * from product_management;
 select * from project;
 
 create table if not exists out_company_list (
-	o_id int primary key auto_increment,
+   o_id int primary key auto_increment,
     o_name varchar(50),
     o_task varchar(30),
     foreign key(o_task) references task(t_name)
@@ -115,7 +115,7 @@ insert into out_company_list(o_name, o_task) values ('bbqCompany', '블럭도장
 select * from out_company_list;
 
 create table if not exists out_company_progress (
-	ocp_id int primary key auto_increment,
+   ocp_id int primary key auto_increment,
     ocp_comid int,
     ocp_ordernum int,
     ocp_name varchar(50),
@@ -133,7 +133,7 @@ insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress
 select * from out_company_progress;
 
 create table if not exists out_product_management (
-	op_num int auto_increment primary key,
+   op_num int auto_increment primary key,
     op_ordernumber varchar(40),
     op_proid varchar(30),
     op_comid int,
@@ -148,8 +148,6 @@ create table if not exists out_product_management (
     foreign key(op_comid) references out_company_list(o_id)
 )default charset=utf8mb4;
 
-drop table out_product_management;
-
 insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values
 ('OT-001', 'PJT-2022-0001', 2, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020001");
 insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values
@@ -158,3 +156,13 @@ insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdat
 ('OT-001', 'PJT-2022-0003', 3, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020002");
 
 select * from out_product_management;
+
+create table if not exists projectcreate(
+	pc_id int auto_increment primary key,
+    pc_name varchar(50),
+    pc_tasknumber varchar(50),
+    pc_propart varchar(10),
+    pc_dpn varchar(10)
+)default charset=utf8mb4;
+
+select * from projectcreate;
