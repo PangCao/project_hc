@@ -51,11 +51,14 @@ public class CommonController {
 	@RequestMapping("/mainpage")
 	public String mainpage(@RequestParam(defaultValue = "1") int noticepage, @RequestParam(defaultValue = "1") int remarkpage, Model model) {
 		model.addAttribute("noticelist", dao.noticeView(noticepage, null, 5));
-		model.addAttribute("issuelist", dao.issueMainView(noticepage, null, 5));
+		model.addAttribute("issuelist", dao.issueMainView(remarkpage, null, 5));
+		model.addAttribute("issueSublist", dao.issueSubView());
 		model.addAttribute("noticepage", (Integer)noticepage);
 		model.addAttribute("remarkpage", (Integer)remarkpage);
 		model.addAttribute("noticetotal", dao.totalpage("notice", null));
 		model.addAttribute("remarktotal", dao.totalpage("remark", null));
+		model.addAttribute("projectmap", dao.projectmap());
+		
 		return "mainpage";
 	}
 	

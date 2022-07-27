@@ -15,7 +15,7 @@
 %>
 </head>
 <body>
-	<section style="width: 700px; height: 700px; margin: auto; border: 1px solid black;">
+	<section style="width: 700px; height: 700px; margin: auto;">
         <table class="table text-center mt-5">
             <tbody >
                 <tr>
@@ -25,24 +25,33 @@
                     <th>선택</th>
                 </tr>
             <%
-            	for(int i = 0; i < productlist.size(); i++) {
-            		ProductCommand command = productlist.get(i);
+            	if (productlist != null && productlist.size() != 0) { 
+            		for(int i = 0; i < productlist.size(); i++) {
+            			ProductCommand command = productlist.get(i);
             %>
-            	<tr>
-                    <td><%=command.getP_proid() %></td>
-                    <td><%=command.getP_tasknumber() %></td>
-                    <td><%=command.getP_processnumber() %></td>
-                    <td><input type="button" value="공정 선택" onclick="issue_select<%=i %>()" class="issue_search_btn"></td>
-                </tr>
-                <script type="text/javascript">
-					function issue_select<%=i%>() {
-						opener.document.getElementById('rp_proid').value = '<%=command.getP_proid()%>';
-						opener.document.getElementById('rp_task').value = '<%=command.getP_tasknumber()%>';
-						opener.document.getElementById('rp_process').value = '<%=command.getP_processnumber()%>';
-						opener.document.getElementById('project_view').value = "<%=projectmap.get(command.getP_proid())%> / <%=command.getP_tasknumber()%> / <%=command.getP_processnumber()%>"
-						window.close();
-					}                
-				</script>
+	            	<tr>
+	                    <td><%=command.getP_proid() %></td>
+	                    <td><%=command.getP_tasknumber() %></td>
+	                    <td><%=command.getP_processnumber() %></td>
+	                    <td><input type="button" value="공정 선택" onclick="issue_select<%=i %>()" class="issue_search_btn"></td>
+	                </tr>
+	                <script type="text/javascript">
+						function issue_select<%=i%>() {
+							opener.document.getElementById('rp_proid').value = '<%=command.getP_proid()%>';
+							opener.document.getElementById('rp_task').value = '<%=command.getP_tasknumber()%>';
+							opener.document.getElementById('rp_process').value = '<%=command.getP_processnumber()%>';
+							opener.document.getElementById('project_view').value = "<%=projectmap.get(command.getP_proid())%> / <%=command.getP_tasknumber()%> / <%=command.getP_processnumber()%>"
+							window.close();
+						}                
+					</script>
+            <%
+            		}
+            	}
+            	else {
+            %>
+            		<tr>
+            			<td class="text-center" colspan="4">등록가능한 이슈 공정이 없습니다.</td>
+            		</tr>
             <%
             	}
             %>

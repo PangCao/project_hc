@@ -60,6 +60,28 @@ public class CommonDao {
 		return result.isEmpty()? null : result; //isEmpty()메서드를 통해 result값이 비었는지 안비었는지 확인함
 	}
 	
+	public Map<String, Remark_projectCommand> issueSubView(){
+		Map<String, Remark_projectCommand> result = new HashMap<String, Remark_projectCommand>();
+		String sql = "select * from remark_project";
+		jt.query(sql, new RowMapper<Object>() {
+
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Remark_projectCommand command = new Remark_projectCommand();
+				command.setRp_num(rs.getInt("rp_num"));
+				command.setRp_r_id(rs.getInt("rp_r_id"));
+				command.setRp_proid(rs.getString("rp_proid"));
+				command.setRp_task(rs.getString("rp_task"));
+				command.setRp_process(rs.getString("rp_process"));
+				result.put(String.valueOf(rs.getInt("rp_r_id")), command);
+				
+				return null;
+			}
+			
+		});
+		return result;
+	}
+	
 	public List<RemarkCommand> issueMainView(int page, String search_title, int cnt) {
 		int searchPage = (page - 1) * cnt;
 		String sql = null;

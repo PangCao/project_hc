@@ -1,3 +1,4 @@
+<%@page import="command.Remark_projectCommand"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -16,6 +17,8 @@
 <%
 	ArrayList<NoticeCommand> noticelist = (ArrayList<NoticeCommand>)request.getAttribute("noticelist");
 	ArrayList<RemarkCommand> remarklist = (ArrayList<RemarkCommand>)request.getAttribute("issuelist");
+	Map<String, Remark_projectCommand> issuesublist = (HashMap<String, Remark_projectCommand>)request.getAttribute("issueSublist");
+	Map<String, String> projectmap = (HashMap<String, String>) request.getAttribute("projectmap");
 	int noticepage = (Integer)request.getAttribute("noticepage");
 	int remarkpage = (Integer)request.getAttribute("remarkpage");
 	int noticetotal = (Integer)request.getAttribute("noticetotal");
@@ -86,9 +89,15 @@
 							<%
 								if (remarklist != null) {
 									for(int i = 0; i < remarklist.size(); i++) {
-										RemarkCommand dto = remarklist.get(i);
+										RemarkCommand dto = remarklist.get(i);			
 							%>
-									
+									<tr>
+										<td><a href="issue_view?r_id=<%=dto.getR_id()%>" style="color:black;"><%=projectmap.get(issuesublist.get(String.valueOf(dto.getR_id())).getRp_proid()) %></a></td>
+										<td><a href="issue_view?r_id=<%=dto.getR_id()%>" style="color:black;"><%=issuesublist.get(String.valueOf(dto.getR_id())).getRp_task() %></a></td>
+										<td><a href="issue_view?r_id=<%=dto.getR_id()%>" style="color:black;"><%=issuesublist.get(String.valueOf(dto.getR_id())).getRp_process() %></a></td>
+										<td><%=dto.getR_date() %></td>
+										<td><%=dto.getR_class() %></td>
+									</tr>
 							<%
 									}
 								}
@@ -100,13 +109,6 @@
 							<%
 								}
 							%>
-									<tr>
-										<td>PJT-01</td>
-										<td>A15</td>
-										<td>AA-001</td>
-										<td>2022/07/21</td>
-										<td>WARN</td>
-									</tr>
 								</tbody>
 							</table>
 						</div>

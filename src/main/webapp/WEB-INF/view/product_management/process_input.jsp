@@ -100,6 +100,7 @@
 					<%
 						for(int i = 0; i < productlist.size(); i++) {
 							ProductCommand command = productlist.get(i);
+							System.out.println(command.getP_proid());
 					%>
 							<tr>
 								<td><%=i+1 %></td>
@@ -109,7 +110,8 @@
 								<td><%= command.getP_regdate() %></td>
 								<td><%= command.getP_startdate() %></td>
 								<td><%= command.getP_compledate() %></td>
-								<td>이슈가 총 <a href="#" onclick="issueup<%=i%>()" style="color:red;"><%= command.getP_remarkid() != null? command.getP_remarkid().split(",").length:0 %></a>개 존재합니다.</td>
+								<td><a href="#" onclick="issueup<%=i%>()" style="color:black;">이슈가 총 <span style="color:red;"><%= command.getP_remarkid() != null? command.getP_remarkid().split(",").length:0 %></span>개 존재합니다.</a></td>
+								
 								<td><%= memberMap.get(command.getP_regnum()) %></td>
 							</tr>
 							<script type="text/javascript">
@@ -187,7 +189,7 @@
 			alert('작업번호 소분류를 선택해주세요.');
 			return false;
 		}
-		x
+		
 		let popwidth = 1000;
 		let popheight = 700;
 		let popx = (window.screen.width / 2) - (popwidth / 2);

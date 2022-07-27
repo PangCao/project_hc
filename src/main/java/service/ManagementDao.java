@@ -118,7 +118,7 @@ public class ManagementDao {
 		if (remarkId == -1) {
 			remarkId = null;
 		} 
-		jt.update(sql, command.getP_proid(), command.getP_tasknumber(), processnumber, LocalDateTime.now(), remarkId, userInfo.getM_num() , "결재 대기");
+		jt.update(sql, requestValues.get("project_id"), command.getP_tasknumber(), processnumber, LocalDateTime.now(), remarkId, userInfo.getM_num() , "결재 대기");
 	}
 	
 	public List<ProductCommand> productlist(String category, Map<String, Object> requestValues) {
@@ -340,15 +340,6 @@ public class ManagementDao {
 		jt.update(sql, LocalDateTime.now(), product_id);
 	}
 	
-	public void  ProjectCreate(String name){
-		String sql = "insert into projectcreate (pc_namevalues) value(?)";
-		jt.query(sql, new RowMapper<ProjectCreateCommand>() {
-
-			@Override
-			public ProjectCreateCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ProjectCreateCommand command = new ProjectCreateCommand();
-				command.setPc_name(rs.getString("name"));
-				return null;
 	public void  ProjectCreate(String name, String date){
 		String[] tasknum = {"A","B","C","D"};
 		String[] propart = {"A(가공)","B(소조립)","C(대조립)","D(선행의장)","E(블럭도장)","F(P.E)","G(탑재)","H(DOCK도장)","I(진수선행도장)","J(진수)"};

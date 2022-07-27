@@ -218,7 +218,7 @@
 				<%
 					}
 				%> 
-								<td>특이사항이 총 <a href="#" onclick="issueup<%=i%>()" style="color:red;"><%=command.getP_remarkid() != null ? command.getP_remarkid().split(",").length : 0 %></a>개 있습니다.</td>
+								<td><a href="#" onclick="issueup<%=i%>()" style="color:black;">이슈가 총 <span style="color:red;"><%=command.getP_remarkid() != null ? command.getP_remarkid().split(",").length : 0 %></span>개 존재합니다.</a></td>
 								<td><%=memberMap.get(command.getP_regnum())%></td>
 								<td><%=command.getP_state() %></td>
 				<%

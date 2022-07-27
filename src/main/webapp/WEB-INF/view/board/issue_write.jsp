@@ -41,7 +41,7 @@
 						<script type="text/javascript">
 							function issue_search() {
 								let popwidth = 720;
-								let popheight = 720;
+								let popheight = 750;
 								let popx = (window.screen.width / 2) - (popwidth / 2);
 								let popy = (window.screen.height / 2) - (popheight / 2);
 								window.open("issue_search_popup","issueSearchpop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
@@ -81,6 +81,11 @@
 </body>
 <script type="text/javascript">
 	function issue_write() {
+		let pv = document.getElementById('project_view').value;
+		if (pv.length == 0) {
+			alert('이슈 공정을 검색해주세요,');
+			return false;
+		}
 		if (confirm('이슈를 작성하시겠습니까?')) {
 			document.issueWriteForm.submit();	
 		}
