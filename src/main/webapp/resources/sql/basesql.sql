@@ -24,33 +24,34 @@ create table if not exists task (
 )default charset=utf8mb4;
 
 insert into task values 
-	('가공'),
-    ('소조립'),
-    ('대조립'),
-    ('선행의장'),
-    ('블럭도장'),
-    ('P.E'),
-    ('탑재'),
-    ('DOCK 의장'),
-    ('진수 선행 도장'),
-    ('진수');
+   ('A(가공)'),
+    ('B(소조립)'),
+    ('C(대조립)'),
+    ('D(선행의장)'),
+    ('E(블럭도장)'),
+    ('F(P.E)'),
+    ('G(탑재)'),
+    ('H(DOCK의장)'),
+    ('I(진수선행도장)'),
+    ('J(진수)');
 
 create table if not exists project (
 	pj_id varchar(30) primary key,
     pj_name varchar(50),
     pj_regdate datetime,
     pj_eta datetime,
-    pj_task varchar(30),
+    pj_task varchar(30) default 'A(가공)',
     pj_progress float default 0.0,
     foreign key(pj_task) references task(t_name)
 )default charset=utf8mb4;
 
+select * from project;
 select distinct pj_id, pj_name from project;
 
-insert into project values ('PJT-2022-0001', '유조선-01', '2022-07-20 14:37:10', '2023-12-31 11:59:59', '가공', '0.12');
-insert into project values ('PJT-2022-0002', '여객선-01', '2022-07-19 14:37:10', '2024-12-31 11:59:59', '가공', '0.01');
-insert into project values ('PJT-2022-0003', '컨테이너선-01', '2022-07-21 14:37:10', '2025-12-31 11:59:59', '가공', '0.9');
-insert into project values ('PJT-2022-0004', '쇄빙유조선-01', '2022-07-24 14:37:10', '2024-02-10 10:12:59', '가공', '0.2');
+insert into project values ('PJT-2022-0001', '유조선-01', '2022-07-20 14:37:10', '2023-12-31 11:59:59', 'A(가공)', '0.12');
+insert into project values ('PJT-2022-0002', '여객선-01', '2022-07-19 14:37:10', '2024-12-31 11:59:59', 'A(가공)', '0.01');
+insert into project values ('PJT-2022-0003', '컨테이너선-01', '2022-07-21 14:37:10', '2025-12-31 11:59:59', 'A(가공)', '0.9');
+insert into project values ('PJT-2022-0004', '쇄빙유조선-01', '2022-07-24 14:37:10', '2024-02-10 10:12:59', 'A(가공)', '0.2');
 
 create table if not exists remark(
 	r_id int primary key auto_increment,
@@ -117,13 +118,13 @@ create table if not exists out_company_list (
 
 select * from notice;
 
-insert into out_company_list(o_name, o_task) values ('OutCompany', '가공');
-insert into out_company_list(o_name, o_task) values ('OutCom', '가공');
-insert into out_company_list(o_name, o_task) values ('Outpany', '가공');
-insert into out_company_list(o_name, o_task) values ('Company', '소조립');
-insert into out_company_list(o_name, o_task) values ('OCompany', '대조립');
-insert into out_company_list(o_name, o_task) values ('aaCompany', '선행의장');
-insert into out_company_list(o_name, o_task) values ('bbqCompany', '블럭도장');
+insert into out_company_list(o_name, o_task) values ('OutCompany', 'A(가공)');
+insert into out_company_list(o_name, o_task) values ('OutCom', 'A(가공)');
+insert into out_company_list(o_name, o_task) values ('Outpany', 'A(가공)');
+insert into out_company_list(o_name, o_task) values ('Company', 'B(소조립)');
+insert into out_company_list(o_name, o_task) values ('OCompany', 'C(대조립)');
+insert into out_company_list(o_name, o_task) values ('aaCompany', 'D(선행의장)');
+insert into out_company_list(o_name, o_task) values ('bbqCompany', 'E(블럭도장)');
 select * from out_company_list;
 
 create table if not exists out_company_progress (
@@ -168,3 +169,16 @@ insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdat
 ('OT-001', 'PJT-2022-0003', 3, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020002");
 
 select * from out_product_management;
+
+create table if not exists projectcreate(
+	pc_num int auto_increment primary key,
+	pc_id varchar(30),
+    pc_name varchar(50),
+    pc_tasknumber varchar(50),
+    pc_propart varchar(30),
+    pc_dpn varchar(30)
+)default charset=utf8mb4;
+
+select * from projectcreate;
+select count(distinct pc_id) from projectcreate where pc_id like '%-2022-%';
+select * from projectcreate where pc_num;
