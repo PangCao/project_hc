@@ -43,6 +43,8 @@ public class MemberDao {
 				
 				session.setAttribute("member", result.get(0));
 				session.setAttribute("id", result.get(0).getM_num());
+				session.setAttribute("department", result.get(0).getM_department());
+				session.setAttribute("name", result.get(0).getM_name());
 				return true;
 			}
 		}

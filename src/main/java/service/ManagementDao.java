@@ -340,15 +340,8 @@ public class ManagementDao {
 		jt.update(sql, LocalDateTime.now(), product_id);
 	}
 	
-	public void  ProjectCreate(String name){
-		String sql = "insert into projectcreate (pc_namevalues) value(?)";
-		jt.query(sql, new RowMapper<ProjectCreateCommand>() {
-
-			@Override
-			public ProjectCreateCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ProjectCreateCommand command = new ProjectCreateCommand();
-				command.setPc_name(rs.getString("name"));
-				return null;
+	
+	//프로젝트 생성시 초기 데이터베이스 저장
 	public void  ProjectCreate(String name, String date){
 		String[] tasknum = {"A","B","C","D"};
 		String[] propart = {"A(가공)","B(소조립)","C(대조립)","D(선행의장)","E(블럭도장)","F(P.E)","G(탑재)","H(DOCK도장)","I(진수선행도장)","J(진수)"};
