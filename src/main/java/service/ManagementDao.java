@@ -50,6 +50,22 @@ public class ManagementDao {
 		return result;
 	}
 	
+	//프로젝트 명을 맵으로 가져오는 메서드
+	public Map<String, String> projectmap() {
+		String sql = "select * from project";
+		Map<String, String> resultmap = new HashMap<String, String>();
+		
+		jt.query(sql, new RowMapper<Object>() {
+
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				resultmap.put(rs.getString("pj_id"), rs.getString("pj_name"));
+				return null;
+			}});
+		
+		return resultmap;
+	}
+	
 	// id에 일치하는 프로젝트 명과 아이디를 가져오는 메서드
 	public ProjectCommand project_id_name(String project_id) {
 		String sql = "select * from project where pj_id = ?";
@@ -94,26 +110,72 @@ public class ManagementDao {
 	}
 	
 	// 생산 작업을 등록하는 메서드
-	public void product_insert(ProductCommand command, String prefix, String suffix, Integer remarkId, HttpSession session) {
+	public void product_insert(ProductCommand command, Map<String, Object> requestValues, Integer remarkId, HttpSession session) {
 		MemberCommand userInfo = (MemberCommand)session.getAttribute("member");
-		String processnumber = prefix + suffix;
-		String sql = "insert into product_management (p_proname, p_tasknumber, p_processnumber, p_regdate, p_remarkid, p_regnum, p_state) values (?,?,?,?,?,?,?)";
+		String processnumber = (String)requestValues.get("p_prefix") + (String)requestValues.get("p_suffix");
+		String sql = "insert into product_management (p_proid, p_tasknumber, p_processnumber, p_regdate, p_remarkid, p_regnum, p_state) values (?,?,?,?,?,?,?)";
 		if (remarkId == -1) {
 			remarkId = null;
 		} 
-		jt.update(sql, command.getP_proname(), command.getP_tasknumber(), processnumber, LocalDateTime.now(), remarkId, userInfo.getM_num() , "결재 대기");
+		jt.update(sql, command.getP_proid(), command.getP_tasknumber(), processnumber, LocalDateTime.now(), remarkId, userInfo.getM_num() , "결재 대기");
 	}
 	
-	public List<ProductCommand> productlist(String category) {
+	public List<ProductCommand> productlist(String category, Map<String, Object> requestValues) {
 		String sql = null;
+		String project_id = (String)requestValues.get("project_id");
+		String tasknumber = (String)requestValues.get("tasknumber");
+		String processnumber = (String)requestValues.get("processnumber");
+		
 		if (category.equals("input")) {
 			sql = "select * from product_management";
 		}
 		else if (category.equals("complete")) {
-			sql = "select * from product_management where p_startdate is null and p_compledate is null";
+			if (project_id != null && !project_id.equals("null")) {
+				if (tasknumber != null && !tasknumber.equals("")) {
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%'";
+				}
+				else if (processnumber != null && !processnumber.equals("")) {
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%'";
+				}
+				else {
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"'";
+				}
+			}
+			else {
+				if (tasknumber != null && !tasknumber.equals("")) {
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_tasknumber like '%"+tasknumber+"%'";
+				}
+				else if (processnumber != null && !processnumber.equals("")) {
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_processnumber like '%"+processnumber+"%'";
+				}
+				else {
+					sql = "select * from product_management where p_startdate is null and p_compledate is null";
+				}
+			}
 		}
 		else {
-			sql = "select * from product_management where p_startdate is not null";
+			if (project_id != null && !project_id.equals("null")) {
+				if (tasknumber != null && !tasknumber.equals("")) {
+					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%'";
+				}
+				else if (processnumber != null && !processnumber.equals("")) {
+					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%'";
+				}
+				else {
+					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"'";
+				}
+			}
+			else {
+				if (tasknumber != null && !tasknumber.equals("")) {
+					sql = "select * from product_management where p_startdate is not null and p_tasknumber like '%"+tasknumber+"%'";
+				}
+				else if (processnumber != null && !processnumber.equals("")) {
+					sql = "select * from product_management where p_startdate is not null and p_processnumber like '%"+processnumber+"%'";
+				}
+				else {
+					sql = "select * from product_management where p_startdate is not null";
+				}
+			}
 		}
 		List<ProductCommand> result = jt.query(sql, new RowMapper<ProductCommand>() {
 
@@ -121,7 +183,7 @@ public class ManagementDao {
 			public ProductCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
 				ProductCommand command = new ProductCommand();
 				command.setP_num(rs.getInt("p_num"));
-				command.setP_proname(rs.getString("p_proname"));
+				command.setP_proid(rs.getString("p_proid"));
 				command.setP_tasknumber(rs.getString("p_tasknumber"));
 				command.setP_processnumber(rs.getString("p_processnumber"));
 				command.setP_regdate(rs.getString("p_regdate"));
@@ -176,17 +238,76 @@ public class ManagementDao {
 		return remarklist;
 	}
 	
-	public Integer totalpage() {
-		String sql = "select count(*) from product_management";
+	public Integer totalpage(String category, Map<String, Object> requestValues) {
+		String sql = null;
+		String project_id = (String)requestValues.get("project_id");
+		String tasknumber = (String)requestValues.get("tasknumber");
+		String processnumber = (String)requestValues.get("processnumber");
+		if (category.equals("input")) {
+			
+			sql = "select count(*) from product_management";
+		}
+		else if (category.equals("complete")) {
+			if (project_id != null && !project_id.equals("null")) {
+				if (tasknumber != null && !tasknumber.equals("")) {
+					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%'";
+				}
+				else if (processnumber != null && !processnumber.equals("")) {
+					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%'";
+				}
+				else {
+					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"'";
+				}
+			}
+			else {
+				if (tasknumber != null && !tasknumber.equals("")) {
+					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null and p_tasknumber like '%"+tasknumber+"%'";
+				}
+				else if (processnumber != null && !processnumber.equals("")) {
+					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null and p_processnumber like '%"+processnumber+"%'";
+				}
+				else {
+					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null";
+				}
+			}
+		}
+		else {
+			if (project_id != null && !project_id.equals("null")) {
+				if (tasknumber != null && !tasknumber.equals("")) {
+					sql = "select count(*) from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%'";
+				}
+				else if (processnumber != null && !processnumber.equals("")) {
+					sql = "select count(*) from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%'";
+				}
+				else {
+					sql = "select count(*) from product_management where p_startdate is not null and p_proid='"+project_id+"'";
+				}
+			}
+			else {
+				if (tasknumber != null && !tasknumber.equals("")) {
+					sql = "select count(*) from product_management where p_startdate is not null and p_tasknumber like '%"+tasknumber+"%'";
+				}
+				else if (processnumber != null && !processnumber.equals("")) {
+					sql = "select count(*) from product_management where p_startdate is not null and p_processnumber like '%"+processnumber+"%'";
+				}
+				else {
+					sql = "select count(*) from product_management where p_startdate is not null";
+				}
+			}
+		}
 		Integer result = jt.queryForObject(sql, Integer.class);
 
 		return result;
 	}
 	
-	public Map<String, Integer> paging(Integer totalpage, int page) {
+	public Map<String, Integer> paging(Integer totalpage, Map<String, Object> requestValues) {
 		Map<String, Integer> result = new HashMap<String, Integer>();
 		int max = 5;
 		int min = 0;
+		int page = 1;
+		if (requestValues.get("page") != null && !requestValues.get("page").equals("null")) {
+			page = Integer.valueOf((String)requestValues.get("page"));
+		}
 		if (page > 3) {
 			min = page - 3;
 			max = page + 2;
@@ -216,6 +337,8 @@ public class ManagementDao {
 	public void compledate_update(int product_id) {
 		String sql = "update product_management set p_compledate=? where p_num=?";
 		jt.update(sql, LocalDateTime.now(), product_id);
+	}
+	
 	public void  ProjectCreate(String name){
 		String sql = "insert into projectcreate (pc_namevalues) value(?)";
 		jt.query(sql, new RowMapper<ProjectCreateCommand>() {
@@ -227,5 +350,11 @@ public class ManagementDao {
 				return null;
 			}
 		},name);		
+	}
+	
+	public void remark_project_insert(ProductCommand command, RemarkCommand issue, int remarkId, Map<String, Object> requestValues) {
+		String sql = "insert into remark_project (rp_r_id, rp_proid, rp_task, rp_process) values (?,?,?,?)";
+		jt.update(sql, remarkId, requestValues.get("project_id"), command.getP_tasknumber(), (String)requestValues.get("p_prefix")+(String)requestValues.get("p_suffix"));
+		
 	}
 }

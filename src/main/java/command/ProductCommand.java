@@ -6,7 +6,7 @@ import lombok.Data;
 public class ProductCommand {
 	
 	private int p_num; //db id값
-	private String p_proname; //프로젝트명
+	private String p_proid; //프로젝트명
 	private String p_tasknumber; //작업번호
 	private String p_processnumber; //공정번호
 	private String p_regdate; //등록일

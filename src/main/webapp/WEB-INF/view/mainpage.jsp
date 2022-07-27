@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
+<%@page import="command.RemarkCommand"%>
 <%@ page import="command.NoticeCommand" %>
 <!DOCTYPE html>
 <html>
@@ -14,11 +15,11 @@
 <head>
 <%
 	ArrayList<NoticeCommand> noticelist = (ArrayList<NoticeCommand>)request.getAttribute("noticelist");
+	ArrayList<RemarkCommand> remarklist = (ArrayList<RemarkCommand>)request.getAttribute("issuelist");
 	int noticepage = (Integer)request.getAttribute("noticepage");
 	int remarkpage = (Integer)request.getAttribute("remarkpage");
 	int noticetotal = (Integer)request.getAttribute("noticetotal");
 	int remarktotal = (Integer)request.getAttribute("remarktotal");
-	
 %>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -41,12 +42,36 @@
 							<div class="d-flex justify-content-between align-items-center">
 								<a href="issue">이슈 관리</a>
 								<div>
-									<a href="">
+									<%
+										if (remarkpage == 1) {
+									%>
+									<a href="#" onclick="firstpage()">
 										<i class="fa-solid fa-circle-arrow-left mr-3"></i>
 									</a>
-									<a href="">
+									<%
+										}
+										else {
+									%>
+									<a href="mainpage?noticepage=<%=noticepage%>&remarkpage=<%=remarkpage-1%>">
+										<i class="fa-solid fa-circle-arrow-left mr-3"></i>
+									</a>
+									<%
+										}
+										if (remarkpage * 5 >= remarktotal) {
+									%>
+									<a href="#" onclick="lastpage()">
 										<i class="fa-solid fa-circle-arrow-right"></i>
 									</a>
+									<%
+										}
+										else {
+									%>
+									<a href="mainpage?noticepage=<%=noticepage%>&remarkpage=<%=remarkpage+1%>">
+										<i class="fa-solid fa-circle-arrow-right"></i>
+									</a>
+									<%
+										}
+									%>
 								</div>
 							</div>
 							<table class="table table-hover text-center">
@@ -58,34 +83,23 @@
 										<th>등록시간</th>
 										<th>등급</th>
 									</tr>
+							<%
+								if (remarklist != null) {
+									for(int i = 0; i < remarklist.size(); i++) {
+										RemarkCommand dto = remarklist.get(i);
+							%>
+									
+							<%
+									}
+								}
+								else {
+							%>
 									<tr>
-										<td>PJT-01</td>
-										<td>A15</td>
-										<td>AA-001</td>
-										<td>2022/07/21</td>
-										<td>INFO</td>
+										<td colspan="4" class="text-center">등록된 공지사항이 없습니다.</td>
 									</tr>
-									<tr>
-										<td>PJT-01</td>
-										<td>A15</td>
-										<td>AA-001</td>
-										<td>2022/07/21</td>
-										<td>INFO</td>
-									</tr>
-									<tr>
-										<td>PJT-01</td>
-										<td>A15</td>
-										<td>AA-001</td>
-										<td>2022/07/21</td>
-										<td>INFO</td>
-									</tr>
-									<tr>
-										<td>PJT-01</td>
-										<td>A15</td>
-										<td>AA-001</td>
-										<td>2022/07/21</td>
-										<td>CARE</td>
-									</tr>
+							<%
+								}
+							%>
 									<tr>
 										<td>PJT-01</td>
 										<td>A15</td>

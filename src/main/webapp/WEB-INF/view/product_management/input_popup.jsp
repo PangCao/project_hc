@@ -24,7 +24,7 @@
                         <label class="col-3">프로젝트명 </label>
                         <input type="text" value="<%= projectinput.getPj_name() %>" disabled class="text-center p-0 m-0 col-6">
                         <input type="hidden" value="<%= projectinput.getPj_name() %>" name="p_proname">
-                        <%-- <input type="hidden" value="<%=projectinput.getPj_id()%>" name="project_id"> --%>
+                        <input type="hidden" value="<%=projectinput.getPj_id()%>" name="project_id">
                     </div>
                     <div>
                         <label class="col-3">작업번호 </label>

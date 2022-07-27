@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,42 +63,57 @@ public class ProductionController {
 	
 	//생산 작업 지시 등록
 	@RequestMapping("/input")
-	public String input(@RequestParam(required=false) String stat, @RequestParam(defaultValue = "1") int page, Model model){
+	public String input(@RequestParam Map<String, Object> requestValues, Model model){
 		model.addAttribute("projectlist", dao.projectlist());
-		model.addAttribute("stat", stat);
-		model.addAttribute("productlist", dao.productlist("input"));
+		model.addAttribute("stat", requestValues.get("stat"));
+		model.addAttribute("productlist", dao.productlist("input", requestValues));
 		model.addAttribute("membermap", dao.membermap());
-		model.addAttribute("paging",  dao.paging(dao.totalpage(), page));
+		model.addAttribute("paging",  dao.paging(dao.totalpage("input", requestValues), requestValues));
+		model.addAttribute("projectmap", dao.projectmap());
 		
 		return "product_management/process_input";
 	}
 	
 	@RequestMapping("/input_popup_input")
-	public String input_popup_input(HttpSession session, ProductCommand command, RemarkCommand issue, @RequestParam String p_prefix, @RequestParam String p_suffix, Model model) {
-		dao.product_insert(command, p_prefix, p_suffix, dao.remark_insert(issue, session), session);
+	public String input_popup_input(HttpSession session, ProductCommand command, RemarkCommand issue, @RequestParam Map<String, Object> requestValues, Model model) {
+		int remarkId = dao.remark_insert(issue, session);
+		dao.product_insert(command, requestValues, remarkId, session);
+		if (remarkId != -1) {
+			dao.remark_project_insert(command, issue, remarkId, requestValues);
+		}
 		model.addAttribute("stat", "2");
 		return "closepopup";
 	}
 	
 	//생산 작업 지시 착수
 	@RequestMapping("/complete")
-	public String complete(@RequestParam(required=false) String stat, Model model){
+	public String complete(@RequestParam Map<String, Object> requestValues, Model model){
 		model.addAttribute("pagechk", "complete");
-		model.addAttribute("productlist", dao.productlist("complete"));
+		model.addAttribute("productlist", dao.productlist("complete", requestValues));
 		model.addAttribute("memberMap",dao.membermap());
 		model.addAttribute("stat", model.getAttribute("stat"));
 		model.addAttribute("projectlist", dao.projectlist());
+		model.addAttribute("project_id", (String)requestValues.get("project_id"));
+		model.addAttribute("paging", dao.paging(dao.totalpage("complete", requestValues), requestValues));
+		model.addAttribute("tasknumber", requestValues.get("tasknumber"));
+		model.addAttribute("processnumber", requestValues.get("processnumber"));
+		model.addAttribute("projectmap", dao.projectmap());
 		return "product_management/product_complete";
 	}
 	
 	//생산 작업 실적 등록
 	@RequestMapping("/record")
-	public String record(@RequestParam(required=false) String stat, Model model){
+	public String record(@RequestParam Map<String, Object> requestValues, Model model){
 		model.addAttribute("pagechk", "record");
-		model.addAttribute("productlist", dao.productlist("record"));
+		model.addAttribute("productlist", dao.productlist("record", requestValues));
 		model.addAttribute("memberMap",dao.membermap());
 		model.addAttribute("stat", model.getAttribute("stat"));
 		model.addAttribute("projectlist", dao.projectlist());
+		model.addAttribute("project_id", (String)requestValues.get("project_id"));
+		model.addAttribute("paging", dao.paging(dao.totalpage("record", requestValues), requestValues));
+		model.addAttribute("tasknumber", requestValues.get("tasknumber"));
+		model.addAttribute("processnumber", requestValues.get("processnumber"));
+		model.addAttribute("projectmap", dao.projectmap());
 		return "product_management/product_complete";
 	}
 	

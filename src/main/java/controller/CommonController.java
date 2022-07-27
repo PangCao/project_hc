@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import command.MemberCommand;
 import command.NoticeCommand;
 import command.RemarkCommand;
+import command.Remark_projectCommand;
 import service.CommonDao;
 import service.MemberDao;
 //공통 컨트롤
@@ -49,6 +51,7 @@ public class CommonController {
 	@RequestMapping("/mainpage")
 	public String mainpage(@RequestParam(defaultValue = "1") int noticepage, @RequestParam(defaultValue = "1") int remarkpage, Model model) {
 		model.addAttribute("noticelist", dao.noticeView(noticepage, null, 5));
+		model.addAttribute("issuelist", dao.issueMainView(noticepage, null, 5));
 		model.addAttribute("noticepage", (Integer)noticepage);
 		model.addAttribute("remarkpage", (Integer)remarkpage);
 		model.addAttribute("noticetotal", dao.totalpage("notice", null));
@@ -111,8 +114,9 @@ public class CommonController {
   	
   	//이슈 작성 등록
     @RequestMapping("/issue_write_input")
-    public String issue_write(RemarkCommand remarkCommand, HttpSession session) {
-    	dao.issue_input(remarkCommand, session);
+    public String issue_write(Remark_projectCommand rp_command, RemarkCommand remarkCommand, HttpSession session) {
+    	int r_id = dao.issue_input(remarkCommand, session);
+    	dao.remark_project_insert(r_id, rp_command);
         return "redirect:issue";
     }
     
@@ -131,5 +135,12 @@ public class CommonController {
     	dao.issue_del(r_id);
     	ra.addFlashAttribute("delete", "true");
     	return "redirect:issue";
+    }
+    
+    @RequestMapping("/issue_search_popup")
+    public String issue_search(Model model) {
+    	model.addAttribute("productlist", dao.product_issue_select());
+    	model.addAttribute("projectmap", dao.projectmap());
+    	return "board/issue_search_popup";
     }
 }

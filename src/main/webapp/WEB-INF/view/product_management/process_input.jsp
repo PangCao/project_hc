@@ -19,6 +19,8 @@
 	ArrayList<ProductCommand> productlist = (ArrayList<ProductCommand>)request.getAttribute("productlist");
 	Map<String, String> memberMap = (HashMap<String, String>)request.getAttribute("membermap");
 	Map<String, Integer> paging = (HashMap<String, Integer>)request.getAttribute("paging");
+	Map<String,String> projectmap = (HashMap<String, String>)request.getAttribute("projectmap");
+	
 	if (stat != null && stat.equals("2")) {
 %>
 <script type="text/javascript">
@@ -78,6 +80,7 @@
 						<tbody>
 							<tr>
 								<th>No</th>
+								<th>프로젝트명</th>
 								<th>작업번호</th>
 								<th>공정번호</th>
 								<th>등록일</th>
@@ -100,6 +103,7 @@
 					%>
 							<tr>
 								<td><%=i+1 %></td>
+								<td><%=projectmap.get(command.getP_proid()) %></td>
 								<td><%= command.getP_tasknumber()%></td>
 								<td><%= command.getP_processnumber() %></td>
 								<td><%= command.getP_regdate() %></td>
@@ -183,7 +187,7 @@
 			alert('작업번호 소분류를 선택해주세요.');
 			return false;
 		}
-		
+		x
 		let popwidth = 1000;
 		let popheight = 700;
 		let popx = (window.screen.width / 2) - (popwidth / 2);

@@ -1,5 +1,7 @@
 package service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -11,11 +13,16 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import command.MemberCommand;
 import command.NoticeCommand;
+import command.ProductCommand;
 import command.RemarkCommand;
+import command.Remark_projectCommand;
 
 public class CommonDao {
 
@@ -26,9 +33,10 @@ public class CommonDao {
 	}
 	
 	// 공지사항 검색기능
-	public List<NoticeCommand> noticeView(int noticepage, String search_title, int cnt) {
-		int searchPage = (noticepage - 1) * cnt;
-		String sql=null;
+	public List<NoticeCommand> noticeView(int page, String search_title, int cnt) {
+		int searchPage = (page - 1) * cnt;
+		String sql = null;
+		
 		if (search_title != null && !search_title.equals("")) {
 			sql = "select * from notice where n_title like '%"+search_title+"%' order by n_id desc limit "+searchPage+", "+cnt;
 		}
@@ -50,6 +58,37 @@ public class CommonDao {
 				return dto;
 			}});
 		return result.isEmpty()? null : result; //isEmpty()메서드를 통해 result값이 비었는지 안비었는지 확인함
+	}
+	
+	public List<RemarkCommand> issueMainView(int page, String search_title, int cnt) {
+		int searchPage = (page - 1) * cnt;
+		String sql = null;
+
+		if (search_title != null && !search_title.equals("")) {
+			sql = "select * from remark where r_title like '%"+search_title+"%' order by r_id desc limit "+searchPage+", "+cnt;
+		}
+		else {
+			sql = "select * from remark order by r_id desc limit "+searchPage+", "+cnt;
+		}
+		List<RemarkCommand> result = jt.query(sql, new RowMapper<RemarkCommand>() {
+
+			@Override
+			public RemarkCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				RemarkCommand dto = new RemarkCommand();
+				dto.setR_id(rs.getInt("r_id"));
+				dto.setR_title(rs.getString("r_title"));
+				dto.setR_content(rs.getString("r_content"));
+				dto.setR_anthor(rs.getString("r_anthor"));
+				dto.setR_date(rs.getString("r_date"));
+				dto.setR_view(rs.getInt("r_view"));
+				dto.setR_class(rs.getString("r_class"));
+				dto.setR_anthor_id(rs.getString("r_anthor_id"));
+				return dto;
+			}});
+		return result.isEmpty()? null : result; //isEmpty()메서드를 통해 result값이 비었는지 안비었는지 확인함
+		
+		
+		
 	}
 	
 	//공지사항 모든 페이지
@@ -265,9 +304,81 @@ public class CommonDao {
 	
 	
 	//이슈글 정보 저장
-	public void issue_input(RemarkCommand remarkCommand, HttpSession session) {
+	public Integer issue_input(RemarkCommand remarkCommand, HttpSession session) {
 		MemberCommand list= (MemberCommand)session.getAttribute("member");
 		String sql = "insert into remark(r_title, r_content, r_anthor, r_date, r_anthor_id, r_class) values (?,?,?,?,?,?)";
-		jt.update(sql, remarkCommand.getR_title(), remarkCommand.getR_content(), remarkCommand.getR_anthor(), LocalDateTime.now(), list.getM_num(), remarkCommand.getR_class());
+		KeyHolder kh = new GeneratedKeyHolder();
+		jt.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"r_id"});
+				pstmt.setString(1, remarkCommand.getR_title());
+				pstmt.setString(2, remarkCommand.getR_content());
+				pstmt.setString(3, remarkCommand.getR_anthor());
+				pstmt.setString(4, String.valueOf(LocalDateTime.now()));
+				pstmt.setString(5, list.getM_num());
+				pstmt.setString(6, remarkCommand.getR_class());
+				return pstmt;
+			}
+		}, kh);
+		Number keyValue = kh.getKey();
+		return keyValue.intValue();
+	}
+	
+	public void remark_project_insert(int r_id, Remark_projectCommand rp_command) {
+		String sql = "insert into remark_project (rp_r_id, rp_proid, rp_task, rp_process) values (?,?,?,?)";
+		jt.update(sql, r_id, rp_command.getRp_proid(), rp_command.getRp_task(), rp_command.getRp_process());
+		
+		sql = "select * from product_management where p_proid=? and p_tasknumber=? and p_processnumber=?";
+		String ans = "";
+		
+		List<String> result = jt.query(sql, new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString("p_remarkid");
+			}}, rp_command.getRp_proid(), rp_command.getRp_task(), rp_command.getRp_process());
+		
+		if (result.get(0) != null) {
+			ans = result.get(0) +","+ r_id;
+		}
+		else {
+			ans = String.valueOf(r_id);
+		}
+		
+		sql = "update product_management set p_remarkid=? where p_proid=? and p_tasknumber=? and p_processnumber=?";
+		jt.update(sql, ans, rp_command.getRp_proid(), rp_command.getRp_task(), rp_command.getRp_process());
+	}
+	
+	public List<ProductCommand> product_issue_select() {
+		String sql = "select * from product_management";
+		List<ProductCommand> result = jt.query(sql, new RowMapper<ProductCommand>() {
+
+			@Override
+			public ProductCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProductCommand command = new ProductCommand();
+				command.setP_proid(rs.getString("p_proid"));
+				command.setP_processnumber(rs.getString("p_processnumber"));
+				command.setP_tasknumber(rs.getString("p_tasknumber"));
+				return command;
+			}});
+		return result;
+	}
+	
+	//프로젝트 명을 맵으로 가져오는 메서드
+	public Map<String, String> projectmap() {
+		String sql = "select * from project";
+		Map<String, String> resultmap = new HashMap<String, String>();
+		
+		jt.query(sql, new RowMapper<Object>() {
+
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				resultmap.put(rs.getString("pj_id"), rs.getString("pj_name"));
+				return null;
+			}});
+		
+		return resultmap;
 	}
 }

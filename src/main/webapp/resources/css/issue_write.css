@@ -25,3 +25,10 @@
 	background-color: rgb(0, 175, 23) !important;
     color: white !important;
 }
+
+.issue_search_btn{
+    padding: 2px 20px;
+    background-color: #d7dde4;
+    border-width: 1px;
+    border-color: rgb(185, 185, 185);
+}

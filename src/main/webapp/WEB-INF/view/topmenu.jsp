@@ -5,6 +5,13 @@
 	<%
 		request.setCharacterEncoding("UTF8");
 		MemberCommand dto = (MemberCommand)session.getAttribute("member");
+		if (dto == null) {
+	%>
+	<script type="text/javascript">
+		location.href="main";
+	</script>
+	<%
+		}
 	%>
 	<div class="d-flex align-items-center">
 		<p><%=dto.getM_department()%> &nbsp <%=dto.getM_name()%>님</p>
