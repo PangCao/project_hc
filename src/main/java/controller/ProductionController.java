@@ -21,8 +21,7 @@ public class ProductionController {
 	
 	@RequestMapping("project_input")
 	public String project_input(@RequestParam(required = false) String name, @RequestParam(required = false) String date, Model model) {
-		dao.ProjectCreate(name);
-		model.addAttribute("fdate", date);
+		dao.ProjectCreate(name,date);
 		return "redirect:product_management";
 	}
 	

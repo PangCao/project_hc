@@ -40,7 +40,9 @@ public class MemberDao {
 					return dto;
 				}},memcom.getM_num(),memcom.getM_password());
 			if(!result.isEmpty()) {
+				
 				session.setAttribute("member", result.get(0));
+				session.setAttribute("id", result.get(0).getM_num());
 				return true;
 			}
 		}

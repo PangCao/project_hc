@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public class ManagementDao {
 		if(issue.getR_title() != null && !issue.getR_title().trim().equals("")) {
 			MemberCommand userInfo = (MemberCommand)session.getAttribute("member");
 			String sql = "insert into remark (r_title, r_content, r_anthor, r_date, r_class, r_anthor_id) values (?,?,?,?,?,?)";
-			KeyHolder kh = new GeneratedKeyHolder();
+			KeyHolder kh = new GeneratedKeyHolder(); //자동 증가값을 알기 위해서 사용
 			jt.update(new PreparedStatementCreator() {
 				
 				@Override
@@ -166,16 +167,33 @@ public class ManagementDao {
 		return remarklist;
 	}
 	
-	public void  ProjectCreate(String name){
-		String sql = "insert into projectcreate (pc_namevalues) value(?)";
-		jt.query(sql, new RowMapper<ProjectCreateCommand>() {
-
-			@Override
-			public ProjectCreateCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ProjectCreateCommand command = new ProjectCreateCommand();
-				command.setPc_name(rs.getString("name"));
-				return null;
+	public void  ProjectCreate(String name, String date){
+		String[] tasknum = {"A","B","C","D"};
+		String[] propart = {"A(가공)","B(소조립)","C(대조립)","D(선행의장)","E(블럭도장)","F(P.E)","G(탑재)","H(DOCK도장)","I(진수선행도장)","J(진수)"};
+		DecimalFormat df = new DecimalFormat("0000");
+		DecimalFormat df2 = new DecimalFormat("00");
+		int yyyy = LocalDateTime.now().getYear();
+		
+		String pc_sql = "select count(distinct pj_id) from project where pj_id like '%-"+yyyy+"-%'";
+		long cnt = jt.queryForObject(pc_sql, Long.class);
+		String pc_id = "PJT-"+yyyy+"-"+df.format(++cnt);
+		
+		String pj_sql = "insert into project(pj_id, pj_name, pj_regdate, pj_eta) values(?,?,?,?)";
+		jt.update(pj_sql, pc_id, name, LocalDateTime.now(), date);
+		
+		String pc_sql1 = "insert into projectcreate(pc_id, pc_name, pc_tasknumber, pc_propart, pc_dpn) values(?,?,?,?,?)";
+		
+		ProjectCreateCommand pcc = new ProjectCreateCommand();
+		
+		for(int i=0;i<4;i++) {
+			pcc.setPc_id(pc_id);
+			for(int k=0; k<12;k++) {
+				pcc.setPc_tasknumber((String)tasknum[i]+df2.format(k+1));
+				for(int j=0; j<10;j++) {
+					pcc.setPc_propart((String)propart[j]);
+					jt.update(pc_sql1, pcc.getPc_id(), name, pcc.getPc_tasknumber(), pcc.getPc_propart() , "0000000000");
+				}
 			}
-		},name);		
+		}
 	}
 }
