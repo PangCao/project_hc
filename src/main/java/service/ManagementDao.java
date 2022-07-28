@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,7 @@ public class ManagementDao {
 	public ManagementDao(DataSource dataSource) {
 		this.jt = new JdbcTemplate(dataSource);
 	}
-	
+		
 	// 프로젝트 명을 가져오는 메서드
 	public List<ProjectCommand> projectlist() {
 		String sql = "select * from project";
@@ -229,11 +228,11 @@ public class ManagementDao {
 		return result;
 	}
 		
-	public void issue_delete(String r_id, String p_num) {
+	public void issue_delete(String r_id) {
 		String sql = "delete from remark_project where rp_r_id=?";
 		jt.update(sql, r_id);
-		sql = "delete from remark where r_p_num=?";
-		jt.update(sql, p_num);
+		sql = "delete from remark where r_id=?";
+		jt.update(sql, r_id);
 	}
 	
 	public List<RemarkCommand> issuelist(Map<String, Object> requestValues) {
@@ -278,6 +277,7 @@ public class ManagementDao {
 				command.setR_view(rs.getInt("r_view"));
 				command.setR_class(rs.getString("r_class"));
 				command.setR_anthor_id(rs.getString("r_anthor_id"));
+				command.setR_p_num(rs.getInt("r_p_num"));
 				return command;
 			}}, r_id);
 		
@@ -534,7 +534,7 @@ public class ManagementDao {
 	
 	public Map<String, String> next_prev(Map<String, Object> requestValues) {
 		Map<String, String> result = new HashMap<String, String>();
-		String sql = "select * from remark where r_p_num = ? and r_id > ? order by r_id desc limit 1";
+		String sql = "select * from remark where r_p_num = ? and r_id > ? order by r_id asc limit 1";
 		jt.query(sql,new RowMapper<Object>() {
 
 			@Override
@@ -543,7 +543,7 @@ public class ManagementDao {
 				return null;
 			}}, requestValues.get("p_num"),requestValues.get("r_id"));
 		
-		sql = "select * from remark where r_p_num = ? and r_id < ? order by r_id asc limit 1";
+		sql = "select * from remark where r_p_num = ? and r_id < ? order by r_id desc limit 1";
 		jt.query(sql,new RowMapper<Object>() {
 
 			@Override

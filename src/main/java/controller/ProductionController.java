@@ -166,7 +166,7 @@ public class ProductionController {
 	
 	@RequestMapping("/issue_popup_delete")
 	public String issue_delete(@RequestParam String r_id, @RequestParam String p_num, RedirectAttributes ra) {
-		dao.issue_delete(r_id, p_num);
+		dao.issue_delete(r_id);
 		ra.addAttribute("r_id", r_id);
 		ra.addAttribute("p_num", p_num);
 		ra.addFlashAttribute("stat", "1");

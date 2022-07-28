@@ -12,17 +12,17 @@ import controller.UserController;
 public class ControllerConfig {
 	
 	@Bean
-	public CommonController loginController() {
+	public CommonController commonController() {
 		return new CommonController();
 	}
 	
 	@Bean
-	public ProductionController leftController() {
+	public ProductionController productionController() {
 		return new ProductionController();
 	}
 	
 	@Bean
-	public OutsourcingController topController() {
+	public OutsourcingController outsourcingController() {
 		return new OutsourcingController();
 	}
 	

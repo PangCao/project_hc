@@ -26,12 +26,12 @@ public class AppConfig {
 	}
 	
 	@Bean
-	public MemberDao loginDao() {
+	public MemberDao memberDao() {
 		return new MemberDao(dataSource());
 	}
 	
 	@Bean
-	public CommonDao boardDao() {
+	public CommonDao commonDao() {
 		return new CommonDao(dataSource());
 	}
 	
