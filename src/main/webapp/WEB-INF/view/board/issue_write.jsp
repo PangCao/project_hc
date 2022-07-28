@@ -42,7 +42,7 @@
 						<script type="text/javascript">
 							function issue_search() {
 								let popwidth = 720;
-								let popheight = 750;
+								let popheight = 780;
 								let popx = (window.screen.width / 2) - (popwidth / 2);
 								let popy = (window.screen.height / 2) - (popheight / 2);
 								window.open("issue_search_popup","issueSearchpop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);

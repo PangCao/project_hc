@@ -97,21 +97,23 @@ public class CommonController {
     
     //이슈관리 페이지
   	@RequestMapping("/issue") // required = false는 null값을 받아도 된다는 설정
-  	public String issue(@RequestParam(defaultValue = "1") int issuepage,
-  			@RequestParam(required = false) String search_title, 
-  			@RequestParam(required = false) String r_class, 
-  			@RequestParam(required = false) String sdate,
-  			@RequestParam(required = false) String fdate,
-  			Model model) {
-  		model.addAttribute("sdate",sdate);
-  		model.addAttribute("fdate",fdate);
-  		if(fdate != null && !fdate.equals("null")) {
-	         fdate = String.valueOf(LocalDate.parse(fdate).plusDays(1));   
-	      }
-  		model.addAttribute("issuelist", dao.issueView(issuepage,search_title,r_class,sdate,fdate,10));
-  		model.addAttribute("issuepage", (Integer)issuepage);
-  		model.addAttribute("issuetotal", dao.totalpage("issue", search_title));
-  		model.addAttribute("r_class",r_class);
+  	public String issue(@RequestParam Map<String, Object> requestValues, Model model) {
+//  	public String issue(@RequestParam(defaultValue = "1") int issuepage,
+//  			@RequestParam(required = false) String search_title, 
+//  			@RequestParam(required = false) String r_class, 
+//  			@RequestParam(required = false) String sdate,
+//  			@RequestParam(required = false) String fdate,
+//  			Model model) {
+//  		model.addAttribute("issuepage", (Integer)issuepage);
+//  		model.addAttribute("issuetotal", dao.totalpage("issue", search_title));
+  		
+  		
+  		model.addAttribute("sdate", (String)requestValues.get("sdate"));
+  		model.addAttribute("fdate", (String)requestValues.get("fdate"));
+  		model.addAttribute("issuelist", dao.issueView(requestValues, 10));
+  		model.addAttribute("paging", dao.paging(dao.issuetotal(requestValues, 10), requestValues));
+  		model.addAttribute("r_class",requestValues.get("r_class"));
+  		model.addAttribute("search_title", requestValues.get("search_title"));
   		return "board/issue";
   	}
   	
@@ -141,9 +143,13 @@ public class CommonController {
     }
     
     @RequestMapping("/issue_search_popup")
-    public String issue_search(Model model) {
-    	model.addAttribute("productlist", dao.product_issue_select());
+    public String issue_search(@RequestParam Map<String, Object> requestValues,Model model) {
+    	model.addAttribute("productlist", dao.product_issue_select(requestValues));
     	model.addAttribute("projectmap", dao.projectmap());
+    	model.addAttribute("projectlist", dao.projectlist());
+    	model.addAttribute("project_id", requestValues.get("project_id"));
+    	model.addAttribute("searchword", requestValues.get("searchword"));
+		model.addAttribute("paging", dao.product_issue_paging(requestValues));
     	return "board/issue_search_popup";
     }
 }

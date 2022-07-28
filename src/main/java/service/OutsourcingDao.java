@@ -1,7 +1,10 @@
 package service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -10,7 +13,10 @@ import java.util.Map;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.ui.Model;
 
 import command.OutCompanyListCommand;
@@ -300,25 +306,42 @@ public class OutsourcingDao {
 		return resultmap;
 	}
 	
+	public String ordernum_create() {
+		DecimalFormat df = new DecimalFormat("00000");
+		int year = LocalDate.now().getYear();
+		String sql = "select count(*) from out_product_management where op_ordernumber like '%-"+year+"-%'";
+		int ans = jt.queryForObject(sql,Integer.class);
+		String result = "OT-"+year+"-"+df.format(ans+1);
+		return result;
+	}
+	
 	// 외주 등록을 하는 메서드로 out_product_management와 out_company_progress 테이블에 같이 등록
-	public void out_input(OutProductCommand command, Map<String, String> commap) {
+	public void out_input(OutProductCommand command, Map<String, String> commap, String op_ordernumber) {
 		String sql = "insert into out_product_management (op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values (?,?,?,?,?,?,?,?,?)";
 		
-		jt.update(sql, command.getOp_ordernumber(), command.getOp_proid(), command.getOp_comid(), LocalDateTime.now(), command.getOp_productname(), command.getOp_productstandard(), command.getOp_unit(), command.getOp_price(), command.getOp_regnum());
-		
-		sql = "select op_num from out_product_management order by op_num desc";
-		
-		List<Integer> max = jt.query(sql, new RowMapper<Integer>() {
-
+		KeyHolder kh = new GeneratedKeyHolder();
+		jt.update(new PreparedStatementCreator() {
+			
 			@Override
-			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				
-				return rs.getInt("op_num");
-			}});
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"op_num"});
+				pstmt.setString(1, op_ordernumber);
+				pstmt.setString(2, command.getOp_proid());
+				pstmt.setInt(3, command.getOp_comid());
+				pstmt.setString(4, String.valueOf(LocalDateTime.now()));
+				pstmt.setString(5, command.getOp_productname());
+				pstmt.setString(6, command.getOp_productstandard());
+				pstmt.setInt(7, command.getOp_unit());
+				pstmt.setInt(8, command.getOp_price());
+				pstmt.setString(9, command.getOp_regnum());
+				return pstmt;
+			}
+		}, kh);
 		
+		int kv = kh.getKey().intValue();
 		
-		sql = "insert into out_company_progress (ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values(?,?,?,?)";
-		jt.update(sql, command.getOp_comid(), max.get(0), commap.get(String.valueOf(command.getOp_comid())), "의뢰수락대기");		
+		String sql2 = "insert into out_company_progress (ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values(?,?,?,?)";
+		jt.update(sql2, command.getOp_comid(), kv, commap.get(String.valueOf(command.getOp_comid())), "의뢰수락대기");		
 	}
 	
 	// 외주 업체의 주문번호와 진행상황을 맵으로 만들어주는 메서드

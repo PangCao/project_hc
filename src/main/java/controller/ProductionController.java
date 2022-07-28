@@ -121,11 +121,25 @@ public class ProductionController {
 	}
 	
 	@RequestMapping("/issue_popup")
-	public String issue_popup(@RequestParam String issueids, Model model) {
-		model.addAttribute("issuelist", dao.issuelist(issueids));		
+	public String issue_popup(@RequestParam Map<String, Object> requestValues, Model model) {
+		String issueids =  dao.issueids(requestValues);
+		model.addAttribute("issuelist", dao.issuelist(issueids, requestValues));
+		model.addAttribute("p_num", (String)requestValues.get("p_num"));
+		model.addAttribute("paging", dao.paging(issueids.split(",").length, requestValues));
+		model.addAttribute("stat", model.getAttribute("stat"));
 		return "product_management/issuepopup";
 	}
-
+	
+	@RequestMapping("/issuepopup_view")
+	public String issuepopup_view(@RequestParam Map<String, Object> requestValues, Model model) {
+		dao.issue_viewUp(Integer.valueOf((String)requestValues.get("r_id")));
+		model.addAttribute("issueDetail", dao.issueDetail(requestValues));
+		model.addAttribute("p_num", (String)requestValues.get("p_num"));
+		model.addAttribute("issueids", dao.issueids(requestValues));
+		model.addAttribute("r_id", (String)requestValues.get("r_id"));
+		return "product_management/issuepopup_view";
+	}
+	
 	@RequestMapping("/startdate_input")
 	public String startdate(@RequestParam Map<String, Object> requestValues, RedirectAttributes ra) {
 		dao.startdate_update(Integer.valueOf((String)requestValues.get("product_num")));
@@ -140,5 +154,15 @@ public class ProductionController {
 		ra.addFlashAttribute("stat", "2");
 		dao.projectcreate_update(requestValues, 3);
 		return "redirect:record";
+	}
+	
+	@RequestMapping("/issue_popup_delete")
+	public String issue_delete(@RequestParam String issueids, @RequestParam String r_id, @RequestParam String p_num, RedirectAttributes ra) {
+		dao.issue_delete(r_id, p_num);
+		ra.addAttribute("r_id", r_id);
+		ra.addAttribute("p_num", p_num);
+		ra.addAttribute("issueids", issueids);
+		ra.addFlashAttribute("stat", "1");
+		return "redirect:issue_popup";
 	}
 }

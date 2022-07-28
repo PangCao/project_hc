@@ -49,10 +49,10 @@
                     %>
                     </select>
                 </div>
-                <div class="col-12 row">
+<!--                 <div class="col-12 row">
                     <label class="col-4">의뢰번호</label>
                     <input type="text" class="col-8 text-right" name="op_ordernumber" id="op_ordernumber">
-                </div>
+                </div> -->
                 <div class="col-12 row">
                     <label class="col-4">등록자</label>
                     <input type="text" class="col-8 text-right" value="<%=name%>" disabled>
@@ -87,8 +87,8 @@
 	function out_submit() {
 		let pro_name = document.getElementById('op_proid');
 		let com_id = document.getElementById('op_comid');
-		let ordernumber = document.getElementById('op_ordernumber');
-		let p_name = document.getElementById('op_productname');
+/* 		let ordernumber = document.getElementById('op_ordernumber');
+ */		let p_name = document.getElementById('op_productname');
 		let p_stan = document.getElementById('op_productstandard');
 		let p_unit = document.getElementById('op_unit');
 		let p_price = document.getElementById('op_price');
@@ -98,10 +98,10 @@
 			alert('업체명을 입력해주세요.');
 			return false;
 		}
-		if (ordernumber.value.length == 0) {
+/* 		if (ordernumber.value.length == 0) {
 			alert('외뢰번호를 입력해주세요.');
 			return false;
-		}
+		} */
 		if (p_name.value.length == 0) {
 			alert('품명을 입력해주세요.');
 			return false;

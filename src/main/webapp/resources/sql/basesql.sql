@@ -43,6 +43,8 @@ create table if not exists project (
     foreign key(pj_task) references task(t_name)
 )default charset=utf8mb4;
 
+select * from remark;
+
 create table if not exists remark(
 	r_id int primary key auto_increment,
     r_title varchar(100) not null,
@@ -52,6 +54,8 @@ create table if not exists remark(
     r_view int default 0,
     r_class varchar(50) not null,
     r_anthor_id varchar(30),
+    r_p_num int,
+    foreign key(r_p_num) references product_management(p_num),
     foreign key(r_anthor_id) references member(m_num)
 )default charset=utf8mb4;
 
@@ -65,6 +69,8 @@ create table if not exists remark_project(
     foreign key(rp_proid) references project(pj_id)
 )default charset=utf8mb4;
 
+select * from remark_project;
+
 create table if not exists notice(
 	n_id int primary key auto_increment,
     n_title varchar(100) not null,
@@ -76,6 +82,8 @@ create table if not exists notice(
     foreign key(n_anthor_id) references member(m_num)
 )default charset=utf8mb4;
 
+select * from notice;
+
 create table if not exists product_management (
 	p_num int auto_increment primary key,
     p_proid varchar(30),
@@ -84,10 +92,11 @@ create table if not exists product_management (
     p_regdate datetime,
     p_startdate datetime,
     p_compledate datetime,
-    p_remarkid varchar(200),
+    p_remarkid varchar(2000),
     p_regnum varchar(30),
     p_state varchar(50)
 )default charset=utf8mb4;
+select * from product_management;
 
 create table if not exists out_company_list (
 	o_id int primary key auto_increment,
@@ -147,3 +156,6 @@ create table if not exists projectcreate(
 )default charset=utf8mb4;
 
 select * from projectcreate;
+
+select * from notice;
+

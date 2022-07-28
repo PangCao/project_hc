@@ -16,27 +16,11 @@
 <title>Insert title here</title>
 <%
 	ArrayList<RemarkCommand> issuelist = (ArrayList<RemarkCommand>)request.getAttribute("issuelist");
-	int issuepage = (Integer)request.getAttribute("issuepage");
-	int issuetotal = (Integer)request.getAttribute("issuetotal");
-	int min = 0;
-	int max = 5;
-	if (issuepage > 3) {
-		min= issuepage - 2;
-		max = issuepage + 3;
-	}
-	if (max > (issuetotal / 10) + 1) {
-		max = (issuetotal / 10) + 1;
-	}
-	if (issuetotal % 10 == 0) {
-		max -= 1;
-	}
-	if (issuetotal == 0) {
-	      max = 1;
-	   }
-
+	Map<String, Integer> paging = (HashMap<String, Integer>)request.getAttribute("paging");
 	String rc = (String)request.getAttribute("r_class");
 	String sdate = (String)request.getAttribute("sdate");
 	String fdate = (String)request.getAttribute("fdate");
+	String search_title = (String)request.getAttribute("search_title");
 %>
 </head>
 <body>
@@ -53,31 +37,12 @@
 					<div class="col-5">
 						<form action="" class="col-12">
 							<div style="width: 100%;">
-							<%
-							if(sdate != null){
-							%>
-								<input type="date" name=sdate id="sdate" value="<%=sdate %>" style="width: 50%;">
-							<%
-							}else{
-							%>
-								<input type="date" name=sdate id="sdate" style="width: 50%;">
-							<%
-							}
-							%>
+								<input type="date" name="sdate" id="sdate" value="<%=sdate %>" style="width: 50%;">
+
 							</div>
 							<div style="width: 100%;">
-							<%
-							if(fdate != null){
-							%>
-								<input type="date" name=fdate id="fdate" value="<%=fdate %>" style="width: 50%;">
-							<%
-							}else{
-							%>
-								<input type="date" name=fdate id="fdate" style="width: 50%;">
-							<%
-							}
-							%>
-								<input type="submit" value="검색" onclick="SearchDate()" class="col-3">
+								<input type="date" name="fdate" id="fdate" value="<%=fdate %>" style="width: 50%;">
+								<input type="button" value="검색" onclick="SearchDate()" class="col-3">
 							</div>
 						</form>
 					</div>
@@ -158,13 +123,13 @@
 								<th class="col-1">조회수</th>
 							</tr>
 					<%
-						int pagecnt = issuetotal - (issuepage-1)* 10 + 1;
+
 						if (issuelist != null) {
 							for(int i = 0; i < issuelist.size(); i++) {
 								RemarkCommand dto = issuelist.get(i);
 					%>
 							<tr>
-								<td><%= pagecnt -= 1%></td>
+								<td><%= paging.get("total") - ((paging.get("page")-1)*10) - i %></td>
 								<td><a style="color:black;" href="issue_view?r_id=<%=dto.getR_id()%>"><%= dto.getR_title() %></a></td>
 								<td><%= dto.getR_anthor() %></td>
 								<td><%= dto.getR_date() %></td>
@@ -193,36 +158,36 @@
 			</section>
 			<div class="col-12 d-flex justify-content-center">
 				<%
-					if(issuepage == 1){	
+					if(paging.get("page") == 1){	
 				%>
 					<a href="#" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
 					else {
 				%>
-					<a href="issue?issuepage=<%=issuepage-1%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+					<a href="issue?page=<%=paging.get("page")-1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
-					for(int i = min; i < max; i++){
-						if (issuepage-1 == i) {
+					for(int i = paging.get("min"); i < paging.get("max"); i++){
+						if (paging.get("page")-1 == i) {
 				%>
-					<a href="issue?issuepage=<%=i+1%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
+					<a href="issue?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
 				<%
 						}
 						else {
 				%>
-					<a href="issue?issuepage=<%=i+1%>"><%=i+1%></a>&nbsp;&nbsp;
+					<a href="issue?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><%=i+1%></a>&nbsp;&nbsp;
 				<%
 						}
 					}
-					if (issuepage * 10 >= issuetotal) {
+					if (paging.get("page") * 10 >= paging.get("total")) {
 				%>
-					<a href="#" onclick="lastpage()"><i class="fa-solid fa-angle-right"></i></a>
+					<a href="#" onclick="lastpage()&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 					else {
 				%>
-					<a href="issue?issuepage=<%=issuepage+1%>"><i class="fa-solid fa-angle-right"></i></a>
+					<a href="issue?page=<%=paging.get("page")+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 					
@@ -240,6 +205,19 @@
 	function SearchDate(){
 		let sdate = document.getElementById("sdate").value;
 		let fdate = document.getElementById("fdate").value;
+		if (sdate == "") {
+			alert('조회 시작일을 선택해주세요.');
+			return false;
+		}
+		if (fdate == "") {
+			alert('조회 종료일을 선택해주세요.');
+			return false;
+		}
+		if (new Date(sdate) > new Date(fdate)) {
+			alert('조회 일자를 다시 한 번 확인해주세요.');
+			return false;
+		}
+		
 		location.href="issue?sdate="+sdate+"&fdate="+fdate;
 	}
 </script>

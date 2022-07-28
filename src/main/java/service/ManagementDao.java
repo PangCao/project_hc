@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,8 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import command.ProductCommand;
 import command.ProjectCommand;
@@ -95,7 +99,7 @@ public class ManagementDao {
 				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 					PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"r_id"});
 					pstmt.setString(1, issue.getR_title());
-					pstmt.setString(2, issue.getR_content());
+					pstmt.setString(2, issue.getR_content().replace("\n", "<br>"));
 					pstmt.setString(3, name);
 					pstmt.setString(4, String.valueOf(LocalDateTime.now()));
 					pstmt.setString(5, issue.getR_class());
@@ -124,31 +128,33 @@ public class ManagementDao {
 	
 	public List<ProductCommand> productlist(String category, Map<String, Object> requestValues) {
 		String sql = null;
+		Integer page = Integer.valueOf((String)requestValues.get("page") == null? "1":(String)requestValues.get("page"));
+		int SearchPage = (page -1 ) * 10;
 		String project_id = (String)requestValues.get("project_id");
 		String tasknumber = (String)requestValues.get("tasknumber");
 		String processnumber = (String)requestValues.get("processnumber");
 		
 		if (category.equals("input")) {
-			sql = "select * from product_management";
+			sql = "select * from product_management limit "+SearchPage+", 10";
 		}
 		else if (category.equals("complete")) {
 			if (project_id != null && !project_id.equals("null")) {
 				if (tasknumber != null && !tasknumber.equals("")) {
-					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%'";
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%' limit "+SearchPage+", 10";
 				}
 				else if (processnumber != null && !processnumber.equals("")) {
-					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%'";
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%' limit "+SearchPage+", 10";
 				}
 				else {
-					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"'";
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' limit "+SearchPage+", 10";
 				}
 			}
 			else {
 				if (tasknumber != null && !tasknumber.equals("")) {
-					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_tasknumber like '%"+tasknumber+"%'";
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_tasknumber like '%"+tasknumber+"%' limit "+SearchPage+", 10";
 				}
 				else if (processnumber != null && !processnumber.equals("")) {
-					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_processnumber like '%"+processnumber+"%'";
+					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_processnumber like '%"+processnumber+"%' limit "+SearchPage+", 10";
 				}
 				else {
 					sql = "select * from product_management where p_startdate is null and p_compledate is null";
@@ -158,24 +164,24 @@ public class ManagementDao {
 		else {
 			if (project_id != null && !project_id.equals("null")) {
 				if (tasknumber != null && !tasknumber.equals("")) {
-					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%'";
+					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%' limit "+SearchPage+", 10";
 				}
 				else if (processnumber != null && !processnumber.equals("")) {
-					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%'";
+					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%' limit "+SearchPage+", 10";
 				}
 				else {
-					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"'";
+					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' limit "+SearchPage+", 10";
 				}
 			}
 			else {
 				if (tasknumber != null && !tasknumber.equals("")) {
-					sql = "select * from product_management where p_startdate is not null and p_tasknumber like '%"+tasknumber+"%'";
+					sql = "select * from product_management where p_startdate is not null and p_tasknumber like '%"+tasknumber+"%' limit "+SearchPage+", 10";
 				}
 				else if (processnumber != null && !processnumber.equals("")) {
-					sql = "select * from product_management where p_startdate is not null and p_processnumber like '%"+processnumber+"%'";
+					sql = "select * from product_management where p_startdate is not null and p_processnumber like '%"+processnumber+"%' limit "+SearchPage+", 10";
 				}
 				else {
-					sql = "select * from product_management where p_startdate is not null";
+					sql = "select * from product_management where p_startdate is not null limit "+SearchPage+", 10";
 				}
 			}
 		}
@@ -213,12 +219,58 @@ public class ManagementDao {
 		return result;
 	}
 	
-	public List<RemarkCommand> issuelist(String issueids) {
+	public String issueids(Map<String, Object> requestValues) {
+		String sql = "select * from product_management where p_num=?";
+		String p_num = (String)requestValues.get("p_num");
+		List<String> result = jt.query(sql, new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString("p_remarkid");
+			}}, p_num);
+
+		return result.isEmpty()? null : result.get(0);
+	}
+	
+	
+	public void issue_delete(String r_id, String p_num) {
+		String sql = "select * from product_management where p_num=?";
+		List<String> result = jt.query(sql, new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString("p_remarkid");
+			}},p_num);
+		String[] ans = result.get(0).split(",");
+		ArrayList<String> list = new ArrayList<String>();
+		Collections.addAll(list, ans);
+		list.remove(r_id);
+		String invalue = String.join(",", list);
+		
+		sql = "update product_management set p_remarkid=? where p_num=?";
+		jt.update(sql, invalue, p_num);
+		
+		sql = "delete from remark_project where rp_r_id=?";
+		jt.update(sql, r_id);
+		
+		sql = "delete from remark where r_id=?";
+		jt.update(sql, r_id);
+		
+	}
+	
+	public List<RemarkCommand> issuelist(String issueids, Map<String, Object> requestValues) {
 		String[] search = issueids.split(",");
+		int page =  requestValues.get("page") == null? 1:Integer.valueOf((String)requestValues.get("page"));
+		int start = (page-1) * 10;
+		int end = page * 10;
+		
+		if (end > search.length) {
+			end = search.length;
+		}
 		String sql = "select * from remark where r_id = ?";
 		List<RemarkCommand> remarklist = new ArrayList<RemarkCommand>();
 		
-		for (int i = 0; i < search.length; i++) {
+		for (int i = start; i < end; i++) {
 			jt.query(sql, new RowMapper<Object>() {
 
 				@Override
@@ -238,6 +290,33 @@ public class ManagementDao {
 		}
 		
 		return remarklist;
+	}
+	
+	public RemarkCommand issueDetail(Map<String, Object> requestValues) {
+		String r_id = (String)requestValues.get("r_id");
+		String sql = "select * from remark where r_id=?";
+		List<RemarkCommand> result = jt.query(sql, new RowMapper<RemarkCommand>() {
+
+			@Override
+			public RemarkCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				RemarkCommand command = new RemarkCommand();
+				command.setR_id(rs.getInt("r_id"));
+				command.setR_title(rs.getString("r_title"));
+				command.setR_content(rs.getString("r_content"));
+				command.setR_anthor(rs.getString("r_anthor"));
+				command.setR_date(rs.getString("r_date"));
+				command.setR_view(rs.getInt("r_view"));
+				command.setR_class(rs.getString("r_class"));
+				command.setR_anthor_id(rs.getString("r_anthor_id"));
+				return command;
+			}}, r_id);
+		
+		return result.isEmpty()? null : result.get(0);
+	}
+	
+	public void issue_viewUp(int r_id) {
+		String sql = "update remark set r_view = r_view+1 where r_id=?";
+		jt.update(sql, r_id);
 	}
 	
 	public Integer totalpage(String category, Map<String, Object> requestValues) {
@@ -413,5 +492,4 @@ public class ManagementDao {
 		sql = "update projectcreate set pc_dpn=? where pc_id=? and pc_tasknumber=? and pc_propart=?";
 		jt.update(sql, dpn, project_id, p_tasknumber, p_prefix);
 	}
-	
 }

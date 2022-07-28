@@ -16,6 +16,13 @@
 	%>
 	<div class="d-flex align-items-center">
 		<p><%=department%> &nbsp <%=name%>님</p>
-		<a href="logout">로그아웃</a>
+		<a href="#" onclick="logoutbtn()">로그아웃</a>
 	</div>
+	<script type="text/javascript">
+		function logoutbtn() {
+			if (confirm('로그아웃하시겠습니까?')){
+				location.href="logout";
+			}
+		}
+	</script>
 </div>

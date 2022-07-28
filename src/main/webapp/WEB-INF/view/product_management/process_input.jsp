@@ -109,10 +109,10 @@
 								<td><%=projectmap.get(command.getP_proid()) %></td>
 								<td><%= command.getP_tasknumber()%></td>
 								<td><%= command.getP_processnumber() %></td>
-								<td><%= command.getP_regdate() %></td>
-								<td><%= command.getP_startdate() %></td>
-								<td><%= command.getP_compledate() %></td>
-								<td><a href="#" onclick="issueup<%=i%>()" style="color:black;">이슈가 총 <span style="color:red;"><%= command.getP_remarkid() != null? command.getP_remarkid().split(",").length:0 %></span>개 존재합니다.</a></td>
+								<td><%= command.getP_regdate().substring(0, 10) %><br><%=command.getP_regdate().substring(10) %></td>
+								<td><%= command.getP_startdate().length() >10 ? command.getP_startdate().substring(0, 10):"-" %><br><%=command.getP_startdate().length() >10 ? command.getP_startdate().substring(10):"" %></td>
+								<td><%= command.getP_compledate().length() >10 ?command.getP_compledate().substring(0,10):"-" %><br><%=command.getP_compledate().length() >10 ? command.getP_compledate().substring(10):"" %></td>
+								<td><a href="#" onclick="issueup<%=i%>()" style="color:black;">이슈가 총 <span style="color:red;"><%= command.getP_remarkid() != null && !command.getP_remarkid().equals("") ? command.getP_remarkid().split(",").length:0 %></span>개 존재합니다.</a></td>
 								
 								<td><%= memberMap.get(command.getP_regnum()) %></td>
 							</tr>
@@ -122,7 +122,7 @@
 									let popheight = 720;
 									let popx = (window.screen.width / 2) - (popwidth / 2);
 									let popy = (window.screen.height / 2) - (popheight / 2);
-									window.open("issue_popup?issueids=<%=command.getP_remarkid()%>" ,"issuepop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
+									window.open("issue_popup?p_num=<%=command.getP_num()%>" ,"issuepop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
 								}
 							</script>
 					<%

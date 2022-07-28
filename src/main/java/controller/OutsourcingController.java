@@ -70,7 +70,7 @@ public class OutsourcingController {
 	//외주 등록 프로세스
 	@RequestMapping("/out_input_popup_input")
 	public String out_input_popup_input(OutProductCommand command, Model model) {
-		dao.out_input(command, dao.commap());
+		dao.out_input(command, dao.commap(), dao.ordernum_create());
 		model.addAttribute("stat", "1");
 		return "closepopup";
 	}

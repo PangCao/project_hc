@@ -77,6 +77,7 @@
                                     <option value="" selected disabled> == 세부공정 == </option>
                         <%
                             if (process != null && !process.equals("")){
+                            	
                             	String dpn = processlist.get(process);
                             	for(int i = 0; i < dpn.length(); i++) {
                             		if (dpn.charAt(i) == '0') {
