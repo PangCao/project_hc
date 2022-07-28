@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
 <%@ page import="command.RemarkCommand" %>
-<%@ page import="command.MemberCommand" %>
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
@@ -18,7 +17,7 @@
 <%
 	RemarkCommand remarkCommand = (RemarkCommand)request.getAttribute("issue_detail");
 	HashMap<String, Integer> remarkmap = (HashMap<String, Integer>)request.getAttribute("paging");
-	MemberCommand memberCommand = (MemberCommand)session.getAttribute("member");
+	String id = (String)session.getAttribute("id");
 %>
 </head>
 <body>
@@ -77,7 +76,7 @@
 				%>
 						<input type="button" value="목록" class="list_btn" onclick="location.href='issue'">
 				<%
-					if (remarkCommand.getR_anthor_id() != null && remarkCommand.getR_anthor_id().equals(memberCommand.getM_num()) ){
+					if (remarkCommand.getR_anthor_id() != null && remarkCommand.getR_anthor_id().equals(id) ){
 				%>
 						<input type="button" value="삭제" class="delete_btn" onclick="r_delete()">
 				<%

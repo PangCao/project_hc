@@ -128,7 +128,7 @@
 						if (pagechk.equals("complete")) {
 					%>
 						<form action="complete?project_id=<%= project_id %>" method="post">
-							<input type="text" placeholder="작업번호" name="tasknumber">
+							<input type="text" placeholder="작업번호" name="p_tasknumber">
 							<input type="submit" value="조회">
 						</form>
 					<%
@@ -136,7 +136,7 @@
 						else {
 					%>
 						<form action="record?project_id=<%= project_id %>" method="post">
-							<input type="text" placeholder="작업번호" name="tasknumber">
+							<input type="text" placeholder="작업번호" name="p_tasknumber">
 							<input type="submit" value="조회">
 						</form>
 					<%
@@ -228,7 +228,7 @@
 								<script type="text/javascript">
 									function start_input<%=i%>() {
 										if (confirm('\"<%=projectmap.get(command.getP_proid())%>\"프로젝트의 \"<%=command.getP_processnumber()%>\"를 착수하시겠습니까?')){
-											location.href="startdate_input?product_id=<%=command.getP_num()%>";
+											location.href="startdate_input?product_num=<%=command.getP_num()%>&project_id=<%=command.getP_proid()%>&p_tasknumber=<%=command.getP_tasknumber() %>&p_prefix=<%=command.getP_processnumber().substring(0, command.getP_processnumber().length()-3) %>&p_suffix=<%=command.getP_processnumber().substring(command.getP_processnumber().length()-3)%>";
 										}
 									}
 								</script>
@@ -241,7 +241,7 @@
 								<script type="text/javascript">
 									function comple_input<%=i%>() {
 										if (confirm('\"<%=projectmap.get(command.getP_proid())%>\"프로젝트의 \"<%=command.getP_processnumber()%>\"를 완료하시겠습니까?')) {
-											location.href="comple_input?product_id=<%=command.getP_num()%>";
+											location.href="comple_input?product_num=<%=command.getP_num()%>&project_id=<%=command.getP_proid()%>&p_tasknumber=<%=command.getP_tasknumber() %>&p_prefix=<%=command.getP_processnumber().substring(0, command.getP_processnumber().length()-3) %>&p_suffix=<%=command.getP_processnumber().substring(command.getP_processnumber().length()-3)%>";
 										}	
 									}
 								</script>

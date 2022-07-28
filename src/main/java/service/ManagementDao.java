@@ -20,7 +20,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import command.MemberCommand;
 import command.ProductCommand;
 import command.ProjectCommand;
 import command.ProjectCreateCommand;
@@ -79,13 +78,15 @@ public class ManagementDao {
 				command.setPj_name(rs.getString("pj_name"));
 				return command;
 			}}, project_id);
+		
 		return result.get(0);
 	}
 	
 	// 이슈내역을 insert하고 키홀더 값을 반환하는 메서드
 	public Integer remark_insert(RemarkCommand issue, HttpSession session) {
 		if(issue.getR_title() != null && !issue.getR_title().trim().equals("")) {
-			MemberCommand userInfo = (MemberCommand)session.getAttribute("member");
+			String name = (String)session.getAttribute("name");
+			String id = (String)session.getAttribute("id");
 			String sql = "insert into remark (r_title, r_content, r_anthor, r_date, r_class, r_anthor_id) values (?,?,?,?,?,?)";
 			KeyHolder kh = new GeneratedKeyHolder(); //자동 증가값을 알기 위해서 사용
 			jt.update(new PreparedStatementCreator() {
@@ -95,10 +96,10 @@ public class ManagementDao {
 					PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"r_id"});
 					pstmt.setString(1, issue.getR_title());
 					pstmt.setString(2, issue.getR_content());
-					pstmt.setString(3, userInfo.getM_name());
+					pstmt.setString(3, name);
 					pstmt.setString(4, String.valueOf(LocalDateTime.now()));
 					pstmt.setString(5, issue.getR_class());
-					pstmt.setString(6, userInfo.getM_num());
+					pstmt.setString(6, id);
 					return pstmt;
 				}
 			}, kh);
@@ -112,13 +113,13 @@ public class ManagementDao {
 	
 	// 생산 작업을 등록하는 메서드
 	public void product_insert(ProductCommand command, Map<String, Object> requestValues, Integer remarkId, HttpSession session) {
-		MemberCommand userInfo = (MemberCommand)session.getAttribute("member");
+		String id = (String)session.getAttribute("id");
 		String processnumber = (String)requestValues.get("p_prefix") + (String)requestValues.get("p_suffix");
 		String sql = "insert into product_management (p_proid, p_tasknumber, p_processnumber, p_regdate, p_remarkid, p_regnum, p_state) values (?,?,?,?,?,?,?)";
 		if (remarkId == -1) {
 			remarkId = null;
 		} 
-		jt.update(sql, requestValues.get("project_id"), command.getP_tasknumber(), processnumber, LocalDateTime.now(), remarkId, userInfo.getM_num() , "결재 대기");
+		jt.update(sql, requestValues.get("project_id"), command.getP_tasknumber(), processnumber, LocalDateTime.now(), remarkId, id , "결재 대기");
 	}
 	
 	public List<ProductCommand> productlist(String category, Map<String, Object> requestValues) {
@@ -344,7 +345,7 @@ public class ManagementDao {
 	//프로젝트 생성시 초기 데이터베이스 저장
 	public void  ProjectCreate(String name, String date){
 		String[] tasknum = {"A","B","C","D"};
-		String[] propart = {"A(가공)","B(소조립)","C(대조립)","D(선행의장)","E(블럭도장)","F(P.E)","G(탑재)","H(DOCK도장)","I(진수선행도장)","J(진수)"};
+		String[] propart = {"A(가공)","B(소조립)","C(대조립)","D(선행의장)","E(블럭도장)","F(P.E)","G(탑재)","H(DOCK의장)","I(진수선행도장)","J(진수)"};
 		DecimalFormat df = new DecimalFormat("0000");
 		DecimalFormat df2 = new DecimalFormat("00");
 		int yyyy = LocalDateTime.now().getYear();
@@ -377,4 +378,40 @@ public class ManagementDao {
 		jt.update(sql, remarkId, requestValues.get("project_id"), command.getP_tasknumber(), (String)requestValues.get("p_prefix")+(String)requestValues.get("p_suffix"));
 		
 	}
+	
+	public Map<String, String> proparts(String project_id, String task) {
+		Map<String, String> result = new HashMap<String, String>();
+		String sql = "select * from projectcreate where pc_id=? and pc_tasknumber=?";
+		jt.query(sql, new RowMapper<Object>() {
+
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				result.put(rs.getString("pc_propart"),rs.getString("pc_dpn"));
+				return null;
+			}}, project_id, task);
+		
+		return result;
+	}
+	
+	public void projectcreate_update(Map<String, Object> requestValues, int value) {
+		String project_id = (String)requestValues.get("project_id");
+		String p_tasknumber = (String)requestValues.get("p_tasknumber");
+		String p_prefix= (String)requestValues.get("p_prefix");
+		String p_suffix= (String)requestValues.get("p_suffix");
+		String sql = "select * from projectcreate where pc_id=? and pc_tasknumber=? and pc_propart=?";
+		List<String> result = jt.query(sql, new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				System.out.println(rs.getString("pc_dpn"));
+				return rs.getString("pc_dpn");
+			}}, project_id, p_tasknumber, p_prefix);
+		
+		String dpn = result.get(0);
+		int index = Integer.valueOf(p_suffix);
+		dpn = dpn.substring(0, index-1) + value +dpn.substring(index);
+		sql = "update projectcreate set pc_dpn=? where pc_id=? and pc_tasknumber=? and pc_propart=?";
+		jt.update(sql, dpn, project_id, p_tasknumber, p_prefix);
+	}
+	
 }

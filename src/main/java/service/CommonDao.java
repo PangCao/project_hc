@@ -18,7 +18,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import command.MemberCommand;
 import command.NoticeCommand;
 import command.ProductCommand;
 import command.RemarkCommand;
@@ -327,7 +326,7 @@ public class CommonDao {
 	
 	//이슈글 정보 저장
 	public Integer issue_input(RemarkCommand remarkCommand, HttpSession session) {
-		MemberCommand list= (MemberCommand)session.getAttribute("member");
+		String id = (String)session.getAttribute("id");
 		String sql = "insert into remark(r_title, r_content, r_anthor, r_date, r_anthor_id, r_class) values (?,?,?,?,?,?)";
 		KeyHolder kh = new GeneratedKeyHolder();
 		jt.update(new PreparedStatementCreator() {
@@ -339,7 +338,7 @@ public class CommonDao {
 				pstmt.setString(2, remarkCommand.getR_content());
 				pstmt.setString(3, remarkCommand.getR_anthor());
 				pstmt.setString(4, String.valueOf(LocalDateTime.now()));
-				pstmt.setString(5, list.getM_num());
+				pstmt.setString(5, id);
 				pstmt.setString(6, remarkCommand.getR_class());
 				return pstmt;
 			}

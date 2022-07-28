@@ -1,7 +1,9 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="command.*" %>
+<%@ page import="java.util.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +14,13 @@
 <%
 	ProjectCommand projectinput = (ProjectCommand)request.getAttribute("projectinput");
 	String task = (String)request.getAttribute("task");
-	MemberCommand userInfo = (MemberCommand)session.getAttribute("member");
+	String name = (String)session.getAttribute("name");
+	String id = (String)session.getAttribute("id");
+	Map<String, String> processlist = (HashMap<String, String>)request.getAttribute("processlist");
+	String process = (String)request.getAttribute("process");
+	String project_id = (String)request.getAttribute("project_id");
+	DecimalFormat df = new DecimalFormat("000");
+	
 %>
 </head>
 <body>
@@ -35,38 +43,55 @@
                         <label class="col-3">공정번호</label>
                         <div>
                             <div class="col-6 d-flex p-0">
-                                <select name="p_prefix" id="p_processnumber_prefix" class="col-11 text-center p-0">
-                                    <option value="" selected disabled> == 공정분류 == </option>
-                                    <option value="A">A(가공)</option>
-                                    <option value="B">B(소조립)</option>
-                                    <option value="C">C(대조립)</option>
-                                    <option value="D">D(선행의장)</option>
-                                    <option value="E">E(블럭도장)</option>
-                                    <option value="F">F(P.E.)</option>
-                                    <option value="G">G(탑재)</option>
-                                    <option value="H">H(DOCK 의장)</option>
-                                    <option value="I">I(진수 선행 도장)</option>
-                                    <option value="J">J(진수)</option>
+                                <select name="p_prefix" id="p_processnumber_prefix" class="col-11 text-center p-0" onchange="prosel(this)">
+                                <%
+                                	if (process == null) {
+                                %>
+                                	<option value="" selected disabled> == 공정분류 == </option>
+                                <%
+                                	}
+                                	String[] propart = {"A(가공)","B(소조립)","C(대조립)","D(선행의장)","E(블럭도장)","F(P.E)","G(탑재)","H(DOCK의장)","I(진수선행도장)","J(진수)"};
+                                	for(int i = 0; i < propart.length; i++) {
+                                		if (process != null && propart[i].equals(process)) {
+                                %>
+                                	<option value="<%=propart[i]%>" selected><%=propart[i] %></option>
+                                <%
+                                		}
+                                		else{
+                      			%>
+                      				<option value="<%=propart[i]%>"><%=propart[i] %></option>
+                      			<%
+                                		}
+                                	}
+                                %>
+                                    
                                 </select>
+                                <script type="text/javascript">
+                                	function prosel(obj) {
+                                		location.href="input_popup?task=<%=task%>&project_id=<%=project_id%>&process="+obj.value;
+                                	}
+                                </script>
                             </div>
                             <div class="col-6 p-0 d-flex justify-content-end">
                                 <select name="p_suffix" id="p_processnumber_suffix" class="col-11 text-center p-0">
                                     <option value="" selected disabled> == 세부공정 == </option>
-                            <%
-                            	for(int i = 0; i < 10; i++) {
-                            		if (i != 9){
-                            %>
-                            	<option value="00<%=i+1%>">00<%=i+1 %></option>
-                            <%
+                        <%
+                            if (process != null && !process.equals("")){
+                            	String dpn = processlist.get(process);
+                            	for(int i = 0; i < dpn.length(); i++) {
+                            		if (dpn.charAt(i) == '0') {
+                        %>
+                            	<option value="<%=df.format(i+1)%>"><%=df.format(i+1)%></option>
+                  		<%
                             		}
-                            		else{
-                  			%>
-                  				<option value="0<%=i+1%>">0<%=i+1 %></option>
-                  			<%
+                            		else {
+               			%>
+               					<option value="<%=df.format(i+1)%>" disabled><%=df.format(i+1) %></option>
+               			<%
                             		}
                             	}
-                            		
-                            %>
+                            }
+                        %>
                                 </select>
                             </div>
                         </div>
@@ -77,8 +102,8 @@
                     </div>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-start">
-                    <h5>등록자 : <%=userInfo.getM_name() %></h5>
-                    <input type="hidden" value="<%=userInfo.getM_num() %>" name="p_regnum">
+                    <h5>등록자 : <%=name %></h5>
+                    <input type="hidden" value="<%=id %>" name="p_regnum">
                 </div>
             </div>
             <div class="mb-0">

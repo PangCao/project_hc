@@ -45,6 +45,8 @@ public class MemberDao {
 				session.setAttribute("id", result.get(0).getM_num());
 				session.setAttribute("department", result.get(0).getM_department());
 				session.setAttribute("name", result.get(0).getM_name());
+				session.setAttribute("position", result.get(0).getM_position());
+				session.setAttribute("tel", result.get(0).getM_tel());
 				return true;
 			}
 		}
@@ -52,9 +54,9 @@ public class MemberDao {
 	}
 	// 비밀번호 확인용 메서드(지금 접속한 아이디의 비밀번호와 입력한 비밀번호가 일치하는지)
 		public boolean passwordchk(String password, HttpSession session) {
-			MemberCommand memberCommand = (MemberCommand)session.getAttribute("member");
+			String id = (String)session.getAttribute("id");
 			String sql = "select count(*) from member where m_num=? and m_password=?";
-			int result = jt.queryForObject(sql, Integer.class,memberCommand.getM_num() , password);
+			int result = jt.queryForObject(sql, Integer.class, id, password);
 			if (result == 1) {
 				return true;
 			}
@@ -69,6 +71,7 @@ public class MemberDao {
 			String pw = (String)requestMap.get("password");
 			String tel = requestMap.get("phone1")+"-"+requestMap.get("phone2")+"-"+requestMap.get("phone3");
 			MemberCommand sessionMemberCommand = (MemberCommand)session.getAttribute("member");
+			String sessiontel = (String)session.getAttribute("");
 			String sql = null;
 			if(pw.equals("")) {
 				sql = "update member set m_name=?, m_tel=? where m_num=?";

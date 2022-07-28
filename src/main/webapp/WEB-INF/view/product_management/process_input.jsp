@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -20,6 +21,7 @@
 	Map<String, String> memberMap = (HashMap<String, String>)request.getAttribute("membermap");
 	Map<String, Integer> paging = (HashMap<String, Integer>)request.getAttribute("paging");
 	Map<String,String> projectmap = (HashMap<String, String>)request.getAttribute("projectmap");
+	DecimalFormat df = new DecimalFormat("00");
 	
 	if (stat != null && stat.equals("2")) {
 %>
@@ -65,7 +67,7 @@
 							<%
 								for(int i = 0; i < 12; i++) {
 							%>
-								<option value="<%=i+1%>"><%=i+1%></option>
+								<option value="<%=df.format(i+1)%>"><%=df.format(i+1)%></option>
 							<%
 								}
 							%>

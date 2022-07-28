@@ -104,7 +104,7 @@
 								else {
 							%>
 									<tr>
-										<td colspan="4" class="text-center">등록된 공지사항이 없습니다.</td>
+										<td colspan="5" class="text-center">등록된 이슈가 없습니다.</td>
 									</tr>
 							<%
 								}

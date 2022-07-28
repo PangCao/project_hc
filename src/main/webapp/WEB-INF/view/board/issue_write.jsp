@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="command.MemberCommand" %>
 <%@ page import="java.util.*" %>
 <!DOCTYPE html>
 <html>
@@ -14,7 +13,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%
-	MemberCommand memberCommand = (MemberCommand)session.getAttribute("member");
+
+	String id = (String)session.getAttribute("id");
+	String name = (String)session.getAttribute("name");
 	Map<String, String> projectmap = (HashMap<String, String>)request.getAttribute("projectmap");
 %>
 </head>
@@ -63,8 +64,8 @@
 						</div>
 						<div class="col-12 row">
 							<label class="col-2">작성자</label>
-							<input type="text" class="col-10" value="<%=memberCommand.getM_name() %>" readonly name="r_anthor">
-							<input type="hidden" name="anthor_id" value="<%=memberCommand.getM_num()%>">
+							<input type="text" class="col-10" value="<%=name %>" readonly name="r_anthor">
+							<input type="hidden" name="anthor_id" value="<%=id%>">
 						</div>
 						<div class="col-12 row">
 							<label class="col-2">내용</label>

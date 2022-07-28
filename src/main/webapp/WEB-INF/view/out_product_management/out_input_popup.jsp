@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
 <%@ page import="command.ProjectCommand" %>
-<%@ page import="command.MemberCommand" %>
 <%@ page import="command.OutCompanyListCommand" %>
 <!DOCTYPE html>
 <html>
@@ -14,7 +13,8 @@
 <title>Insert title here</title>
 <%
 	ArrayList<ProjectCommand> projectlist = (ArrayList<ProjectCommand>)request.getAttribute("projectlist");
-	MemberCommand member = (MemberCommand)session.getAttribute("member");
+	String id = (String)session.getAttribute("id");
+	String name = (String)session.getAttribute("name");
 	ArrayList<OutCompanyListCommand> comlist = (ArrayList<OutCompanyListCommand>)request.getAttribute("comlist");
 %>
 </head>
@@ -55,8 +55,8 @@
                 </div>
                 <div class="col-12 row">
                     <label class="col-4">등록자</label>
-                    <input type="text" class="col-8 text-right" value="<%=member.getM_name()%>" disabled>
-                    <input type="hidden" value="<%=member.getM_num() %>" name="op_regnum">
+                    <input type="text" class="col-8 text-right" value="<%=name%>" disabled>
+                    <input type="hidden" value="<%=id %>" name="op_regnum">
                 </div>
             </div>
             <div class="col-6">

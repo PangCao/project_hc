@@ -28,13 +28,6 @@ public class ProductionController {
 		return "redirect:product_management";
 	}
 	
-	@RequestMapping("/input_popup")
-	public String input_popup(@RequestParam String project_id, @RequestParam String task, Model model) {
-		model.addAttribute("projectinput", dao.project_id_name(project_id));
-		model.addAttribute("task", task);
-		return "product_management/input_popup";
-	}
-	
 	@RequestMapping("/projectpopup")
 	public String projectpopup() {
 		return "product_management/projectpopup";
@@ -73,6 +66,16 @@ public class ProductionController {
 		return "product_management/process_input";
 	}
 	
+	@RequestMapping("/input_popup")
+	public String input_popup(@RequestParam String project_id, @RequestParam String task, @RequestParam(required = false) String process, Model model) {
+		model.addAttribute("projectinput", dao.project_id_name(project_id));
+		model.addAttribute("task", task);
+		model.addAttribute("processlist", dao.proparts(project_id, task));
+		model.addAttribute("process", process);
+		model.addAttribute("project_id",project_id);
+		return "product_management/input_popup";
+	}
+	
 	@RequestMapping("/input_popup_input")
 	public String input_popup_input(HttpSession session, ProductCommand command, RemarkCommand issue, @RequestParam Map<String, Object> requestValues, Model model) {
 		int remarkId = dao.remark_insert(issue, session);
@@ -80,6 +83,7 @@ public class ProductionController {
 		if (remarkId != -1) {
 			dao.remark_project_insert(command, issue, remarkId, requestValues);
 		}
+		dao.projectcreate_update(requestValues, 1);
 		model.addAttribute("stat", "2");
 		return "closepopup";
 	}
@@ -94,7 +98,7 @@ public class ProductionController {
 		model.addAttribute("projectlist", dao.projectlist());
 		model.addAttribute("project_id", (String)requestValues.get("project_id"));
 		model.addAttribute("paging", dao.paging(dao.totalpage("complete", requestValues), requestValues));
-		model.addAttribute("tasknumber", requestValues.get("tasknumber"));
+		model.addAttribute("tasknumber", requestValues.get("p_tasknumber"));
 		model.addAttribute("processnumber", requestValues.get("processnumber"));
 		model.addAttribute("projectmap", dao.projectmap());
 		return "product_management/product_complete";
@@ -110,7 +114,7 @@ public class ProductionController {
 		model.addAttribute("projectlist", dao.projectlist());
 		model.addAttribute("project_id", (String)requestValues.get("project_id"));
 		model.addAttribute("paging", dao.paging(dao.totalpage("record", requestValues), requestValues));
-		model.addAttribute("tasknumber", requestValues.get("tasknumber"));
+		model.addAttribute("tasknumber", requestValues.get("p_tasknumber"));
 		model.addAttribute("processnumber", requestValues.get("processnumber"));
 		model.addAttribute("projectmap", dao.projectmap());
 		return "product_management/product_complete";
@@ -123,16 +127,18 @@ public class ProductionController {
 	}
 
 	@RequestMapping("/startdate_input")
-	public String startdate(@RequestParam int product_id, RedirectAttributes ra) {
-		dao.startdate_update(product_id);
+	public String startdate(@RequestParam Map<String, Object> requestValues, RedirectAttributes ra) {
+		dao.startdate_update(Integer.valueOf((String)requestValues.get("product_num")));
+		dao.projectcreate_update(requestValues, 2);
 		ra.addFlashAttribute("stat", "1");
 		return "redirect:complete";
 	}
 	
 	@RequestMapping("/comple_input")
-	public String compledate(@RequestParam int product_id, RedirectAttributes ra) {
-		dao.compledate_update(product_id);
+	public String compledate(@RequestParam Map<String, Object> requestValues, RedirectAttributes ra) {
+		dao.compledate_update(Integer.valueOf((String)requestValues.get("product_num")));
 		ra.addFlashAttribute("stat", "2");
+		dao.projectcreate_update(requestValues, 3);
 		return "redirect:record";
 	}
 }
