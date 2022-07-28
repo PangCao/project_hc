@@ -43,7 +43,20 @@ create table if not exists project (
     foreign key(pj_task) references task(t_name)
 )default charset=utf8mb4;
 
-select * from remark;
+create table if not exists product_management (
+	p_num int auto_increment primary key,
+    p_proid varchar(30),
+    p_tasknumber varchar(50),
+    p_processnumber varchar(50),
+    p_regdate datetime,
+    p_startdate datetime,
+    p_compledate datetime,
+    p_regnum varchar(30),
+    p_state varchar(50)
+)default charset=utf8mb4;
+select * from product_management;
+
+
 
 create table if not exists remark(
 	r_id int primary key auto_increment,
@@ -84,19 +97,7 @@ create table if not exists notice(
 
 select * from notice;
 
-create table if not exists product_management (
-	p_num int auto_increment primary key,
-    p_proid varchar(30),
-    p_tasknumber varchar(50),
-    p_processnumber varchar(50),
-    p_regdate datetime,
-    p_startdate datetime,
-    p_compledate datetime,
-    p_remarkid varchar(2000),
-    p_regnum varchar(30),
-    p_state varchar(50)
-)default charset=utf8mb4;
-select * from product_management;
+
 
 create table if not exists out_company_list (
 	o_id int primary key auto_increment,
