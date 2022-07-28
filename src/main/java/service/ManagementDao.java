@@ -534,8 +534,8 @@ public class ManagementDao {
 		return result.isEmpty() ? null : result;
 	}
 	
-	public List<ProductCommand> pcom(String sq){
-		String sql = "select * from product_management where p_proname = ?";
+	public List<ProductCommand> pcom(String sq, String pid){
+		String sql = "select * from product_management where p_num = ? and p_proname = ?";
 		
 		List<ProductCommand> result = jt.query(sql, new RowMapper<ProductCommand>() {
 
