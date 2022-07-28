@@ -146,4 +146,4 @@ create table if not exists projectcreate(
     pc_dpn varchar(30)
 )default charset=utf8mb4;
 
-select * from projectcreate where pc_id='PJT-2022-0001' and pc_tasknumber='A09';
+select * from projectcreate;

@@ -54,6 +54,7 @@
 						<tbody>
 							<tr>
 								<th>No</th>
+								<th>프로잭트명</th>
 								<th>작업번호</th>
 								<th>공정번호</th>
 								<th>등록일</th>
