@@ -16,8 +16,7 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	ArrayList<ProjectCreateCommand> pcclist = (ArrayList<ProjectCreateCommand>)request.getAttribute("pcc");
-	String sq = pcclist.get(0).getPc_name();
-	String pid = pcclist.get(0).getPc_id();
+	String pj_id = pcclist.get(0).getPc_id();
 	String dpn = pcclist.get(0).getPc_dpn();
 	String[] Part = {"A","B","C","D"};
 %>
@@ -40,7 +39,7 @@
 							int cnt=1;
 				%>
 					<div class="col-3">
-						<a href="project_detail?sq=<%=sq%>">
+						<a href="project_detail?pj_id=<%=pj_id%>">
 							<table>
 								<tbody>
 								<%

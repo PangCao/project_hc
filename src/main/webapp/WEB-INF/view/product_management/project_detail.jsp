@@ -20,7 +20,9 @@
 <title>Insert title here</title>
 </head>
 <%
-	ArrayList<ProductCommand> productcom = (ArrayList<ProductCommand>)request.getAttribute("productcom");
+	ArrayList<ProductCommand> productlist = (ArrayList<ProductCommand>)request.getAttribute("productcom");
+	String sdate = (String)request.getAttribute("sdate");
+	String fdate = (String)request.getAttribute("fdate");
 %>
 <body>
 	<section class="layout_main row">
@@ -35,11 +37,11 @@
 					<div class="col-6">
 						<form action="" method="post">
 							<div class="col-12 pl-0">
-								<input type="date" class="col-7">
+								<input type="date"  name="sdate" id="sdate" value="<%=sdate %>" class="col-7">
 							</div>
 							<div class="col-12 pl-0">
-								<input type="date" class="col-7">
-								<input type="submit" value="조회">
+								<input type="date" name="fdate" id="fdate" value="<%=fdate %>" class="col-7">
+								<input type="submit" onclick="SearchDate()" value="조회">
 							</div>
 						</form>
 					</div>
@@ -59,49 +61,103 @@
 						<tbody>
 							<tr>
 								<th>No</th>
-								<th>프로잭트명</th>
+								<th>프로잭트코드</th>
 								<th>작업번호</th>
 								<th>공정번호</th>
 								<th>등록일</th>
 								<th>착수일</th>
 								<th>완료일</th>
-								<th>특이사항</th>
 								<th>등록자</th>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 			</section>
+			<%
+				for(int i=0; i<productlist.size(); i++){
+					ProductCommand productcom = productlist.get(i);
+			%>
 			<section class="search_middle">
-
 				<div>
 					<table>
 						<tbody>
 							<tr>
-								<td>1</td>
-								<td>프로젝트명이오</td>
-								<td>A15</td>
-								<td>A1-001</td>
-								<td>2022/07/19 12:04:10</td>
-								<td>2022/07/21 09:04:10</td>
-								<td>2022/07/25 18:01:40</td>
-								<td>특이사항 무</td>
-								<td>김현일</td>
+								<td><%=productcom.getP_num() %></td>
+								<td><%=productcom.getP_proid() %></td>
+								<td><%=productcom.getP_tasknumber() %></td>
+								<td><%=productcom.getP_processnumber() %></td>
+								<td><%=productcom.getP_regdate() %></td>
+								<td><%=productcom.getP_startdate() %></td>
+								<td><%=productcom.getP_compledate() %></td>
+								<td><%=productcom.getP_regnum() %></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 			</section>
-
-			<div class="d-flex justify-content-center mt-5">
-				<p>&lt; 1 2 3 &gt;</p>
-			</div>
-			
-			
+			<%
+				}
+			%>
+			<div class="col-12 d-flex justify-content-center">
+				<%
+					if(paging.get("page") == 1){	
+				%>
+					<a href="#" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+				<%
+					}
+					else {
+				%>
+					<a href="issue?page=<%=paging.get("page")-1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+				<%
+					}
+					for(int i = paging.get("min"); i < paging.get("max"); i++){
+						if (paging.get("page")-1 == i) {
+				%>
+					<a href="issue?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
+				<%
+						}
+						else {
+				%>
+					<a href="issue?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><%=i+1%></a>&nbsp;&nbsp;
+				<%
+						}
+					}
+					if (paging.get("page") * 10 >= paging.get("total")) {
+				%>
+					<a href="#" onclick="lastpage()&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-right"></i></a>
+				<%
+					}
+					else {
+				%>
+					<a href="issue?page=<%=paging.get("page")+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-right"></i></a>
+				<%
+					}
+					
+				%>
+			</div>				
 		</section>
 	</section>
 </body>
 <script type="text/javascript">
 	document.getElementById('product_management').checked=true;
+	
+	function SearchDate(){
+		let sdate = document.getElementById("sdate").value;
+		let fdate = document.getElementById("fdate").value;
+		if (sdate == "") {
+			alert('조회 시작일을 선택해주세요.');
+			return false;
+		}
+		if (fdate == "") {
+			alert('조회 종료일을 선택해주세요.');
+			return false;
+		}
+		if (new Date(sdate) > new Date(fdate)) {
+			alert('조회 일자를 다시 한 번 확인해주세요.');
+			return false;
+		}
+		
+		location.href="issue?sdate="+sdate+"&fdate="+fdate;
+	}
 </script>
 </html>
