@@ -10,6 +10,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<%
+	
+%>
 <body>
 	<section class="layout_main row">
 		<section class="layout_left col-2 p-0">
