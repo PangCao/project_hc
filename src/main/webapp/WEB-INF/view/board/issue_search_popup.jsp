@@ -90,6 +90,7 @@ a, a:hover, a:active{
 							opener.document.getElementById('rp_proid').value = '<%=command.getP_proid()%>';
 							opener.document.getElementById('rp_task').value = '<%=command.getP_tasknumber()%>';
 							opener.document.getElementById('rp_process').value = '<%=command.getP_processnumber()%>';
+							opener.document.getElementById('p_num').value = '<%=command.getP_num()%>';
 							opener.document.getElementById('project_view').value = "<%=projectmap.get(command.getP_proid())%> / <%=command.getP_tasknumber()%> / <%=command.getP_processnumber()%>"
 							window.close();
 						}                

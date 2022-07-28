@@ -12,7 +12,6 @@ public class ProductCommand {
 	private String p_regdate; //등록일
 	private String p_startdate; //착수일
 	private String p_compledate; //완료일
-	private String p_remarkid; //특이사항 아이디
 	private String p_regnum; //등록자
 	private String p_state; //결재상태
 }

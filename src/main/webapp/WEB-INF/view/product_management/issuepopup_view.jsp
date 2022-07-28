@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="command.*" %>
+<%@ page import="java.util.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -13,22 +14,11 @@
 <%
 	RemarkCommand issueDetail = (RemarkCommand)request.getAttribute("issueDetail");
 	String id = (String)session.getAttribute("id");
-	String issueids = (String)request.getAttribute("issueids");
 	String r_id = (String)request.getAttribute("r_id");
 	String p_num = (String)request.getAttribute("p_num");
-	String[] list = issueids.split(",");
-	String next = null;
-	String prev = null;
-	for (int i = 0; i < list.length; i++) {
-		if (list[i].equals(r_id)) {
-			if (i < list.length-1){
-				next = list[i+1];
-			}
-			if (i > 0) {
-				prev = list[i-1];
-			}
-		}
-	}
+	Map<String, String> n_p = (HashMap<String, String>)request.getAttribute("next_prev");
+	String next = n_p.get("next");
+	String prev = n_p.get("prev");
 %>
 </head>
 <body>
@@ -63,25 +53,26 @@
             </div>
             <hr>
             <div class="d-flex justify-content-center">
-            <%
-            	if (prev != null) {
-            %>
+			<%
+				if(prev != null){
+			%>
                 <input type="button" value="이전" class="col-1 mx-1" onclick="prevpage()">
-            <%
-            	}
-            	if (next != null) {
-            %>
+			<%
+				}
+				if (next != null){
+			%>
                 <input type="button" value="다음" class="col-1 mx-1" onclick="nextpage()">
             <%
-            	}
+				}
+
             %>
-                <input type="button" value="목록" class="col-1 mx-1" onclick="backlist()">
-            <%
-            	if (issueDetail.getR_anthor_id().equals(id)) {
-            %>
+				<input type="button" value="목록" class="col-1 mx-1" onclick="backlist()">
+			<%
+				if (id.equals(issueDetail.getR_anthor_id())){
+			%>
                 <input type="button" value="삭제" class="col-1 mx-1" onclick="deleteissue()">
             <%
-                }
+				}
             %>
             </div>
         </div>
@@ -99,7 +90,7 @@
 	}
 	function deleteissue() {
 		if (confirm('이슈를 삭제하시겠습니까?')){
-			location.href="issue_popup_delete?r_id=<%=r_id%>&p_num=<%=p_num%>&issueids=<%=issueids%>";
+			location.href="issue_popup_delete?r_id=<%=r_id%>&p_num=<%=p_num%>";
 		}
 	}
 </script>

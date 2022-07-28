@@ -110,6 +110,7 @@ public class CommonDao {
 				dto.setR_view(rs.getInt("r_view"));
 				dto.setR_class(rs.getString("r_class"));
 				dto.setR_anthor_id(rs.getString("r_anthor_id"));
+				dto.setR_p_num(rs.getInt("r_p_num"));
 				return dto;
 			}});
 		return result.isEmpty()? null : result; //isEmpty()메서드를 통해 result값이 비었는지 안비었는지 확인함
@@ -300,6 +301,7 @@ public class CommonDao {
 				dto.setR_view(rs.getInt("r_view"));
 				dto.setR_class(rs.getString("r_class"));
 				dto.setR_anthor_id(rs.getString("r_anthor_id"));
+				dto.setR_p_num(rs.getInt("r_p_num"));
 				return dto;
 			}});
 		return result.isEmpty()? null : result; //isEmpty()메서드를 통해 result값이 비었는지 안비었는지 확인함
@@ -351,6 +353,7 @@ public class CommonDao {
 				dto.setR_date(rs.getString("r_date").substring(0, 10));
 				dto.setR_view(rs.getInt("r_view"));
 				dto.setR_anthor_id(rs.getString("r_anthor_id"));
+				dto.setR_p_num(rs.getInt("r_p_num"));
 				return dto;
 			}}, r_id);
 		return result.isEmpty()? null:result.get(0);
@@ -390,79 +393,23 @@ public class CommonDao {
 	
 	
 	//이슈글 삭제
-	public void issue_del(int r_id) {
-		String sql = "select * from product_management where p_num=?";
-		List<String> result = jt.query(sql, new RowMapper<String>() {
-
-			@Override
-			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return rs.getString("p_remarkid");
-			}},p_num);
-		String[] ans = result.get(0).split(",");
-		ArrayList<String> list = new ArrayList<String>();
-		Collections.addAll(list, ans);
-		list.remove(r_id);
-		String invalue = String.join(",", list);
-		
-		sql = "update product_management set p_remarkid=? where p_num=?";
-		jt.update(sql, invalue, p_num);
-		
-		sql = "delete from remark_project where rp_r_id=?";
+	public void issue_del(int r_id, int p_num) {
+		String sql = "delete from remark_project where rp_r_id=?";
 		jt.update(sql, r_id);
-		
-		sql = "delete from remark where r_id=?";
-		jt.update(sql, r_id);
+		sql = "delete from remark where r_p_num=?";
+		jt.update(sql, p_num);
+		System.out.println("여기는 실행됨");
 	}
 	
 	
 	//이슈글 정보 저장
-	public Integer issue_input(RemarkCommand remarkCommand, HttpSession session) {
+	public void issue_input(RemarkCommand remarkCommand, HttpSession session, String p_num) {
 		String id = (String)session.getAttribute("id");
-		String sql = "insert into remark(r_title, r_content, r_anthor, r_date, r_anthor_id, r_class) values (?,?,?,?,?,?)";
-		KeyHolder kh = new GeneratedKeyHolder();
-		jt.update(new PreparedStatementCreator() {
-			
-			@Override
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"r_id"});
-				pstmt.setString(1, remarkCommand.getR_title());
-				pstmt.setString(2, remarkCommand.getR_content().replace("\n", "<br>"));
-				pstmt.setString(3, remarkCommand.getR_anthor());
-				pstmt.setString(4, String.valueOf(LocalDateTime.now()));
-				pstmt.setString(5, id);
-				pstmt.setString(6, remarkCommand.getR_class());
-				return pstmt;
-			}
-		}, kh);
-		Number keyValue = kh.getKey();
-		return keyValue.intValue();
+		String sql = "insert into remark(r_title, r_content, r_anthor, r_date, r_anthor_id, r_class,r_p_num) values (?,?,?,?,?,?,?)";
+		
+		jt.update(sql, remarkCommand.getR_title(),  remarkCommand.getR_content().replace("\n", "<br>"), remarkCommand.getR_anthor(), String.valueOf(LocalDateTime.now()),id, remarkCommand.getR_class(), p_num);
 	}
-	
-	public void remark_project_insert(int r_id, Remark_projectCommand rp_command) {
-		String sql = "insert into remark_project (rp_r_id, rp_proid, rp_task, rp_process) values (?,?,?,?)";
-		jt.update(sql, r_id, rp_command.getRp_proid(), rp_command.getRp_task(), rp_command.getRp_process());
-		
-		sql = "select * from product_management where p_proid=? and p_tasknumber=? and p_processnumber=?";
-		String ans = "";
-		
-		List<String> result = jt.query(sql, new RowMapper<String>() {
 
-			@Override
-			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return rs.getString("p_remarkid");
-			}}, rp_command.getRp_proid(), rp_command.getRp_task(), rp_command.getRp_process());
-		
-		if (result.get(0) != null && !result.get(0).equals("")) {
-			ans = result.get(0) +","+ r_id;
-		}
-		else {
-			ans = String.valueOf(r_id);
-		}
-		
-		sql = "update product_management set p_remarkid=? where p_proid=? and p_tasknumber=? and p_processnumber=?";
-		jt.update(sql, ans, rp_command.getRp_proid(), rp_command.getRp_task(), rp_command.getRp_process());
-	}
-	
 	public List<ProductCommand> product_issue_select(Map<String,Object> requestValues) {
 		String project_id = (String)requestValues.get("project_id");
 		String searchword = (String)requestValues.get("searchword");
@@ -490,6 +437,7 @@ public class CommonDao {
 				command.setP_proid(rs.getString("p_proid"));
 				command.setP_processnumber(rs.getString("p_processnumber"));
 				command.setP_tasknumber(rs.getString("p_tasknumber"));
+				command.setP_num(rs.getInt("p_num"));
 				return command;
 			}});
 		return result;

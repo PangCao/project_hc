@@ -119,9 +119,8 @@ public class CommonController {
   	
   	//이슈 작성 등록
     @RequestMapping("/issue_write_input")
-    public String issue_write(Remark_projectCommand rp_command, RemarkCommand remarkCommand, HttpSession session) {
-    	int r_id = dao.issue_input(remarkCommand, session);
-    	dao.remark_project_insert(r_id, rp_command);
+    public String issue_write(@RequestParam String p_num, Remark_projectCommand rp_command, RemarkCommand remarkCommand, HttpSession session) {
+    	dao.issue_input(remarkCommand, session, p_num);
         return "redirect:issue";
     }
     
@@ -136,8 +135,8 @@ public class CommonController {
     
     //이슈 게시물 삭제
     @RequestMapping("/issue_delete")
-    public String issue_delete(@RequestParam int r_id, RedirectAttributes ra) {
-    	dao.issue_del(r_id);
+    public String issue_delete(@RequestParam int r_id, @RequestParam int p_num, RedirectAttributes ra) {
+    	dao.issue_del(r_id, p_num);
     	ra.addFlashAttribute("delete", "true");
     	return "redirect:issue";
     }

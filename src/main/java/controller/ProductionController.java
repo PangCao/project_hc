@@ -67,6 +67,7 @@ public class ProductionController {
 		model.addAttribute("membermap", dao.membermap());
 		model.addAttribute("paging",  dao.paging(dao.totalpage("input", requestValues), requestValues));
 		model.addAttribute("projectmap", dao.projectmap());
+		model.addAttribute("product_issuelist", dao.product_issuelist());
 		
 		return "product_management/process_input";
 	}
@@ -83,8 +84,9 @@ public class ProductionController {
 	
 	@RequestMapping("/input_popup_input")
 	public String input_popup_input(HttpSession session, ProductCommand command, RemarkCommand issue, @RequestParam Map<String, Object> requestValues, Model model) {
-		int remarkId = dao.remark_insert(issue, session);
-		dao.product_insert(command, requestValues, remarkId, session);
+		
+		int p_num = dao.product_insert(command, requestValues, session);
+		int remarkId = dao.remark_insert(issue, session, p_num);
 		if (remarkId != -1) {
 			dao.remark_project_insert(command, issue, remarkId, requestValues);
 		}
@@ -98,6 +100,7 @@ public class ProductionController {
 	public String complete(@RequestParam Map<String, Object> requestValues, Model model){
 		model.addAttribute("pagechk", "complete");
 		model.addAttribute("productlist", dao.productlist("complete", requestValues));
+		model.addAttribute("product_issuelist", dao.product_issuelist());
 		model.addAttribute("memberMap",dao.membermap());
 		model.addAttribute("stat", model.getAttribute("stat"));
 		model.addAttribute("projectlist", dao.projectlist());
@@ -115,6 +118,7 @@ public class ProductionController {
 		model.addAttribute("pagechk", "record");
 		model.addAttribute("productlist", dao.productlist("record", requestValues));
 		model.addAttribute("memberMap",dao.membermap());
+		model.addAttribute("product_issuelist", dao.product_issuelist());
 		model.addAttribute("stat", model.getAttribute("stat"));
 		model.addAttribute("projectlist", dao.projectlist());
 		model.addAttribute("project_id", (String)requestValues.get("project_id"));
@@ -127,10 +131,9 @@ public class ProductionController {
 	
 	@RequestMapping("/issue_popup")
 	public String issue_popup(@RequestParam Map<String, Object> requestValues, Model model) {
-		String issueids =  dao.issueids(requestValues);
-		model.addAttribute("issuelist", dao.issuelist(issueids, requestValues));
+		model.addAttribute("issuelist", dao.issuelist(requestValues));
 		model.addAttribute("p_num", (String)requestValues.get("p_num"));
-		model.addAttribute("paging", dao.paging(issueids.split(",").length, requestValues));
+		model.addAttribute("paging", dao.paging(dao.issuetotal(), requestValues));
 		model.addAttribute("stat", model.getAttribute("stat"));
 		return "product_management/issuepopup";
 	}
@@ -140,8 +143,8 @@ public class ProductionController {
 		dao.issue_viewUp(Integer.valueOf((String)requestValues.get("r_id")));
 		model.addAttribute("issueDetail", dao.issueDetail(requestValues));
 		model.addAttribute("p_num", (String)requestValues.get("p_num"));
-		model.addAttribute("issueids", dao.issueids(requestValues));
 		model.addAttribute("r_id", (String)requestValues.get("r_id"));
+		model.addAttribute("next_prev", dao.next_prev(requestValues));
 		return "product_management/issuepopup_view";
 	}
 	
@@ -162,11 +165,10 @@ public class ProductionController {
 	}
 	
 	@RequestMapping("/issue_popup_delete")
-	public String issue_delete(@RequestParam String issueids, @RequestParam String r_id, @RequestParam String p_num, RedirectAttributes ra) {
+	public String issue_delete(@RequestParam String r_id, @RequestParam String p_num, RedirectAttributes ra) {
 		dao.issue_delete(r_id, p_num);
 		ra.addAttribute("r_id", r_id);
 		ra.addAttribute("p_num", p_num);
-		ra.addAttribute("issueids", issueids);
 		ra.addFlashAttribute("stat", "1");
 		return "redirect:issue_popup";
 	}

@@ -37,6 +37,7 @@
 							<input type="hidden" id="rp_proid" name="rp_proid">
 							<input type="hidden" id="rp_task" name="rp_task">
 							<input type="hidden" id="rp_process" name="rp_process">
+							<input type="hidden" id="p_num" name="p_num">
 							<input type="button" class="ml-2 issue_search_btn" value="공정 검색" onclick="issue_search()">
 						</div>
 						<script type="text/javascript">

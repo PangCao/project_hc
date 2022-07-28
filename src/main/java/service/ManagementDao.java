@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +20,6 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import command.ProductCommand;
 import command.ProjectCommand;
@@ -87,11 +84,11 @@ public class ManagementDao {
 	}
 	
 	// 이슈내역을 insert하고 키홀더 값을 반환하는 메서드
-	public Integer remark_insert(RemarkCommand issue, HttpSession session) {
+	public Integer remark_insert(RemarkCommand issue, HttpSession session, int p_num) {
 		if(issue.getR_title() != null && !issue.getR_title().trim().equals("")) {
 			String name = (String)session.getAttribute("name");
 			String id = (String)session.getAttribute("id");
-			String sql = "insert into remark (r_title, r_content, r_anthor, r_date, r_class, r_anthor_id) values (?,?,?,?,?,?)";
+			String sql = "insert into remark (r_title, r_content, r_anthor, r_date, r_class, r_anthor_id, r_p_num) values (?,?,?,?,?,?,?)";
 			KeyHolder kh = new GeneratedKeyHolder(); //자동 증가값을 알기 위해서 사용
 			jt.update(new PreparedStatementCreator() {
 				
@@ -104,6 +101,7 @@ public class ManagementDao {
 					pstmt.setString(4, String.valueOf(LocalDateTime.now()));
 					pstmt.setString(5, issue.getR_class());
 					pstmt.setString(6, id);
+					pstmt.setInt(7, p_num);
 					return pstmt;
 				}
 			}, kh);
@@ -116,14 +114,27 @@ public class ManagementDao {
 	}
 	
 	// 생산 작업을 등록하는 메서드
-	public void product_insert(ProductCommand command, Map<String, Object> requestValues, Integer remarkId, HttpSession session) {
+	public Integer product_insert(ProductCommand command, Map<String, Object> requestValues, HttpSession session) {
 		String id = (String)session.getAttribute("id");
 		String processnumber = (String)requestValues.get("p_prefix") + (String)requestValues.get("p_suffix");
-		String sql = "insert into product_management (p_proid, p_tasknumber, p_processnumber, p_regdate, p_remarkid, p_regnum, p_state) values (?,?,?,?,?,?,?)";
-		if (remarkId == -1) {
-			remarkId = null;
-		} 
-		jt.update(sql, requestValues.get("project_id"), command.getP_tasknumber(), processnumber, LocalDateTime.now(), remarkId, id , "결재 대기");
+		String sql = "insert into product_management (p_proid, p_tasknumber, p_processnumber, p_regdate, p_regnum, p_state) values (?,?,?,?,?,?)";
+		KeyHolder kh = new GeneratedKeyHolder(); //자동 증가값을 알기 위해서 사용
+		jt.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"p_num"});
+				pstmt.setString(1, (String)requestValues.get("project_id"));
+				pstmt.setString(2, command.getP_tasknumber());
+				pstmt.setString(3, processnumber);
+				pstmt.setString(4, String.valueOf(LocalDateTime.now()));
+				pstmt.setString(5, id);
+				pstmt.setString(6, "결재 대기");
+				return pstmt;
+			}
+		}, kh);
+		Number keyValue = kh.getKey();
+		return keyValue.intValue();
 	}
 	
 	public List<ProductCommand> productlist(String category, Map<String, Object> requestValues) {
@@ -197,7 +208,6 @@ public class ManagementDao {
 				command.setP_regdate(rs.getString("p_regdate"));
 				command.setP_startdate(rs.getString("p_startdate") == null ? "-" : rs.getString("p_startdate"));
 				command.setP_compledate(rs.getString("p_compledate") == null ? "-" : rs.getString("p_compledate"));
-				command.setP_remarkid(rs.getString("p_remarkid"));
 				command.setP_regnum(rs.getString("p_regnum"));
 				command.setP_state(rs.getString("p_state"));
 				return command;
@@ -218,78 +228,38 @@ public class ManagementDao {
 			
 		return result;
 	}
-	
-	public String issueids(Map<String, Object> requestValues) {
-		String sql = "select * from product_management where p_num=?";
-		String p_num = (String)requestValues.get("p_num");
-		List<String> result = jt.query(sql, new RowMapper<String>() {
-
-			@Override
-			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return rs.getString("p_remarkid");
-			}}, p_num);
-
-		return result.isEmpty()? null : result.get(0);
-	}
-	
-	
+		
 	public void issue_delete(String r_id, String p_num) {
-		String sql = "select * from product_management where p_num=?";
-		List<String> result = jt.query(sql, new RowMapper<String>() {
-
-			@Override
-			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return rs.getString("p_remarkid");
-			}},p_num);
-		String[] ans = result.get(0).split(",");
-		ArrayList<String> list = new ArrayList<String>();
-		Collections.addAll(list, ans);
-		list.remove(r_id);
-		String invalue = String.join(",", list);
-		
-		sql = "update product_management set p_remarkid=? where p_num=?";
-		jt.update(sql, invalue, p_num);
-		
-		sql = "delete from remark_project where rp_r_id=?";
+		String sql = "delete from remark_project where rp_r_id=?";
 		jt.update(sql, r_id);
-		
-		sql = "delete from remark where r_id=?";
-		jt.update(sql, r_id);
-		
+		sql = "delete from remark where r_p_num=?";
+		jt.update(sql, p_num);
 	}
 	
-	public List<RemarkCommand> issuelist(String issueids, Map<String, Object> requestValues) {
-		String[] search = issueids.split(",");
+	public List<RemarkCommand> issuelist(Map<String, Object> requestValues) {
+		String p_num = (String)requestValues.get("p_num");
 		int page =  requestValues.get("page") == null? 1:Integer.valueOf((String)requestValues.get("page"));
-		int start = (page-1) * 10;
-		int end = page * 10;
-		
-		if (end > search.length) {
-			end = search.length;
-		}
-		String sql = "select * from remark where r_id = ?";
-		List<RemarkCommand> remarklist = new ArrayList<RemarkCommand>();
-		
-		for (int i = start; i < end; i++) {
-			jt.query(sql, new RowMapper<Object>() {
+		int SearchPage = (page - 1) * 10;
+		String sql = "select * from remark where r_p_num=? limit "+SearchPage+", 10";
+		List<RemarkCommand> result = jt.query(sql, new RowMapper<RemarkCommand>() {
 
-				@Override
-				public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-					RemarkCommand command = new RemarkCommand();
-					command.setR_id(rs.getInt("r_id"));
-					command.setR_title(rs.getString("r_title"));
-					command.setR_content(rs.getString("r_content"));
-					command.setR_anthor(rs.getString("r_anthor"));
-					command.setR_date(rs.getString("r_date").substring(0,10));
-					command.setR_view(rs.getInt("r_view"));
-					command.setR_class(rs.getString("r_class"));
-					command.setR_anthor_id(rs.getString("r_anthor_id"));
-					remarklist.add(command);
-					return null;
-				}},search[i]);
-		}
+			@Override
+			public RemarkCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				RemarkCommand command = new RemarkCommand();
+				command.setR_id(rs.getInt("r_id"));
+				command.setR_title(rs.getString("r_title"));
+				command.setR_content(rs.getString("r_content"));
+				command.setR_anthor(rs.getString("r_anthor"));
+				command.setR_date(rs.getString("r_date").substring(0,10));
+				command.setR_view(rs.getInt("r_view"));
+				command.setR_class(rs.getString("r_class"));
+				command.setR_anthor_id(rs.getString("r_anthor_id"));
+				command.setR_p_num(rs.getInt("r_p_num"));
+				return command;
+			}}, p_num);
+	
 		
-		return remarklist;
+		return result;
 	}
 	
 	public RemarkCommand issueDetail(Map<String, Object> requestValues) {
@@ -378,6 +348,13 @@ public class ManagementDao {
 		}
 		Integer result = jt.queryForObject(sql, Integer.class);
 
+		return result;
+	}
+	
+	public Integer issuetotal() {
+		String sql = "select count(*) from remark";
+		Integer result = jt.queryForObject(sql, Integer.class);
+		
 		return result;
 	}
 	
@@ -548,11 +525,59 @@ public class ManagementDao {
 				pdc.setP_regdate(rs.getString("p_regdate"));
 				pdc.setP_startdate(rs.getString("p_startdate"));
 				pdc.setP_compledate(rs.getString("p_compledate"));
-				pdc.setP_remarkid(rs.getString("p_remarkid"));
 				pdc.setP_regnum(rs.getString("p_regnum"));
 				return pdc;
 			}
 		},sq);
 		return result.isEmpty()? null : result;
+	}
+	
+	public Map<String, String> next_prev(Map<String, Object> requestValues) {
+		Map<String, String> result = new HashMap<String, String>();
+		String sql = "select * from remark where r_p_num = ? and r_id > ? order by r_id desc limit 1";
+		jt.query(sql,new RowMapper<Object>() {
+
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				result.put("next", String.valueOf(rs.getInt("r_id")));
+				return null;
+			}}, requestValues.get("p_num"),requestValues.get("r_id"));
+		
+		sql = "select * from remark where r_p_num = ? and r_id < ? order by r_id asc limit 1";
+		jt.query(sql,new RowMapper<Object>() {
+
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				result.put("prev", String.valueOf(rs.getInt("r_id")));
+				return null;
+			}}, requestValues.get("p_num"),requestValues.get("r_id"));
+		return result;
+	}
+	
+	public Map<String, ArrayList<Integer>> product_issuelist() {
+		Map<String, ArrayList<Integer>> result = new HashMap<String, ArrayList<Integer>>();
+		
+		String sql = "select * from product_management";
+		List<Integer> p_num = jt.query(sql, new RowMapper<Integer>() {
+
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getInt("p_num");
+			}});
+		sql = "select * from remark where r_p_num=?";
+		for (int i = 0; i < p_num.size(); i++) {
+			List<Integer> list = jt.query(sql, new RowMapper<Integer>() {
+
+				@Override
+				public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+					
+					return rs.getInt("r_id");
+				}}, p_num.get(i));
+			list = list == null?  new ArrayList<Integer>():list;
+			
+			result.put(String.valueOf(p_num.get(i)), (ArrayList)list);
+			
+		}
+		return result;
 	}
 }

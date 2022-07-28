@@ -21,6 +21,8 @@
 	Map<String, String> memberMap = (HashMap<String, String>)request.getAttribute("membermap");
 	Map<String, Integer> paging = (HashMap<String, Integer>)request.getAttribute("paging");
 	Map<String,String> projectmap = (HashMap<String, String>)request.getAttribute("projectmap");
+	Map<String, ArrayList<Integer>> product_issuelist = (HashMap<String, ArrayList<Integer>>)request.getAttribute("product_issuelist");
+	
 	DecimalFormat df = new DecimalFormat("00");
 	
 	if (stat != null && stat.equals("2")) {
@@ -112,7 +114,7 @@
 								<td><%= command.getP_regdate().substring(0, 10) %><br><%=command.getP_regdate().substring(10) %></td>
 								<td><%= command.getP_startdate().length() >10 ? command.getP_startdate().substring(0, 10):"-" %><br><%=command.getP_startdate().length() >10 ? command.getP_startdate().substring(10):"" %></td>
 								<td><%= command.getP_compledate().length() >10 ?command.getP_compledate().substring(0,10):"-" %><br><%=command.getP_compledate().length() >10 ? command.getP_compledate().substring(10):"" %></td>
-								<td><a href="#" onclick="issueup<%=i%>()" style="color:black;">이슈가 총 <span style="color:red;"><%= command.getP_remarkid() != null && !command.getP_remarkid().equals("") ? command.getP_remarkid().split(",").length:0 %></span>개 존재합니다.</a></td>
+								<td><a href="#" onclick="issueup<%=i%>()" style="color:black;">이슈가 총 <span style="color:red;"><%= product_issuelist.get(String.valueOf(command.getP_num())).size()%></span>개 존재합니다.</a></td>
 								
 								<td><%= memberMap.get(command.getP_regnum()) %></td>
 							</tr>

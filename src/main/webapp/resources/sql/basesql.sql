@@ -72,6 +72,8 @@ create table if not exists remark(
     foreign key(r_anthor_id) references member(m_num)
 )default charset=utf8mb4;
 
+select * from remark;
+
 create table if not exists remark_project(
 	rp_num int primary key auto_increment,
     rp_r_id int,

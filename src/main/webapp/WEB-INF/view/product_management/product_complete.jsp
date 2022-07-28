@@ -22,6 +22,7 @@
 	String tasknumber = (String)request.getAttribute("tasknumber");
 	String processnumber = (String)request.getAttribute("processnumber");
 	Map<String, String> projectmap = (HashMap<String, String>)request.getAttribute("projectmap");
+	Map<String, ArrayList<Integer>> product_issuelist = (HashMap<String, ArrayList<Integer>>)request.getAttribute("product_issuelist");
 	
 	if (stat != null && stat.equals("1")){
 %>
@@ -218,7 +219,7 @@
 				<%
 					}
 				%> 
-								<td><a href="#" onclick="issueup<%=i%>()" style="color:black;">이슈가 총 <span style="color:red;"><%=command.getP_remarkid() != null && !command.getP_remarkid().equals("") ? command.getP_remarkid().split(",").length:0 %></span>개 존재합니다.</a></td>
+								<td><a href="#" onclick="issueup<%=i%>()" style="color:black;">이슈가 총 <span style="color:red;"><%= product_issuelist.get(String.valueOf(command.getP_num())).size()%></span>개 존재합니다.</a></td>
 								<td><%=memberMap.get(command.getP_regnum())%></td>
 								<td><%=command.getP_state() %></td>
 				<%

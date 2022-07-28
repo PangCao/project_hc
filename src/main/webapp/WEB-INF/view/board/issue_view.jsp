@@ -91,7 +91,7 @@
 <script type="text/javascript">
 	function r_delete() {
 		if (confirm('게시물을 삭제하시겠습니까?')) {
-			location.href="issue_delete?r_id=<%=remarkmap.get("current")%>";
+			location.href="issue_delete?r_id=<%=remarkCommand.getR_id()%>&p_num=<%=remarkCommand.getR_p_num()%>";
 		}
 	}
 </script>
