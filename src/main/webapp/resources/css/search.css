@@ -47,24 +47,27 @@
     width: 2%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(2) {
-    width: 7%;
+    width: 10%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(3) {
     width: 7%;
 }
-.search_top  div > table > tbody > tr > th:nth-of-type(4) {
-    width: 13%;
+.search_top > div > table > tbody > tr > th:nth-of-type(4) {
+    width: 7%;
 }
-.search_top > div > table > tbody > tr > th:nth-of-type(5) {
+.search_top  div > table > tbody > tr > th:nth-of-type(5) {
     width: 13%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(6) {
     width: 13%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(7) {
-    width: 35%;
+    width: 13%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(8) {
+    width: 25%;
+}
+.search_top > div > table > tbody > tr > th:nth-of-type(9) {
     width: 10%;
 }
 
@@ -88,23 +91,26 @@
     width: 2%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(2) {
-    width: 7%;
+    width: 10%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(3) {
     width: 7%;
 }
-.search_middle  div > table > tbody > tr > td:nth-of-type(4) {
-    width: 13%;
+.search_middle > div > table > tbody > tr > td:nth-of-type(4) {
+    width: 7%;
 }
-.search_middle > div > table > tbody > tr > td:nth-of-type(5) {
+.search_middle  div > table > tbody > tr > td:nth-of-type(5) {
     width: 13%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(6) {
     width: 13%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(7) {
-    width: 35%;
+    width: 13%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(8) {
+    width: 25%;
+}
+.search_middle > div > table > tbody > tr > td:nth-of-type(9) {
     width: 10%;
 }

@@ -414,4 +414,66 @@ public class ManagementDao {
 		jt.update(sql, dpn, project_id, p_tasknumber, p_prefix);
 	}
 	
+	//project테이블정보 가져오기
+	public List<ProjectCommand> ProjectSearch () {
+		String sql = "select * from project";
+		
+		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
+
+			@Override
+			public ProjectCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProjectCommand procom = new ProjectCommand();
+				procom.setPj_id(rs.getString("pj_id"));
+				procom.setPj_name(rs.getString("pj_name"));
+				procom.setPj_regdate(rs.getString("pj_regdate"));
+				procom.setPj_eta(rs.getString("pj_eta").substring(0,11));
+				procom.setPj_task(rs.getString("pj_task"));
+				procom.setPj_progress(rs.getFloat("pj_progress"));
+				return procom;
+			}
+		});
+		return result.isEmpty() ? null : result;
+	}
+	
+	//ProjectCreate테이블 정보 가져오기(단 프로젝트 아이디가 같을 경우)
+	public List<ProjectCreateCommand> PccSearch(String Sequence){
+		String sql = "select * from projectcreate where pc_id = ?";
+		
+		List<ProjectCreateCommand> result = jt.query(sql, new RowMapper<ProjectCreateCommand>() {
+
+			@Override
+			public ProjectCreateCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProjectCreateCommand pcc = new ProjectCreateCommand();
+				pcc.setPc_id(rs.getString("pc_id"));
+				pcc.setPc_name(rs.getString("pc_name"));
+				pcc.setPc_tasknumber(rs.getString("pc_tasknumber"));
+				pcc.setPc_propart(rs.getString("pc_propart"));
+				pcc.setPc_dpn(rs.getString("pc_dpn"));
+				return pcc;
+			}
+		}, Sequence);
+		return result.isEmpty() ? null : result;
+	}
+	
+	public List<ProductCommand> pcom(String sq){
+		String sql = "select * from product_management where p_proname = ?";
+		
+		List<ProductCommand> result = jt.query(sql, new RowMapper<ProductCommand>() {
+
+			@Override
+			public ProductCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProductCommand pdc = new ProductCommand();
+				pdc.setP_proid(rs.getString("p_proname"));
+				pdc.setP_tasknumber(rs.getString("p_tasknumber"));
+				pdc.setP_processnumber(rs.getString("p_tasknumber"));
+				pdc.setP_regdate(rs.getString("p_regdate"));
+				pdc.setP_startdate(rs.getString("p_startdate"));
+				pdc.setP_compledate(rs.getString("p_compledate"));
+				pdc.setP_remarkid(rs.getString("p_remarkid"));
+				pdc.setP_regnum(rs.getString("p_regnum"));
+				return pdc;
+			}
+		},sq);
+		return result.isEmpty()? null : result;
+	}
 }

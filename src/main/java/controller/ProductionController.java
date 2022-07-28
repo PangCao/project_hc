@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import command.ProductCommand;
+import command.ProjectCommand;
 import command.RemarkCommand;
 import service.ManagementDao;
 
@@ -23,7 +24,9 @@ public class ProductionController {
 	private ManagementDao dao;
 	
 	@RequestMapping("project_input")
-	public String project_input(@RequestParam(required = false) String name, @RequestParam(required = false) String date, Model model) {
+	public String project_input(@RequestParam(required = false) String name,
+			@RequestParam(required = false) String date, 
+			@RequestParam(required = false) String Sequence, Model model) {
 		dao.ProjectCreate(name,date);
 		return "redirect:product_management";
 	}
@@ -35,21 +38,23 @@ public class ProductionController {
 	
 	//전체 공정 현황
 	@RequestMapping("/product_management")
-	public String product_management() {
-		
+	public String product_management(Model model) {
+		model.addAttribute("ProCom", dao.ProjectSearch());
 		return "product_management/project_management";
 	}
 	
 	//프로잭트 서브
 	@RequestMapping("/project_sub_management")
-	public String sub(){
+	public String sub(@RequestParam String Sequence, Model model){
+		model.addAttribute("pcc", dao.PccSearch(Sequence));
+		model.addAttribute("sq",Sequence);
 		return "product_management/project_sub_management";
 	}
 	
 	//생산 작업 실적 등록
 	@RequestMapping("/project_detail")
-	public String detail(){
-		
+	public String detail(@RequestParam String sq, Model model){
+		model.addAttribute("productcom",dao.pcom(sq));
 		return "product_management/project_detail";
 	}
 	

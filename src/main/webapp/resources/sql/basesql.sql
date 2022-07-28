@@ -147,3 +147,4 @@ create table if not exists projectcreate(
 )default charset=utf8mb4;
 
 select * from projectcreate;
+select * from projectcreate where pc_id = 'PJT-2022-0001';
