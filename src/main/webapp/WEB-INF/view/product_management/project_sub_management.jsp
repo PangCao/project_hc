@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.*" %>
+<%@ page import="command.ProjectCreateCommand" %>
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
@@ -11,6 +13,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<%
+	request.setCharacterEncoding("utf-8");
+	ArrayList<ProjectCreateCommand> pcclist = (ArrayList<ProjectCreateCommand>)request.getAttribute("pcc");
+	String sq = (String)request.getAttribute("sq");
+	String dpn = pcclist.get(0).getPc_dpn();
+	String[] Part = {"A","B","C","D"};
+%>
 <body>
 	<section class="layout_main row">
 		<section class="layout_left col-2 p-0">
@@ -21,130 +30,63 @@
 			<!-- 여기 아래부터 바디 -->
 			<section class="project_sub_management">
 				<div class="d-flex justify-content-between p-4">
-					<h2>PJT명</h2>
+					<h2><%=pcclist.get(0).getPc_name() %></h2>
 				</div>
 				<div class="row m-0">
+				<%
+					for(int i=0;i<Part.length;i++){
+						if(pcclist != null && pcclist.size()>i){	
+							int cnt=1;
+				%>
 					<div class="col-3">
-						<a href="project_detail">
+						<a href="project_detail?sq=<%=sq%>">
 							<table>
 								<tbody>
+								<%
+								for(int k=0; k<3; k++){
+								%>
 									<tr>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">1</td>
-										<td>2</td>
-										<td>3</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">4</td>
+									<%
+									for(int j=0; j<4; j++){
+										for(int h=0; h<dpn.length(); h++){
+											int count = 0;
+											if(dpn.charAt(h) == '0'){
+												count++;
+												if(count==10){
+												 %>
+														<td style="background-color:green;"><%=cnt%></td>
+												<%
+												cnt++;
+												break;
+												}else{
+												 %>
+														<td><%=cnt%></td>
+												<%	
+												cnt++;
+												break;
+												}
+											}
+										}
+		
+									}
+									 %>
 									</tr>
-									<tr>
-										<td>5</td>
-										<td>6</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">7</td>
-										<td>8</td>
-									</tr>
-									<tr>
-										<td>9</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">10</td>
-										<td>11</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">12</td>
-									</tr>
+								<%
+									}
+								%>
 								</tbody>
 							</table>
 						</a>
 						<div class="d-flex justify-content-center">
-							<p>&lt; A &gt;</p>
+							<p>&lt; <%=Part[i] %> &gt;</p>
 						</div>
 					</div>
-					<div class="col-3">
-						<a href="project_detail">
-							<table>
-								<tbody>
-									<tr>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">1</td>
-										<td>2</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">3</td>
-										<td>4</td>
-									</tr>
-									<tr>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">5</td>
-										<td>6</td>
-										<td>7</td>
-										<td>8</td>
-									</tr>
-									<tr>
-										<td>9</td>
-										<td>10</td>
-										<td>11</td>
-										<td>12</td>
-									</tr>
-								</tbody>
-							</table>
-						</a>
-						<div class="d-flex justify-content-center">
-							<p>&lt; B &gt;</p>
-						</div>
-					</div>
-					<div class="col-3">
-						<a href="project_detail">
-							<table>
-								<tbody>
-									<tr>
-										<td>1</td>
-										<td>2</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">3</td>
-										<td>4</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>6</td>
-										<td>7</td>
-										<td>8</td>
-									</tr>
-									<tr>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">9</td>
-										<td>10</td>
-										<td>11</td>
-										<td>12</td>
-									</tr>
-								</tbody>
-							</table>
-						</a>
-						<div class="d-flex justify-content-center">
-							<p>&lt; C &gt;</p>
-						</div>
-					</div>
-					<div class="col-3">
-						<a href="project_detail">
-							<table>
-								<tbody>
-									<tr>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">1</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">2</td>
-										<td>3</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">4</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>6</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">7</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">8</td>
-									</tr>
-									<tr>
-										<td>9</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">10</td>
-										<td style="background-color: rgba(255, 0, 0, 0.322);">11</td>
-										<td>12</td>
-									</tr>
-								</tbody>
-							</table>
-						</a>
-						<div class="d-flex justify-content-center">
-							<p>&lt; D &gt;</p>
-						</div>
-					</div>
+			<%
+						}
+					}
+			%>
 				</div>
 			</section>
-			<div class="d-flex justify-content-center mt-5">
-				<p>&lt; 1 2 3 &gt;</p>
-			</div>
 		</section>
 	</section>
 </body>
