@@ -31,7 +31,7 @@
 					ProjectCommand dto = procomlist.get(i);
 					if(dto.getPj_progress() == 1){
 	%>
-				<a class="col-5 comple" href="#" onclick="project_input()?Sequence=<%=dto.getPj_id()%>">
+				<a class="col-5 comple" href="#" onclick="project_input()">
 					<h3 class="mb-4"><%=dto.getPj_name()%></h3>
 					<div>
 						<P> 현재 진행 공정 : <%=dto.getPj_task() %></P>

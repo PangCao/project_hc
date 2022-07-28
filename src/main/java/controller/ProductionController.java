@@ -25,8 +25,7 @@ public class ProductionController {
 	
 	@RequestMapping("project_input")
 	public String project_input(@RequestParam(required = false) String name,
-			@RequestParam(required = false) String date, 
-			@RequestParam(required = false) String Sequence, Model model) {
+			@RequestParam(required = false) String date, Model model) {
 		dao.ProjectCreate(name,date);
 		return "redirect:product_management";
 	}
@@ -47,14 +46,15 @@ public class ProductionController {
 	@RequestMapping("/project_sub_management")
 	public String sub(@RequestParam String Sequence, Model model){
 		model.addAttribute("pcc", dao.PccSearch(Sequence));
-		model.addAttribute("sq",Sequence);
 		return "product_management/project_sub_management";
 	}
 	
 	//생산 작업 실적 등록
 	@RequestMapping("/project_detail")
-	public String detail(@RequestParam String sq, String pid, Model model){
-		model.addAttribute("productcom",dao.pcom(sq,pid));
+	public String detail(@RequestParam String pj_id, @RequestParam(required = false) String sdate, @RequestParam(required = false) String fdate, Model model){
+		model.addAttribute("productcom",dao.pcom(pj_id));
+		model.addAttribute("sdate", sdate);
+  		model.addAttribute("fdate", fdate);
 		return "product_management/project_detail";
 	}
 	

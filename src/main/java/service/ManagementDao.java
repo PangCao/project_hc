@@ -511,24 +511,25 @@ public class ManagementDao {
 		return result.isEmpty() ? null : result;
 	}
 	
-	public List<ProductCommand> pcom(String sq, String pid){
-		String sql = "select * from product_management where p_num = ? and p_proname = ?";
+	public List<ProductCommand> pcom(String pj_id){
+		String sql = "select * from product_management where p_proid = ?";
 		
 		List<ProductCommand> result = jt.query(sql, new RowMapper<ProductCommand>() {
 
 			@Override
 			public ProductCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
 				ProductCommand pdc = new ProductCommand();
-				pdc.setP_proid(rs.getString("p_proname"));
+				pdc.setP_num(rs.getInt("p_num"));
+				pdc.setP_proid(rs.getString("p_proid"));
 				pdc.setP_tasknumber(rs.getString("p_tasknumber"));
-				pdc.setP_processnumber(rs.getString("p_tasknumber"));
+				pdc.setP_processnumber(rs.getString("p_processnumber"));
 				pdc.setP_regdate(rs.getString("p_regdate"));
-				pdc.setP_startdate(rs.getString("p_startdate"));
-				pdc.setP_compledate(rs.getString("p_compledate"));
+				pdc.setP_startdate(rs.getString("p_startdate") == null ? "-" : rs.getString("p_startdate"));
+				pdc.setP_compledate(rs.getString("p_compledate") == null ? "-" : rs.getString("p_compledate"));
 				pdc.setP_regnum(rs.getString("p_regnum"));
 				return pdc;
 			}
-		},sq);
+		},pj_id);
 		return result.isEmpty()? null : result;
 	}
 	
