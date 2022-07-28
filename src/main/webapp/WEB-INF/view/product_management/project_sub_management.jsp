@@ -16,7 +16,8 @@
 <%
 	request.setCharacterEncoding("utf-8");
 	ArrayList<ProjectCreateCommand> pcclist = (ArrayList<ProjectCreateCommand>)request.getAttribute("pcc");
-	String sq = (String)request.getAttribute("sq");
+	String sq = pcclist.get(0).getPc_name();
+	String pid = pcclist.get(0).getPc_id();
 	String dpn = pcclist.get(0).getPc_dpn();
 	String[] Part = {"A","B","C","D"};
 %>

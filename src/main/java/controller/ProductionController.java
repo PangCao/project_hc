@@ -53,8 +53,8 @@ public class ProductionController {
 	
 	//생산 작업 실적 등록
 	@RequestMapping("/project_detail")
-	public String detail(@RequestParam String sq, Model model){
-		model.addAttribute("productcom",dao.pcom(sq));
+	public String detail(@RequestParam String sq, String pid, Model model){
+		model.addAttribute("productcom",dao.pcom(sq,pid));
 		return "product_management/project_detail";
 	}
 	
