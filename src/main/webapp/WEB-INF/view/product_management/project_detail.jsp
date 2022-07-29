@@ -20,7 +20,9 @@
 <title>Insert title here</title>
 </head>
 <%
-	ArrayList<ProductCommand> productlist = (ArrayList<ProductCommand>)request.getAttribute("productcom");
+	ArrayList<ProductCommand> detaillist = (ArrayList<ProductCommand>)request.getAttribute("detaillist");
+	Map<String, String> regnum = (Map<String, String>)request.getAttribute("membermap");
+	Map<String, Integer> paging = (Map<String, Integer>)request.getAttribute("paging");
 	String sdate = (String)request.getAttribute("sdate");
 	String fdate = (String)request.getAttribute("fdate");
 %>
@@ -46,13 +48,13 @@
 						</form>
 					</div>
 					<div class="col-6 d-flex align-items-end flex-column">
-						<form action="" method="post">
-							<input type="text" placeholder="작업번호">
-							<input type="submit" value="조회">
+						<form action="project_detail" method="post">
+							<input type="text" name="tasknum" id="tasknum" placeholder="작업번호">
+							<input type="submit"  value="조회">
 						</form>
-						<form action="" method="post">
-							<input type="text" placeholder="공정번호">
-							<input type="submit" value="조회">
+						<form action="project_detail" method="post">
+							<input type="text" name="processnum" id="processnum" placeholder="공정번호">
+							<input type="submit"  value="조회">
 						</form>
 					</div>
 				</div>
@@ -74,8 +76,8 @@
 				</div>
 			</section>
 			<%
-				for(int i=0; i<productlist.size(); i++){
-					ProductCommand productcom = productlist.get(i);
+				for(int i=0; i<detaillist.size(); i++){
+					ProductCommand productcom = detaillist.get(i);
 			%>
 			<section class="search_middle">
 				<div>
@@ -89,7 +91,7 @@
 								<td><%=productcom.getP_regdate() %></td>
 								<td><%=productcom.getP_startdate() %></td>
 								<td><%=productcom.getP_compledate() %></td>
-								<td><%=productcom.getP_regnum() %></td>
+								<td><%=regnum.get(productcom.getP_regnum()) %></td>
 							</tr>
 						</tbody>
 					</table>
@@ -107,18 +109,18 @@
 					}
 					else {
 				%>
-					<a href="issue?page=<%=paging.get("page")-1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+					<a href="project_detail?page=<%=paging.get("page")-1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
 					for(int i = paging.get("min"); i < paging.get("max"); i++){
 						if (paging.get("page")-1 == i) {
 				%>
-					<a href="issue?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
+					<a href="project_detail?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
 				<%
 						}
 						else {
 				%>
-					<a href="issue?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><%=i+1%></a>&nbsp;&nbsp;
+					<a href="project_detail?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><%=i+1%></a>&nbsp;&nbsp;
 				<%
 						}
 					}
@@ -129,7 +131,7 @@
 					}
 					else {
 				%>
-					<a href="issue?page=<%=paging.get("page")+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-right"></i></a>
+					<a href="project_detail?page=<%=paging.get("page")+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 					
@@ -157,7 +159,7 @@
 			return false;
 		}
 		
-		location.href="issue?sdate="+sdate+"&fdate="+fdate;
+		location.href="product_detail?sdate="+sdate+"&fdate="+fdate;
 	}
 </script>
 </html>

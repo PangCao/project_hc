@@ -511,8 +511,24 @@ public class ManagementDao {
 		return result.isEmpty() ? null : result;
 	}
 	
-	public List<ProductCommand> pcom(String pj_id){
-		String sql = "select * from product_management where p_proid = ?";
+	//프로젝트 공정 현황 뷰 리스트
+	public List<ProductCommand> detailView(String pj_id , int page, String tasknum,String processnum,String sdate,String fdate, int cnt){
+		int searchPage = (page - 1) * cnt;
+		
+		String sql = null;
+		
+		if(tasknum != null && !tasknum.equals("")) {
+			sql = "select * from product_management where p_tasknumber like '%"+tasknum+"%' order by p_proid desc limit"+searchPage+","+cnt;
+		}
+		else if(processnum != null && !processnum.equals("")) {
+			sql = "select * from product_management where p_processnumber like '%"+processnum+"%' order by p_proid desc limit"+searchPage+","+cnt;
+		}
+		else if(sdate != null && !sdate.equals("") && fdate != null && !fdate.equals("")) {
+			sql = "select * from remark where p_regdate between '"+sdate+"' and '"+fdate+"' order by p_proid desc limit "+searchPage+", "+cnt;
+		}
+		else{
+			sql = "select * from product_management order by p_proid desc limit "+searchPage+", "+cnt;
+		}
 		
 		List<ProductCommand> result = jt.query(sql, new RowMapper<ProductCommand>() {
 
@@ -532,6 +548,23 @@ public class ManagementDao {
 		},pj_id);
 		return result.isEmpty()? null : result;
 	}
+	
+	public Integer totalpage_detail(String category, String tasknum,String processnum) {
+		String sql = null;
+		if (category.equals("detail")) {
+			if(tasknum != null && !tasknum.equals("")) {
+				sql = "select count(*) from product_management where p_tasknumber like '%"+tasknum+"%'";
+			}
+			else if(processnum != null && !processnum.equals("")) {
+				sql = "select count(*) from product_management where p_processnumber like '%"+processnum+"%'";
+			}
+			else{
+				sql = "select count(*) from product_management";
+			}
+		}
+		return jt.queryForObject(sql, Integer.class);
+	}
+	
 	
 	public Map<String, String> next_prev(Map<String, Object> requestValues) {
 		Map<String, String> result = new HashMap<String, String>();

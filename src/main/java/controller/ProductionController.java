@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import command.ProductCommand;
-import command.ProjectCommand;
 import command.RemarkCommand;
+import service.CommonDao;
 import service.ManagementDao;
 
 //생산관리
@@ -22,6 +22,8 @@ public class ProductionController {
 	
 	@Autowired
 	private ManagementDao dao;
+	@Autowired
+	private CommonDao comdao;
 	
 	@RequestMapping("project_input")
 	public String project_input(@RequestParam(required = false) String name,
@@ -46,10 +48,18 @@ public class ProductionController {
 	
 	//생산 작업 실적 등록
 	@RequestMapping("/project_detail")
-	public String detail(@RequestParam String pj_id, @RequestParam(required = false) String sdate, @RequestParam(required = false) String fdate, Model model){
-		model.addAttribute("productcom",dao.pcom(pj_id));
+	public String detail(@RequestParam(defaultValue = "1") int detailpage,
+			@RequestParam String pj_id, 
+			@RequestParam(required = false) String sdate, 
+			@RequestParam(required = false) String fdate,
+			@RequestParam(required = false) String tasknum,
+			@RequestParam(required = false) String processnum, Model model){
+		model.addAttribute("detaillist",dao.detailView(pj_id,detailpage,tasknum,processnum,sdate,fdate,10));
+		model.addAttribute("membermap",dao.membermap());
 		model.addAttribute("sdate", sdate);
   		model.addAttribute("fdate", fdate);
+		model.addAttribute("detailpage", (Integer)detailpage);
+  		model.addAttribute("paging",comdao.pageConut(dao.totalpage_detail("detail", tasknum, processnum), detailpage));
 		return "product_management/project_detail";
 	}
 	
