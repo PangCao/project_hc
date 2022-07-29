@@ -25,6 +25,9 @@
 	Map<String, Integer> paging = (Map<String, Integer>)request.getAttribute("paging");
 	String sdate = (String)request.getAttribute("sdate");
 	String fdate = (String)request.getAttribute("fdate");
+	String tasknum = (String)request.getAttribute("tasknum");
+	String pj_id = (String)request.getAttribute("pj_id");
+	String processnum = (String)request.getAttribute("processnum");
 %>
 <body>
 	<section class="layout_main row">
@@ -48,11 +51,11 @@
 						</form>
 					</div>
 					<div class="col-6 d-flex align-items-end flex-column">
-						<form action="project_detail" method="post">
+						<form action="project_detail?pj_id=<%=pj_id %>" method="post">
 							<input type="text" name="tasknum" id="tasknum" placeholder="작업번호">
 							<input type="submit"  value="조회">
 						</form>
-						<form action="project_detail" method="post">
+						<form action="project_detail?pj_id=<%=pj_id %>" method="post">
 							<input type="text" name="processnum" id="processnum" placeholder="공정번호">
 							<input type="submit"  value="조회">
 						</form>
@@ -76,8 +79,9 @@
 				</div>
 			</section>
 			<%
-				for(int i=0; i<detaillist.size(); i++){
-					ProductCommand productcom = detaillist.get(i);
+				if(detaillist != null){
+					for(int i=0; i<detaillist.size(); i++){
+						ProductCommand productcom = detaillist.get(i);
 			%>
 			<section class="search_middle">
 				<div>
@@ -97,6 +101,22 @@
 					</table>
 				</div>
 			</section>
+							<%
+					}
+				}
+				else{
+			%>
+			<section class="search_middle">
+				<div>
+					<table>
+						<tbody>
+							<tr>
+								<td colspan="5" class="text-center">정보가 없습니다.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
 			<%
 				}
 			%>
@@ -109,29 +129,29 @@
 					}
 					else {
 				%>
-					<a href="project_detail?page=<%=paging.get("page")-1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+					<a href="project_detail?page=<%=paging.get("page")-1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
 					for(int i = paging.get("min"); i < paging.get("max"); i++){
 						if (paging.get("page")-1 == i) {
 				%>
-					<a href="project_detail?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
+					<a href="project_detail?page=<%=i+1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
 				<%
 						}
 						else {
 				%>
-					<a href="project_detail?page=<%=i+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><%=i+1%></a>&nbsp;&nbsp;
+					<a href="project_detail?page=<%=i+1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><%=i+1%></a>&nbsp;&nbsp;
 				<%
 						}
 					}
 					if (paging.get("page") * 10 >= paging.get("total")) {
 				%>
-					<a href="#" onclick="lastpage()&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-right"></i></a>
+					<a href="#" onclick="lastpage()&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 					else {
 				%>
-					<a href="project_detail?page=<%=paging.get("page")+1%>&r_class=<%=rc%>&sdate=<%=sdate%>&fdate=<%=fdate%>&search_title=<%=search_title%>"><i class="fa-solid fa-angle-right"></i></a>
+					<a href="project_detail?page=<%=paging.get("page")+1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 					
