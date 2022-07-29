@@ -148,6 +148,53 @@ public class OutsourcingDao {
 		return 	result;
 	}
 	
+	// 외주 업체 리스트 조회
+	public List<OutCompanyListCommand> out_com_list(Model model) {
+		String sql = "select * from out_company_list";
+		
+		List<OutCompanyListCommand> result = jt.query(sql, new RowMapper<OutCompanyListCommand>() {
+	
+			@Override
+			public OutCompanyListCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				OutCompanyListCommand command = new OutCompanyListCommand();
+				command.setO_id(rs.getInt("o_id"));
+				command.setO_name(rs.getString("o_name"));
+				command.setO_task(rs.getString("o_task"));
+				return command;
+			}});
+		
+		return result;
+	}
+
+	// 외주 등록을 하는 메서드로 out_product_management와 out_company_progress 테이블에 같이 등록
+	public void out_input(OutProductCommand command, Map<String, String> commap, String op_ordernumber) {
+		String sql = "insert into out_product_management (op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values (?,?,?,?,?,?,?,?,?)";
+		
+		KeyHolder kh = new GeneratedKeyHolder();
+		jt.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"op_num"});
+				pstmt.setString(1, op_ordernumber);
+				pstmt.setString(2, command.getOp_proid());
+				pstmt.setInt(3, command.getOp_comid());
+				pstmt.setString(4, String.valueOf(LocalDateTime.now()));
+				pstmt.setString(5, command.getOp_productname());
+				pstmt.setString(6, command.getOp_productstandard());
+				pstmt.setInt(7, command.getOp_unit());
+				pstmt.setInt(8, command.getOp_price());
+				pstmt.setString(9, command.getOp_regnum());
+				return pstmt;
+			}
+		}, kh);
+		
+		int kv = kh.getKey().intValue();
+		
+		String sql2 = "insert into out_company_progress (ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values(?,?,?,?)";
+		jt.update(sql2, command.getOp_comid(), kv, commap.get(String.valueOf(command.getOp_comid())), "의뢰수락대기");		
+	}
+
 	// 프로젝트 이름을 조회해서 command에 set하는 메서드
 	public void project_name_select(List<OutProductCommand> outlist) {
 		String sql = null;
@@ -174,6 +221,64 @@ public class OutsourcingDao {
 		}
 	}
 	
+	// 프로젝트의 id와 name 값을 command객체에 넣어서 List로 반환하는 메서드
+	public List<ProjectCommand> projectlist() {
+		String sql = "select * from project";
+		
+		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
+
+			@Override
+			public ProjectCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProjectCommand command = new ProjectCommand();
+				command.setPj_id(rs.getString("pj_id"));
+				command.setPj_name(rs.getString("pj_name"));
+				return command;
+			}});
+		
+		return result;
+	}
+	
+	// 외주 회사 id와 이름을 맵으로 만들어주는 메서드
+	public Map<String, String> commap() {
+		String sql = "select * from out_company_list";
+		Map<String, String> resultmap = new HashMap<String, String>();
+		
+		jt.query(sql, new RowMapper<Object>() {
+
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				resultmap.put(String.valueOf(rs.getInt("o_id")), rs.getString("o_name"));
+				return null;
+			}});
+		
+		return resultmap;
+	}
+	
+	public String ordernum_create() {
+		DecimalFormat df = new DecimalFormat("00000");
+		int year = LocalDate.now().getYear();
+		String sql = "select count(*) from out_product_management where op_ordernumber like '%-"+year+"-%'";
+		int ans = jt.queryForObject(sql,Integer.class);
+		String result = "OT-"+year+"-"+df.format(ans+1);
+		return result;
+	}
+	
+	// 외주 업체의 주문번호와 진행상황을 맵으로 만들어주는 메서드
+	public Map<String, String> order_check() {
+		String sql = "select * from out_company_progress";
+		Map<String, String> result = new HashMap<String, String>();
+		
+		jt.query(sql, new RowMapper<Object>() {
+
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				result.put(String.valueOf(rs.getInt("ocp_ordernum")), rs.getString("ocp_progress"));
+				return null;
+			}});
+		
+		return result;
+	}
+
 	// 조건에 따라 출력해야할 총 게시물의 수를 받아오는 메서드
 	public Integer totalpage(Map<String, Object> requestValues) {
 		String project_id = (String)requestValues.get("project_id");
@@ -223,140 +328,5 @@ public class OutsourcingDao {
 		
 		return result;
 	}
-	
-	// 페이징 처리를 위한 메서드
-	public Map<String, Integer> pageConut(int totalpage, Map<String, Object> requestValues) {
-		int page = requestValues.get("page") == null ? 1 : Integer.valueOf((String)requestValues.get("page"));
-		int min = 0;
-		int max = 5;
-		if (page > 3) {
-			min = page - 3;
-			max = page + 2;
-		}
-		if (max > (totalpage / 10) + 1) {
-			max = (totalpage / 10) + 1;
-		}
-		if (totalpage % 10 == 0) {
-			max -= 1;
-		}
-		if (totalpage == 0) {
-			max = 1;
-		}
-		if (max < 5) {
-			min = 0;
-		}
-		Map<String, Integer> result = new HashMap<String, Integer>();
-	
-		result.put("max", max);
-		result.put("min", min);
-		result.put("totalpage", totalpage);
-		result.put("page", page);
-		return result;
-	}
-	
-	
-	// 프로젝트의 id와 name 값을 command객체에 넣어서 List로 반환하는 메서드
-	public List<ProjectCommand> projectlist() {
-		String sql = "select * from project";
-		
-		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
 
-			@Override
-			public ProjectCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ProjectCommand command = new ProjectCommand();
-				command.setPj_id(rs.getString("pj_id"));
-				command.setPj_name(rs.getString("pj_name"));
-				return command;
-			}});
-		
-		return result;
-	}
-	
-	// 외주 업체 리스트 조회
-	public List<OutCompanyListCommand> out_com_list(Model model) {
-		String sql = "select * from out_company_list";
-		
-		List<OutCompanyListCommand> result = jt.query(sql, new RowMapper<OutCompanyListCommand>() {
-
-			@Override
-			public OutCompanyListCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
-				OutCompanyListCommand command = new OutCompanyListCommand();
-				command.setO_id(rs.getInt("o_id"));
-				command.setO_name(rs.getString("o_name"));
-				command.setO_task(rs.getString("o_task"));
-				return command;
-			}});
-		
-		return result;
-	}
-	
-	// 외주 회사 id와 이름을 맵으로 만들어주는 메서드
-	public Map<String, String> commap() {
-		String sql = "select * from out_company_list";
-		Map<String, String> resultmap = new HashMap<String, String>();
-		
-		jt.query(sql, new RowMapper<Object>() {
-
-			@Override
-			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-				resultmap.put(String.valueOf(rs.getInt("o_id")), rs.getString("o_name"));
-				return null;
-			}});
-		
-		return resultmap;
-	}
-	
-	public String ordernum_create() {
-		DecimalFormat df = new DecimalFormat("00000");
-		int year = LocalDate.now().getYear();
-		String sql = "select count(*) from out_product_management where op_ordernumber like '%-"+year+"-%'";
-		int ans = jt.queryForObject(sql,Integer.class);
-		String result = "OT-"+year+"-"+df.format(ans+1);
-		return result;
-	}
-	
-	// 외주 등록을 하는 메서드로 out_product_management와 out_company_progress 테이블에 같이 등록
-	public void out_input(OutProductCommand command, Map<String, String> commap, String op_ordernumber) {
-		String sql = "insert into out_product_management (op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values (?,?,?,?,?,?,?,?,?)";
-		
-		KeyHolder kh = new GeneratedKeyHolder();
-		jt.update(new PreparedStatementCreator() {
-			
-			@Override
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"op_num"});
-				pstmt.setString(1, op_ordernumber);
-				pstmt.setString(2, command.getOp_proid());
-				pstmt.setInt(3, command.getOp_comid());
-				pstmt.setString(4, String.valueOf(LocalDateTime.now()));
-				pstmt.setString(5, command.getOp_productname());
-				pstmt.setString(6, command.getOp_productstandard());
-				pstmt.setInt(7, command.getOp_unit());
-				pstmt.setInt(8, command.getOp_price());
-				pstmt.setString(9, command.getOp_regnum());
-				return pstmt;
-			}
-		}, kh);
-		
-		int kv = kh.getKey().intValue();
-		
-		String sql2 = "insert into out_company_progress (ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values(?,?,?,?)";
-		jt.update(sql2, command.getOp_comid(), kv, commap.get(String.valueOf(command.getOp_comid())), "의뢰수락대기");		
-	}
-	
-	// 외주 업체의 주문번호와 진행상황을 맵으로 만들어주는 메서드
-	public Map<String, String> order_check() {
-		String sql = "select * from out_company_progress";
-		Map<String, String> result = new HashMap<String, String>();
-		
-		jt.query(sql, new RowMapper<Object>() {
-
-			@Override
-			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-				result.put(String.valueOf(rs.getInt("ocp_ordernum")), rs.getString("ocp_progress"));
-				return null;
-			}});
-		
-		return result;
-	}
 }

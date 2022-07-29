@@ -68,21 +68,21 @@ public class MemberDao {
 		// 개인정보 수정 메서드(이름, 전화번호, 비밀번호 변경 가능)
 		// 비밀번호가 아무 값이 없으면 비밀번호 제외 모든 값 변경(있다면 비밀번호도 포함하여 변경)
 		public void user_modi(MemberCommand memberCommand, Map<String, Object> requestMap, HttpSession session) {
+			String name = (String)requestMap.get("m_name");
 			String pw = (String)requestMap.get("password");
 			String tel = requestMap.get("phone1")+"-"+requestMap.get("phone2")+"-"+requestMap.get("phone3");
-			MemberCommand sessionMemberCommand = (MemberCommand)session.getAttribute("member");
-			String sessiontel = (String)session.getAttribute("");
+			String id = (String)session.getAttribute("id");
 			String sql = null;
 			if(pw.equals("")) {
 				sql = "update member set m_name=?, m_tel=? where m_num=?";
-				jt.update(sql, memberCommand.getM_name(), tel, sessionMemberCommand.getM_num());
+				jt.update(sql, name, tel, id);
 			} 
 			else {
 				sql = "update member set m_name=?, m_tel=?, m_password=? where m_num=?";
-				jt.update(sql, memberCommand.getM_name(), tel, pw, sessionMemberCommand.getM_num());
+				jt.update(sql, name, tel, pw, id);
 			}
-			sessionMemberCommand.setM_tel(tel);
-			sessionMemberCommand.setM_name(memberCommand.getM_name());
+			session.setAttribute("name", name);
+			session.setAttribute("tel", tel);
 		}
 	
 	//로그아웃

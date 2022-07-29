@@ -134,7 +134,7 @@ a, a:hover, a:active{
 				<%
 						}
 					}
-					if (paging.get("page") * 10 >= paging.get("totalpage")) {
+					if (paging.get("page") * 10 >= paging.get("total")) {
 				%>
 					<a href="#" onclick="lastpage()"><i class="fa-solid fa-angle-right"></i></a>
 				<%

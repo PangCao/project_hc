@@ -49,7 +49,7 @@
 								NoticeCommand dto = noticelist.get(i);
 					%>
 							<tr>
-								<td><%= paging.get("totalpage") - (paging.get("page")-1)* 10 - i%></td>
+								<td><%= paging.get("total") - (paging.get("page")-1)* 10 - i%></td>
 								<td><a href="notice_view?n_id=<%=dto.getN_id()%>"><%= dto.getN_title() %></a></td>
 								<td><%= dto.getN_anthor() %></td>
 								<td><%= dto.getN_date() %></td>
@@ -97,7 +97,7 @@
 				<%
 						}
 					}
-					if (paging.get("page") * 10 >= paging.get("totalpage")) {
+					if (paging.get("page") * 10 >= paging.get("total")) {
 				%>
 					<a href="#" onclick="lastpage()"><i class="fa-solid fa-angle-right"></i></a>
 				<%

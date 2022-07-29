@@ -16,6 +16,7 @@ import command.NoticeCommand;
 import command.RemarkCommand;
 import command.Remark_projectCommand;
 import service.CommonDao;
+import service.DefaultDao;
 import service.MemberDao;
 //공통 컨트롤
 @Controller
@@ -23,8 +24,12 @@ public class CommonController {
 	
 	@Autowired
 	private CommonDao dao;
+	
 	@Autowired
 	private MemberDao memdao;
+	
+	@Autowired
+	private DefaultDao dfdao;
 	
 	// 로그인
 	@RequestMapping("/login")
@@ -48,14 +53,14 @@ public class CommonController {
 	
 	//메인 페이지
 	@RequestMapping("/mainpage")
-	public String mainpage(@RequestParam(defaultValue = "1") int noticepage, @RequestParam(defaultValue = "1") int remarkpage, Model model) {
-		model.addAttribute("noticelist", dao.noticeView(noticepage, null, 5));
-		model.addAttribute("issuelist", dao.issueMainView(remarkpage, null, 5));
+	public String mainpage(@RequestParam Map<String, Object> requestValues, Model model) {
+		model.addAttribute("noticelist", dao.noticeView(requestValues, 5));
+		model.addAttribute("issuelist", dao.issueMainView(requestValues, 5));
 		model.addAttribute("issueSublist", dao.issueSubView());
-		model.addAttribute("noticepage", (Integer)noticepage);
-		model.addAttribute("remarkpage", (Integer)remarkpage);
-		model.addAttribute("noticetotal", dao.totalpage("notice", null));
-		model.addAttribute("remarktotal", dao.totalpage("remark", null));
+		model.addAttribute("noticepage", requestValues.get("noticepage") == null? 1:Integer.valueOf((String)requestValues.get("noticepage")));
+		model.addAttribute("remarkpage", requestValues.get("remarkpage") == null? 1:Integer.valueOf((String)requestValues.get("remarkpage")));
+		model.addAttribute("noticetotal", dao.totalpage("notice", requestValues));
+		model.addAttribute("remarktotal", dao.totalpage("remark", requestValues));
 		model.addAttribute("projectmap", dao.projectmap());
 		
 		return "mainpage";
@@ -63,10 +68,10 @@ public class CommonController {
 	
 	//공지사항 페이지
 	@RequestMapping("/notice")
-	public String notice(@RequestParam(defaultValue = "1") int noticepage, @RequestParam(required = false) String search_title, Model model) {
-		model.addAttribute("noticelist", dao.noticeView(noticepage, search_title, 10));
-		model.addAttribute("noticepage", (Integer)noticepage);
-		model.addAttribute("paging", dao.pageConut(dao.totalpage("notice", search_title), noticepage));
+	public String notice(@RequestParam Map<String, Object> requestValues, Model model) {
+		model.addAttribute("noticelist", dao.noticeView(requestValues, 10));
+		model.addAttribute("noticepage", (Integer)requestValues.get("noticepage"));
+		model.addAttribute("paging",dfdao.paging(dao.totalpage("notice", requestValues), requestValues));
 		return "board/notice";
 	}
 	
@@ -110,7 +115,7 @@ public class CommonController {
   		model.addAttribute("sdate", (String)requestValues.get("sdate"));
   		model.addAttribute("fdate", (String)requestValues.get("fdate"));
   		model.addAttribute("issuelist", dao.issueView(requestValues, 10));
-  		model.addAttribute("paging", dao.paging(dao.issuetotal(requestValues, 10), requestValues));
+  		model.addAttribute("paging", dfdao.paging(dao.issuetotal(requestValues, 10), requestValues));
   		model.addAttribute("r_class",requestValues.get("r_class"));
   		model.addAttribute("search_title", requestValues.get("search_title"));
   		return "board/issue";
@@ -134,8 +139,8 @@ public class CommonController {
     
     //이슈 게시물 삭제
     @RequestMapping("/issue_delete")
-    public String issue_delete(@RequestParam int r_id, @RequestParam int p_num, RedirectAttributes ra) {
-    	dao.issue_del(r_id, p_num);
+    public String issue_delete(@RequestParam int r_id, RedirectAttributes ra) {
+    	dao.issue_del(r_id);
     	ra.addFlashAttribute("delete", "true");
     	return "redirect:issue";
     }
@@ -147,7 +152,7 @@ public class CommonController {
     	model.addAttribute("projectlist", dao.projectlist());
     	model.addAttribute("project_id", requestValues.get("project_id"));
     	model.addAttribute("searchword", requestValues.get("searchword"));
-		model.addAttribute("paging", dao.product_issue_paging(requestValues));
+		model.addAttribute("paging", dfdao.paging(dao.product_issue_total(requestValues),requestValues));
     	return "board/issue_search_popup";
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import command.ProductCommand;
 import command.ProjectCommand;
 import command.RemarkCommand;
+import service.DefaultDao;
 import service.ManagementDao;
 
 //생산관리
@@ -22,6 +23,9 @@ public class ProductionController {
 	
 	@Autowired
 	private ManagementDao dao;
+	
+	@Autowired
+	private DefaultDao dfdao;
 	
 	@RequestMapping("project_input")
 	public String project_input(@RequestParam(required = false) String name,
@@ -60,7 +64,7 @@ public class ProductionController {
 		model.addAttribute("stat", requestValues.get("stat"));
 		model.addAttribute("productlist", dao.productlist("input", requestValues));
 		model.addAttribute("membermap", dao.membermap());
-		model.addAttribute("paging",  dao.paging(dao.totalpage("input", requestValues), requestValues));
+		model.addAttribute("paging",  dfdao.paging(dao.totalpage("input", requestValues), requestValues));
 		model.addAttribute("projectmap", dao.projectmap());
 		model.addAttribute("product_issuelist", dao.product_issuelist());
 		
@@ -100,7 +104,7 @@ public class ProductionController {
 		model.addAttribute("stat", model.getAttribute("stat"));
 		model.addAttribute("projectlist", dao.projectlist());
 		model.addAttribute("project_id", (String)requestValues.get("project_id"));
-		model.addAttribute("paging", dao.paging(dao.totalpage("complete", requestValues), requestValues));
+		model.addAttribute("paging", dfdao.paging(dao.totalpage("complete", requestValues), requestValues));
 		model.addAttribute("tasknumber", requestValues.get("p_tasknumber"));
 		model.addAttribute("processnumber", requestValues.get("processnumber"));
 		model.addAttribute("projectmap", dao.projectmap());
@@ -117,7 +121,7 @@ public class ProductionController {
 		model.addAttribute("stat", model.getAttribute("stat"));
 		model.addAttribute("projectlist", dao.projectlist());
 		model.addAttribute("project_id", (String)requestValues.get("project_id"));
-		model.addAttribute("paging", dao.paging(dao.totalpage("record", requestValues), requestValues));
+		model.addAttribute("paging", dfdao.paging(dao.totalpage("record", requestValues), requestValues));
 		model.addAttribute("tasknumber", requestValues.get("p_tasknumber"));
 		model.addAttribute("processnumber", requestValues.get("processnumber"));
 		model.addAttribute("projectmap", dao.projectmap());
@@ -128,7 +132,7 @@ public class ProductionController {
 	public String issue_popup(@RequestParam Map<String, Object> requestValues, Model model) {
 		model.addAttribute("issuelist", dao.issuelist(requestValues));
 		model.addAttribute("p_num", (String)requestValues.get("p_num"));
-		model.addAttribute("paging", dao.paging(dao.issuetotal(), requestValues));
+		model.addAttribute("paging", dfdao.paging(dao.issuetotal(), requestValues));
 		model.addAttribute("stat", model.getAttribute("stat"));
 		return "product_management/issuepopup";
 	}

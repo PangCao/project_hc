@@ -33,39 +33,6 @@ public class ManagementDao {
 		this.jt = new JdbcTemplate(dataSource);
 	}
 		
-	// 프로젝트 명을 가져오는 메서드
-	public List<ProjectCommand> projectlist() {
-		String sql = "select * from project";
-		
-		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
-
-			@Override
-			public ProjectCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ProjectCommand command = new ProjectCommand();
-				command.setPj_id(rs.getString("pj_id"));
-				command.setPj_name(rs.getString("pj_name"));
-				return command;
-			}});
-		
-		return result;
-	}
-	
-	//프로젝트 명을 맵으로 가져오는 메서드
-	public Map<String, String> projectmap() {
-		String sql = "select * from project";
-		Map<String, String> resultmap = new HashMap<String, String>();
-		
-		jt.query(sql, new RowMapper<Object>() {
-
-			@Override
-			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-				resultmap.put(rs.getString("pj_id"), rs.getString("pj_name"));
-				return null;
-			}});
-		
-		return resultmap;
-	}
-	
 	// id에 일치하는 프로젝트 명과 아이디를 가져오는 메서드
 	public ProjectCommand project_id_name(String project_id) {
 		String sql = "select * from project where pj_id = ?";
@@ -80,36 +47,6 @@ public class ManagementDao {
 			}}, project_id);
 		
 		return result.get(0);
-	}
-	
-	// 이슈내역을 insert하고 키홀더 값을 반환하는 메서드
-	public Integer remark_insert(RemarkCommand issue, HttpSession session, int p_num) {
-		if(issue.getR_title() != null && !issue.getR_title().trim().equals("")) {
-			String name = (String)session.getAttribute("name");
-			String id = (String)session.getAttribute("id");
-			String sql = "insert into remark (r_title, r_content, r_anthor, r_date, r_class, r_anthor_id, r_p_num) values (?,?,?,?,?,?,?)";
-			KeyHolder kh = new GeneratedKeyHolder(); //자동 증가값을 알기 위해서 사용
-			jt.update(new PreparedStatementCreator() {
-				
-				@Override
-				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-					PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"r_id"});
-					pstmt.setString(1, issue.getR_title());
-					pstmt.setString(2, issue.getR_content().replace("\n", "<br>"));
-					pstmt.setString(3, name);
-					pstmt.setString(4, String.valueOf(LocalDateTime.now()));
-					pstmt.setString(5, issue.getR_class());
-					pstmt.setString(6, id);
-					pstmt.setInt(7, p_num);
-					return pstmt;
-				}
-			}, kh);
-			Number keyValue = kh.getKey();
-			return keyValue.intValue();
-		}
-		else {
-		 return -1;
-		}
 	}
 	
 	// 생산 작업을 등록하는 메서드
@@ -136,6 +73,33 @@ public class ManagementDao {
 		return keyValue.intValue();
 	}
 	
+	public Map<String, ArrayList<Integer>> product_issuelist() {
+		Map<String, ArrayList<Integer>> result = new HashMap<String, ArrayList<Integer>>();
+		
+		String sql = "select * from product_management";
+		List<Integer> p_num = jt.query(sql, new RowMapper<Integer>() {
+	
+			@Override
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getInt("p_num");
+			}});
+		sql = "select * from remark where r_p_num=?";
+		for (int i = 0; i < p_num.size(); i++) {
+			List<Integer> list = jt.query(sql, new RowMapper<Integer>() {
+	
+				@Override
+				public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+					
+					return rs.getInt("r_id");
+				}}, p_num.get(i));
+			list = list == null?  new ArrayList<Integer>():list;
+			
+			result.put(String.valueOf(p_num.get(i)), (ArrayList)list);
+			
+		}
+		return result;
+	}
+
 	public List<ProductCommand> productlist(String category, Map<String, Object> requestValues) {
 		String sql = null;
 		Integer page = Integer.valueOf((String)requestValues.get("page") == null? "1":(String)requestValues.get("page"));
@@ -214,20 +178,6 @@ public class ManagementDao {
 		return result;
 	}
 	
-	public Map<String, String> membermap() {
-		Map<String, String> result = new HashMap<String, String>();
-		String sql = "select m_num, m_name from member";
-		jt.query(sql, new RowMapper<Object>() {
-
-			@Override
-			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-				result.put(rs.getString("m_num"), rs.getString("m_name"));
-				return null;
-			}});
-			
-		return result;
-	}
-		
 	public void issue_delete(String r_id) {
 		String sql = "delete from remark_project where rp_r_id=?";
 		jt.update(sql, r_id);
@@ -235,6 +185,36 @@ public class ManagementDao {
 		jt.update(sql, r_id);
 	}
 	
+	// 이슈내역을 insert하고 키홀더 값을 반환하는 메서드
+	public Integer remark_insert(RemarkCommand issue, HttpSession session, int p_num) {
+		if(issue.getR_title() != null && !issue.getR_title().trim().equals("")) {
+			String name = (String)session.getAttribute("name");
+			String id = (String)session.getAttribute("id");
+			String sql = "insert into remark (r_title, r_content, r_anthor, r_date, r_class, r_anthor_id, r_p_num) values (?,?,?,?,?,?,?)";
+			KeyHolder kh = new GeneratedKeyHolder(); //자동 증가값을 알기 위해서 사용
+			jt.update(new PreparedStatementCreator() {
+				
+				@Override
+				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+					PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"r_id"});
+					pstmt.setString(1, issue.getR_title());
+					pstmt.setString(2, issue.getR_content().replace("\n", "<br>"));
+					pstmt.setString(3, name);
+					pstmt.setString(4, String.valueOf(LocalDateTime.now()));
+					pstmt.setString(5, issue.getR_class());
+					pstmt.setString(6, id);
+					pstmt.setInt(7, p_num);
+					return pstmt;
+				}
+			}, kh);
+			Number keyValue = kh.getKey();
+			return keyValue.intValue();
+		}
+		else {
+		 return -1;
+		}
+	}
+
 	public List<RemarkCommand> issuelist(Map<String, Object> requestValues) {
 		String p_num = (String)requestValues.get("p_num");
 		int page =  requestValues.get("page") == null? 1:Integer.valueOf((String)requestValues.get("page"));
@@ -289,6 +269,13 @@ public class ManagementDao {
 		jt.update(sql, r_id);
 	}
 	
+	public Integer issuetotal() {
+		String sql = "select count(*) from remark";
+		Integer result = jt.queryForObject(sql, Integer.class);
+		
+		return result;
+	}
+
 	public Integer totalpage(String category, Map<String, Object> requestValues) {
 		String sql = null;
 		String project_id = (String)requestValues.get("project_id");
@@ -351,42 +338,28 @@ public class ManagementDao {
 		return result;
 	}
 	
-	public Integer issuetotal() {
-		String sql = "select count(*) from remark";
-		Integer result = jt.queryForObject(sql, Integer.class);
+	public Map<String, String> next_prev(Map<String, Object> requestValues) {
+		Map<String, String> result = new HashMap<String, String>();
+		String sql = "select * from remark where r_p_num = ? and r_id > ? order by r_id asc limit 1";
+		jt.query(sql,new RowMapper<Object>() {
+	
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				result.put("next", String.valueOf(rs.getInt("r_id")));
+				return null;
+			}}, requestValues.get("p_num"),requestValues.get("r_id"));
 		
+		sql = "select * from remark where r_p_num = ? and r_id < ? order by r_id desc limit 1";
+		jt.query(sql,new RowMapper<Object>() {
+	
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				result.put("prev", String.valueOf(rs.getInt("r_id")));
+				return null;
+			}}, requestValues.get("p_num"),requestValues.get("r_id"));
 		return result;
 	}
-	
-	public Map<String, Integer> paging(int totalpage, Map<String, Object> requestValues) {
-		Map<String, Integer> result = new HashMap<String, Integer>();
-		int max = 5;
-		int min = 0;
-		int page = 1;
-		if (requestValues.get("page") != null && !requestValues.get("page").equals("null")) {
-			page = Integer.valueOf((String)requestValues.get("page"));
-		}
-		if (page > 3) {
-			min = page - 3;
-			max = page + 2;
-		}
-		if (max > totalpage/10 +1) {
-			max = totalpage/10 + 1;
-		}		
-		if (totalpage % 10 == 0) {
-			max -= 1;
-		}
-		if (totalpage == 0) {
-			max = 1;
-		}
-		result.put("max", max);
-		result.put("min", min);
-		result.put("total", totalpage);
-		result.put("page", page);
-		
-		return result;
-	}
-	
+
 	public void startdate_update(int product_id) {
 		String sql = "update product_management set p_startdate=? where p_num=?";
 		jt.update(sql, LocalDateTime.now(), product_id);
@@ -533,52 +506,50 @@ public class ManagementDao {
 		return result.isEmpty()? null : result;
 	}
 	
-	public Map<String, String> next_prev(Map<String, Object> requestValues) {
+	public Map<String, String> membermap() {
 		Map<String, String> result = new HashMap<String, String>();
-		String sql = "select * from remark where r_p_num = ? and r_id > ? order by r_id asc limit 1";
-		jt.query(sql,new RowMapper<Object>() {
-
+		String sql = "select m_num, m_name from member";
+		jt.query(sql, new RowMapper<Object>() {
+	
 			@Override
 			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-				result.put("next", String.valueOf(rs.getInt("r_id")));
+				result.put(rs.getString("m_num"), rs.getString("m_name"));
 				return null;
-			}}, requestValues.get("p_num"),requestValues.get("r_id"));
-		
-		sql = "select * from remark where r_p_num = ? and r_id < ? order by r_id desc limit 1";
-		jt.query(sql,new RowMapper<Object>() {
-
-			@Override
-			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-				result.put("prev", String.valueOf(rs.getInt("r_id")));
-				return null;
-			}}, requestValues.get("p_num"),requestValues.get("r_id"));
+			}});
+			
 		return result;
 	}
-	
-	public Map<String, ArrayList<Integer>> product_issuelist() {
-		Map<String, ArrayList<Integer>> result = new HashMap<String, ArrayList<Integer>>();
+
+	// 프로젝트 명을 가져오는 메서드
+	public List<ProjectCommand> projectlist() {
+		String sql = "select * from project";
 		
-		String sql = "select * from product_management";
-		List<Integer> p_num = jt.query(sql, new RowMapper<Integer>() {
-
+		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
+	
 			@Override
-			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return rs.getInt("p_num");
+			public ProjectCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ProjectCommand command = new ProjectCommand();
+				command.setPj_id(rs.getString("pj_id"));
+				command.setPj_name(rs.getString("pj_name"));
+				return command;
 			}});
-		sql = "select * from remark where r_p_num=?";
-		for (int i = 0; i < p_num.size(); i++) {
-			List<Integer> list = jt.query(sql, new RowMapper<Integer>() {
-
-				@Override
-				public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-					
-					return rs.getInt("r_id");
-				}}, p_num.get(i));
-			list = list == null?  new ArrayList<Integer>():list;
-			
-			result.put(String.valueOf(p_num.get(i)), (ArrayList)list);
-			
-		}
+		
 		return result;
+	}
+
+	//프로젝트 명을 맵으로 가져오는 메서드
+	public Map<String, String> projectmap() {
+		String sql = "select * from project";
+		Map<String, String> resultmap = new HashMap<String, String>();
+		
+		jt.query(sql, new RowMapper<Object>() {
+	
+			@Override
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				resultmap.put(rs.getString("pj_id"), rs.getString("pj_name"));
+				return null;
+			}});
+		
+		return resultmap;
 	}
 }

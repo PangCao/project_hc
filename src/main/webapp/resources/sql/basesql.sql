@@ -74,6 +74,7 @@ create table if not exists remark(
 
 select * from remark;
 
+
 create table if not exists remark_project(
 	rp_num int primary key auto_increment,
     rp_r_id int,
@@ -158,7 +159,7 @@ create table if not exists projectcreate(
     pc_dpn varchar(30)
 )default charset=utf8mb4;
 
-select * from projectcreate;
+select * from projectcreate where pc_dpn != '0000000000';
 
 select * from notice;
 
