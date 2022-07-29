@@ -358,7 +358,7 @@ public class ManagementDao {
 		return result;
 	}
 	
-	public Map<String, Integer> paging(Integer totalpage, Map<String, Object> requestValues) {
+	public Map<String, Integer> paging(int totalpage, Map<String, Object> requestValues) {
 		Map<String, Integer> result = new HashMap<String, Integer>();
 		int max = 5;
 		int min = 0;

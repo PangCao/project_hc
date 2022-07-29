@@ -29,12 +29,7 @@ public class ProductionController {
 		dao.ProjectCreate(name,date);
 		return "redirect:product_management";
 	}
-	
-	@RequestMapping("/projectpopup")
-	public String projectpopup() {
-		return "product_management/projectpopup";
-	}
-	
+
 	//전체 공정 현황
 	@RequestMapping("/product_management")
 	public String product_management(Model model) {
