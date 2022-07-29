@@ -47,23 +47,27 @@ public class ProductionController {
 	@RequestMapping("/project_sub_management")
 	public String sub(@RequestParam String Sequence, Model model){
 		model.addAttribute("pcc", dao.PccSearch(Sequence));
+		model.addAttribute("pj_id",Sequence);
 		return "product_management/project_sub_management";
 	}
 	
 	//생산 작업 실적 등록
 	@RequestMapping("/project_detail")
-	public String detail(@RequestParam(defaultValue = "1") int detailpage,
+	public String detail(@RequestParam(defaultValue = "1") int page,
 			@RequestParam String pj_id, 
 			@RequestParam(required = false) String sdate, 
 			@RequestParam(required = false) String fdate,
 			@RequestParam(required = false) String tasknum,
 			@RequestParam(required = false) String processnum, Model model){
-		model.addAttribute("detaillist",dao.detailView(pj_id,detailpage,tasknum,processnum,sdate,fdate,10));
+		model.addAttribute("detaillist",dao.detailView(pj_id,page,tasknum,processnum,sdate,fdate,10));
 		model.addAttribute("membermap",dao.membermap());
 		model.addAttribute("sdate", sdate);
-  		model.addAttribute("fdate", fdate);
-		model.addAttribute("detailpage", (Integer)detailpage);
-  		model.addAttribute("paging",comdao.pageConut(dao.totalpage_detail("detail", tasknum, processnum), detailpage));
+		model.addAttribute("fdate", fdate);
+		model.addAttribute("tasknum", tasknum);
+		model.addAttribute("processnum", processnum);
+		model.addAttribute("detailpage", (Integer)page);
+		model.addAttribute("pj_id", pj_id);
+  		model.addAttribute("paging",dfdao.paging(dao.totalpage_detail("detail", tasknum, processnum), page));
 		return "product_management/project_detail";
 	}
 	

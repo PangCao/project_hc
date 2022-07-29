@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -486,21 +487,34 @@ public class ManagementDao {
 	
 	//프로젝트 공정 현황 뷰 리스트
 	public List<ProductCommand> detailView(String pj_id , int page, String tasknum,String processnum,String sdate,String fdate, int cnt){
+		
+		if(fdate != null && !fdate.equals("null")) {
+			fdate = String.valueOf(LocalDate.parse(fdate).plusDays(1));   
+	    }
+		
 		int searchPage = (page - 1) * cnt;
 		
 		String sql = null;
 		
-		if(tasknum != null && !tasknum.equals("")) {
-			sql = "select * from product_management where p_tasknumber like '%"+tasknum+"%' order by p_proid desc limit"+searchPage+","+cnt;
-		}
-		else if(processnum != null && !processnum.equals("")) {
-			sql = "select * from product_management where p_processnumber like '%"+processnum+"%' order by p_proid desc limit"+searchPage+","+cnt;
-		}
-		else if(sdate != null && !sdate.equals("") && fdate != null && !fdate.equals("")) {
-			sql = "select * from remark where p_regdate between '"+sdate+"' and '"+fdate+"' order by p_proid desc limit "+searchPage+", "+cnt;
-		}
-		else{
-			sql = "select * from product_management order by p_proid desc limit "+searchPage+", "+cnt;
+		if(pj_id != null && !pj_id.equals("")) {
+			sql = "select count(*) from product_management where p_proid = ?";
+			int countid = jt.queryForObject(sql, Integer.class, pj_id);
+			if(countid >= 1) {
+				if(tasknum != null && !tasknum.equals("")) {
+					sql = "select * from product_management where p_proid = ? and p_tasknumber like '%"+tasknum+"%' order by p_proid desc limit"+searchPage+","+cnt;
+				}
+				else if(processnum != null && !processnum.equals("")) {
+					sql = "select * from product_management where p_proid = ? and p_processnumber like '%"+processnum+"%' order by p_proid desc limit"+searchPage+","+cnt;
+				}
+				else if(sdate != null && !sdate.equals("") && fdate != null && !fdate.equals("")) {
+					sql = "select * from product_management where p_proid = ? and p_regdate between '"+sdate+"' and '"+fdate+"' order by p_proid desc limit "+searchPage+", "+cnt;
+				}
+				else{
+					sql = "select * from product_management where p_proid = ?  order by p_proid desc limit "+searchPage+", "+cnt;
+				}
+			}else{
+				sql = "select * from product_management where p_proid = ? order by p_proid desc limit "+searchPage+", "+cnt;
+			}
 		}
 		
 		List<ProductCommand> result = jt.query(sql, new RowMapper<ProductCommand>() {
