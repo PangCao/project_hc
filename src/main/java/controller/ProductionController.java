@@ -63,7 +63,7 @@ public class ProductionController {
 		model.addAttribute("sdate", sdate);
   		model.addAttribute("fdate", fdate);
 		model.addAttribute("detailpage", (Integer)detailpage);
-  		model.addAttribute("paging",comdao.pageConut(dao.totalpage_detail("detail", tasknum, processnum), detailpage));
+  		model.addAttribute("paging",dfdao.paging(dao.totalpage_detail("detail", tasknum, processnum), detailpage));
 		return "product_management/project_detail";
 	}
 	

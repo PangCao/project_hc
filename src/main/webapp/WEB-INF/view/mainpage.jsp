@@ -90,10 +90,6 @@
 								if (remarklist != null) {
 									for(int i = 0; i < remarklist.size(); i++) {
 										RemarkCommand dto = remarklist.get(i);
-										System.out.println("1 " + dto.getR_id());
-										System.out.println("2 " + String.valueOf(dto.getR_id()));
-										System.out.println("3 " + issuesublist.get(String.valueOf(dto.getR_id())).getRp_proid());
-										System.out.println("4 " + projectmap.get(issuesublist.get(String.valueOf(dto.getR_id())).getRp_proid()));
 							%>
 									<tr>
 									
