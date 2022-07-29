@@ -74,7 +74,7 @@
 				}
 			}else{
 	%>
-				<a class="col-5 d-flex justify-content-center align-items-center comple" style="heigh" href="#" onclick="project_input()">
+				<a class="col-5 d-flex justify-content-center align-items-center comple" style="min-height:212px !important;" href="#" onclick="project_input()">
 					<h3 class="m-4">프로젝트를 입력해주세요</h3>
 				</a>
 	<%

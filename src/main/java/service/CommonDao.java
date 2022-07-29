@@ -1,5 +1,7 @@
 package service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -12,7 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import command.NoticeCommand;
 import command.ProductCommand;
@@ -315,12 +320,36 @@ public class CommonDao {
 	}
 
 	//이슈글 정보 저장
-	public void issue_input(RemarkCommand remarkCommand, HttpSession session, String p_num) {
+	public Integer issue_input(RemarkCommand remarkCommand, HttpSession session, String p_num) {
 		String id = (String)session.getAttribute("id");
 		String sql = "insert into remark(r_title, r_content, r_anthor, r_date, r_anthor_id, r_class,r_p_num) values (?,?,?,?,?,?,?)";
+		KeyHolder kh = new GeneratedKeyHolder();
+		jt.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"r_id"});
+				pstmt.setString(1, remarkCommand.getR_title());
+				pstmt.setString(2, remarkCommand.getR_content().replace("\n", "<br>"));
+				pstmt.setString(3, remarkCommand.getR_anthor());
+				pstmt.setString(4, String.valueOf(LocalDateTime.now()));
+				pstmt.setString(5, id);
+				pstmt.setString(6, remarkCommand.getR_class());
+				pstmt.setString(7, p_num);
+				return pstmt;
+			}
+		}, kh);
+		Number keyValue = kh.getKey();
+		return keyValue.intValue();
 		
-		jt.update(sql, remarkCommand.getR_title(),  remarkCommand.getR_content().replace("\n", "<br>"), remarkCommand.getR_anthor(), String.valueOf(LocalDateTime.now()),id, remarkCommand.getR_class(), p_num);
+		
 	}
+	
+	public void issue_input_sub(int r_id, Remark_projectCommand rp_command, RemarkCommand remarkCommand) {
+		String sql = "insert into remark_project (rp_r_id, rp_proid, rp_task, rp_process) values (?,?,?,?)";
+		jt.update(sql, r_id ,rp_command.getRp_proid(), rp_command.getRp_task(), rp_command.getRp_process());
+	}
+	
 
 	public List<ProductCommand> product_issue_select(Map<String,Object> requestValues) {
 		String project_id = (String)requestValues.get("project_id");

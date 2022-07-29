@@ -124,7 +124,9 @@ public class CommonController {
   	//이슈 작성 등록
     @RequestMapping("/issue_write_input")
     public String issue_write(@RequestParam String p_num, Remark_projectCommand rp_command, RemarkCommand remarkCommand, HttpSession session) {
-    	dao.issue_input(remarkCommand, session, p_num);
+    	System.out.println(p_num);
+    	int r_id = dao.issue_input(remarkCommand, session, p_num);
+    	dao.issue_input_sub(r_id, rp_command, remarkCommand);
         return "redirect:issue";
     }
     

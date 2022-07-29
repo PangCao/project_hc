@@ -43,6 +43,7 @@ create table if not exists project (
     foreign key(pj_task) references task(t_name)
 )default charset=utf8mb4;
 
+
 create table if not exists product_management (
 	p_num int auto_increment primary key,
     p_proid varchar(30),
@@ -73,8 +74,6 @@ create table if not exists remark(
 )default charset=utf8mb4;
 
 select * from remark;
-
-
 
 create table if not exists remark_project(
 	rp_num int primary key auto_increment,
