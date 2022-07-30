@@ -160,6 +160,7 @@ create table if not exists projectcreate(
 )default charset=utf8mb4;
 
 select * from projectcreate where pc_dpn != '0000000000';
+select * from projectcreate;
 
 select * from notice;
 

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="command.ProjectCreateCommand" %>
 <!DOCTYPE html>
 <html>
@@ -17,7 +17,6 @@
 	request.setCharacterEncoding("utf-8");
 	ArrayList<ProjectCreateCommand> pcclist = (ArrayList<ProjectCreateCommand>)request.getAttribute("pcc");
 	String pj_id = pcclist.get(0).getPc_id();
-	String dpn = pcclist.get(0).getPc_dpn();
 	String[] Part = {"A","B","C","D"};
 %>
 <body>
@@ -49,25 +48,20 @@
 									<%
 									for(int j=0; j<4; j++){
 										for(int h=0; h<dpn.length(); h++){
-											int count = 0;
-											if(dpn.charAt(h) == '0'){
-												count++;
-												if(count==10){
+											if(dpn.charAt(h) == '3'){
 												 %>
-														<td style="background-color:green;"><%=cnt%></td>
+												 	<td style="background-color:green; opacity:0.8;"><%=cnt%></td>
 												<%
 												cnt++;
 												break;
-												}else{
+												}else if(dpn.charAt(h)=='0'){
 												 %>
-														<td><%=cnt%></td>
+													<td><%=cnt%></td>
 												<%	
 												cnt++;
 												break;
 												}
 											}
-										}
-		
 									}
 									 %>
 									</tr>
