@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/all.css"/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value="/resources/css/search.css"/>">
+<script type="text/javascript" src="<c:url value='/resources/js/common.js'/>"></script>
+<script src="https://kit.fontawesome.com/42c64699fb.js" crossorigin="anonymous"></script>
 <style>
 .all_product {
 	background-color: rgb(0, 175, 23);
@@ -24,6 +26,7 @@
 	ArrayList<ProductCommand> detaillist = (ArrayList<ProductCommand>)request.getAttribute("detaillist");
 	Map<String, String> regnum = (Map<String, String>)request.getAttribute("membermap");
 	Map<String, Integer> paging = (Map<String, Integer>)request.getAttribute("paging");
+	Map<String, String> projectmap = (HashMap<String, String>)request.getAttribute("projectmap");
 	String sdate = (String)request.getAttribute("sdate");
 	String fdate = (String)request.getAttribute("fdate");
 	String tasknum = (String)request.getAttribute("tasknum");
@@ -40,42 +43,52 @@
 		<section class="layout_right col-10 p-0">
 			<jsp:include page="/WEB-INF/view/topmenu.jsp"/>
 			<!-- 여기 아래부터 바디 -->
-			<section class="search_top">
+			<section class="search_top" style="z-index:1">
 				<div class="d-flex justify-content-between">
 					<div class="col-6">
-						<form action="" method="post">
+						<form action="project_detail" method="post" name="dateForm">
 							<div class="col-12 pl-0">
 								<input type="date"  name="sdate" id="sdate" value="<%=sdate %>" class="col-7">
 							</div>
 							<div class="col-12 pl-0">
 								<input type="date" name="fdate" id="fdate" value="<%=fdate %>" class="col-7">
-								<input type="submit" onclick="SearchDate()" value="조회">
+								<input type="button" onclick="SearchDate()" value="조회">
 							</div>
 						</form>
 					</div>
 					<div class="col-6 d-flex align-items-end flex-column">
 						<form action="project_detail?pj_id=<%=pj_id %>" method="post" class="col-6 row">
-							<select name="tasknum" id="tasknum" class="col-12" onchange="tasknumchg(this)" style="height: 32px; padding-top:2px; padding-bottom:2px; margin:5px;">
+							<select name="tasknum" id="tasknum" class="col-12 text-center" onchange="tasknumchg(this)" style="height: 32px; padding-top:2px; padding-bottom:2px; margin:5px;">
 							<%
-								if (tasknum != null && !tasknum.equals("") ) {
+								if (tasknum != null && !tasknum.equals("")) {
 							%>
-								<option value="">== 공정번호 ==</option>
+								<option value="" disabled>== 작업번호 ==</option>
 							<%
 								}
 								else {
 							%>
-								<option value="" selected>== 공정번호 ==</option>
+								<option value="" selected disabled>== 작업번호 ==</option>
+							<%
+								}
+								if (tasknum != null && tasknum.equals("all")) {
+							%>
+								<option value="all" selected>== 전체공정 ==</option>
+							<%
+								}
+								else{
+							%>
+								<option value="all">== 전체공정 ==</option>
 							<%
 								}
 								for(int i = 0; i < 12; i++) {
-									if (tasknum != null && tasknum.equals(String.valueOf(i+1))){
+									if (tasknum != null && tasknum.equals(String.valueOf(df.format(i+1)))){
 							%>
-										<option value="<%=i+1%>" selected><%=i+1 %></option>
+										<option value="<%=df.format(i+1)%>" selected><%=df.format(i+1) %></option>
 							<%
 									}
 									else {
 							%>
-										<option value="<%=i+1%>"><%=i+1 %></option>
+										<option value="<%=df.format(i+1)%>"><%=df.format(i+1) %></option>
 							<%
 									}
 								}
@@ -83,11 +96,11 @@
 							</select>
 							<script type="text/javascript">
 								function tasknumchg(obj) {
-									location.href="project_detail?page=<%=paging.get("page")%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum="+obj.value+"&processnum=<%=processnum%>&taskselector=<%=taskselector%>"
+									location.href="project_detail?page=<%=1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum="+obj.value+"&processnum=<%=processnum%>&taskselector=<%=taskselector%>"
 								}
 							</script>
 						</form>
-						<form action="project_detail?pj_id=<%=pj_id %>" method="post" class="col-6 row d-flex justify-content-between">
+						<form action="project_detail?page=<%=1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum %>&taskselector=<%=taskselector%>" method="post" class="col-6 row d-flex justify-content-between">
 							<input type="text" name="processnum" id="processnum" placeholder="공정번호" class="col-8">
 							<input type="submit"  value="조회" class="col-3">
 						</form>
@@ -99,6 +112,7 @@
 							<tr>
 								<th>No</th>
 								<th>프로잭트코드</th>
+								<th>프로잭트명</th>
 								<th>작업번호</th>
 								<th>공정번호</th>
 								<th>등록일</th>
@@ -122,6 +136,7 @@
 							<tr>
 								<td><%=productcom.getP_num() %></td>
 								<td><%=productcom.getP_proid() %></td>
+								<td><%=projectmap.get(productcom.getP_proid()) %></td>
 								<td><%=productcom.getP_tasknumber() %></td>
 								<td><%=productcom.getP_processnumber() %></td>
 								<td><%=productcom.getP_regdate().substring(0,10) %><br><%=productcom.getP_regdate().substring(10) %></td>
@@ -172,7 +187,7 @@
 			<%
 				}
 			%>
-			<div class="col-12 d-flex justify-content-center">
+			<div class="col-12 d-flex justify-content-center my-5">
 				<%
 					if(paging.get("page") == 1){	
 				%>
@@ -198,7 +213,7 @@
 					}
 					if (paging.get("page") * 10 >= paging.get("total")) {
 				%>
-					<a href="#" onclick="lastpage()&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>&taskselector=<%=taskselector%>"><i class="fa-solid fa-angle-right"></i></a>
+					<a href="#" onclick="lastpage()"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 					else {
@@ -213,25 +228,22 @@
 	</section>
 </body>
 <script type="text/javascript">
-	document.getElementById('product_management').checked=true;
-	
 	function SearchDate(){
-		let sdate = document.getElementById("sdate").value;
-		let fdate = document.getElementById("fdate").value;
-		if (sdate == "") {
+		let sdates = document.getElementById("sdate").value;
+		let fdates = document.getElementById("fdate").value;
+		if (sdates == "") {
 			alert('조회 시작일을 선택해주세요.');
 			return false;
 		}
-		if (fdate == "") {
+		if (fdates == "") {
 			alert('조회 종료일을 선택해주세요.');
 			return false;
 		}
-		if (new Date(sdate) > new Date(fdate)) {
+		if (new Date(sdates) > new Date(fdates)) {
 			alert('조회 일자를 다시 한 번 확인해주세요.');
 			return false;
 		}
-		
-		location.href="product_detail?sdate="+sdate+"&fdate="+fdate;
+		document.dateForm.submit();
 	}
 </script>
 </html>

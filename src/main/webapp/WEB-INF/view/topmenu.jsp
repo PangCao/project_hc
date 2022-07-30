@@ -10,6 +10,7 @@
 	%>
 	<script type="text/javascript">
 		location.href="main";
+		alert('세션이 만료되어 로그인페이지로 돌아갑니다.');
 	</script>
 	<%
 		}

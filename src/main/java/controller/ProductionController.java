@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -12,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import command.ProductCommand;
+import command.ProjectCommand;
 import command.RemarkCommand;
-import service.DefaultDao;
 import service.CommonDao;
+import service.DefaultDao;
 import service.ManagementDao;
 
 //생산관리
@@ -39,7 +42,10 @@ public class ProductionController {
 	//전체 공정 현황
 	@RequestMapping("/product_management")
 	public String product_management(Model model) {
-		model.addAttribute("ProCom", dao.ProjectSearch());
+		List<ProjectCommand> project_list = (ArrayList<ProjectCommand>)dao.ProjectSearch();
+		model.addAttribute("progressbar", dao.progressbar(project_list));
+		model.addAttribute("totalprogressbar", dao.totalprogressbar(project_list));
+		model.addAttribute("ProCom", project_list);
 		return "product_management/project_management";
 	}
 	
@@ -60,6 +66,7 @@ public class ProductionController {
 			@RequestParam(required = false) String processnum,
 			@RequestParam() String taskselector, Model model){
 		model.addAttribute("detaillist",dao.detailView(pj_id,taskselector,page,tasknum,processnum,sdate,fdate,10));
+		model.addAttribute("projectmap", dao.projectmap());
 		model.addAttribute("membermap",dao.membermap());
 		model.addAttribute("sdate", sdate);
 		model.addAttribute("fdate", fdate);

@@ -12,7 +12,7 @@
     margin: 5px;
     padding: 2px 0;
 }
-.search_top > div > div > form > div > input[type="submit"]{
+.search_top > div > div > form > div > input[type="button"]{
     padding: 2px 20px;
     background-color: #d7dde4;
     border-width: 1px;
@@ -44,28 +44,28 @@
     padding: 3px;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(1) {
-    width: 2%;
+    width: 4%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(2) {
-    width: 10%;
+    width: 13%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(3) {
-    width: 7%;
+	width: 13%
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(4) {
-    width: 7%;
+    width: 10%;
 }
-.search_top  div > table > tbody > tr > th:nth-of-type(5) {
-    width: 13%;
+.search_top > div > table > tbody > tr > th:nth-of-type(5) {
+    width: 10%;
 }
-.search_top > div > table > tbody > tr > th:nth-of-type(6) {
-    width: 13%;
+.search_top  div > table > tbody > tr > th:nth-of-type(6) {
+    width: 10%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(7) {
-    width: 13%;
+    width: 10%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(8) {
-    width: 25%;
+    width: 10%;
 }
 .search_top > div > table > tbody > tr > th:nth-of-type(9) {
     width: 10%;
@@ -88,28 +88,28 @@
     padding: 3px;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(1) {
-    width: 2%;
+    width: 4%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(2) {
-    width: 10%;
+	width: 13%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(3) {
-    width: 7%;
+    width: 13%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(4) {
-    width: 7%;
+    width: 10%;
 }
-.search_middle  div > table > tbody > tr > td:nth-of-type(5) {
-    width: 13%;
+.search_middle > div > table > tbody > tr > td:nth-of-type(5) {
+    width: 10%;
 }
-.search_middle > div > table > tbody > tr > td:nth-of-type(6) {
-    width: 13%;
+.search_middle  div > table > tbody > tr > td:nth-of-type(6) {
+    width: 10%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(7) {
-    width: 13%;
+    width: 10%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(8) {
-    width: 25%;
+    width: 10%;
 }
 .search_middle > div > table > tbody > tr > td:nth-of-type(9) {
     width: 10%;

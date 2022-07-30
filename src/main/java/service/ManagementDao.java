@@ -465,6 +465,71 @@ public class ManagementDao {
 		return result.isEmpty() ? null : result;
 	}
 	
+	public Map<String, Integer> progressbar(List<ProjectCommand> project_list) {
+		Map<String, Integer> result = new HashMap<String, Integer>();
+		String sql = "select * from projectcreate where pc_id=? and pc_propart=?";
+		if (project_list != null) {
+			for (int i = 0; i < project_list.size(); i++) {
+				int prochk = 0;
+				List<String> ans = jt.query(sql, new RowMapper<String>() {
+		
+					@Override
+					public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+						return rs.getString("pc_dpn");
+					}}, project_list.get(i).getPj_id(), project_list.get(i).getPj_task());
+				for (int j = 0; j < ans.size(); j++) {
+					if (ans.get(j).equals("3333333333")) {
+						prochk++;
+					}
+				}
+				if (prochk == 48) {
+					taskchange(project_list.get(i));
+					if (!project_list.get(i).getPj_task().equals("J(진수)")) {
+						result.put(project_list.get(i).getPj_id(), 0);
+					}
+					else {
+						result.put(project_list.get(i).getPj_id(), prochk);
+					}
+				}
+				else {
+					result.put(project_list.get(i).getPj_id(), prochk);
+				}
+				
+			}
+		}
+		
+		return result;
+	}
+	
+	private void taskchange(ProjectCommand command) {
+		String task = command.getPj_task();
+		String sql = "select * from task where t_name > ? order by t_name asc limit 1";
+		List<String> result = jt.query(sql, new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString("t_name");
+			}}, task);
+		task = result.isEmpty()? null : result.get(0);
+		
+		if (task != null) {
+			sql = "update project set pj_task=? where pj_id=?";
+			jt.update(sql, task, command.getPj_id());
+			command.setPj_task(task);
+		}
+	}
+	
+	public Map<String, Integer> totalprogressbar(List<ProjectCommand> project_list) {
+		Map<String, Integer> result = new HashMap<String, Integer>();
+		if (project_list != null){
+			for (int i = 0; i < project_list.size(); i++) {
+				int ans = project_list.get(i).getPj_task().charAt(0)-'A';
+				result.put(project_list.get(i).getPj_id(), ans * 48);
+			} 
+		}
+		return result;
+	}
+	
 	//ProjectCreate테이블 정보 가져오기(단 프로젝트 아이디가 같을 경우)
 	public List<ProjectCreateCommand> PccSearch(String Sequence, String task){
 		String sql = "select * from projectcreate where pc_id = ? and pc_propart=? order by pc_tasknumber asc";
@@ -503,14 +568,17 @@ public class ManagementDao {
 			int countid = jt.queryForObject(sql, Integer.class, pj_id);
 			
 			if(countid >= 1) {
-				if(tasknum != null && !tasknum.equals("") && !tasknum.equals("null")) {
-					sql = "select * from product_management where p_proid = ? and p_tasknumber ='"+taskselector+tasknum+"' order by p_proid desc limit"+searchPage+","+cnt;
+				if (tasknum != null && processnum != null && !tasknum.equals("") && !processnum.equals("") && !tasknum.equals("null") && !processnum.equals("null") && !tasknum.equals("all")) {
+					sql = "select * from product_management where p_proid = ? and p_tasknumber ='"+taskselector+tasknum+"' and p_processnumber like '%"+processnum+"%' order by p_proid desc limit "+searchPage+", "+cnt;
+				}
+				else if(tasknum != null && !tasknum.equals("") && !tasknum.equals("null") && !tasknum.equals("all")) {
+					sql = "select * from product_management where p_proid = ? and p_tasknumber ='"+taskselector+tasknum+"' order by p_proid desc limit "+searchPage+","+cnt;
 				}
 				else if(processnum != null && !processnum.equals("") && !processnum.equals("null")) {
-					sql = "select * from product_management where p_proid = ? and p_processnumber like '%"+processnum+"%' order by p_proid desc limit"+searchPage+","+cnt;
+					sql = "select * from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%' and p_processnumber like '%"+processnum+"%' order by p_proid desc limit "+searchPage+","+cnt;
 				}
 				else if(sdate != null && !sdate.equals("") && fdate != null && !fdate.equals("") && !sdate.equals("null") && !fdate.equals("null")) {
-					sql = "select * from product_management where p_proid = ? and p_regdate between '"+sdate+"' and '"+fdate+"' order by p_proid desc limit "+searchPage+", "+cnt;
+					sql = "select * from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%' and p_regdate between '"+sdate+"' and '"+fdate+"' order by p_proid desc limit "+searchPage+", "+cnt;
 				}
 				else{
 					sql = "select * from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%' order by p_proid desc limit "+searchPage+", "+cnt;
@@ -546,20 +614,24 @@ public class ManagementDao {
 			fdate = String.valueOf(LocalDate.parse(fdate).plusDays(1));   
 	    }
 		String sql = null;
+		
 		if(pj_id != null && !pj_id.equals("")) {
 			sql = "select count(*) from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%'";
 			
 			int countid = jt.queryForObject(sql, Integer.class, pj_id);
 			
 			if(countid >= 1) {
-				if(tasknum != null && !tasknum.equals("") && !tasknum.equals("null")) {
+				if (tasknum != null && processnum != null && !tasknum.equals("") && !processnum.equals("") && !tasknum.equals("null") && !processnum.equals("null")) {
+					sql = "select count(*) from product_management where p_proid = ? and p_tasknumber ='"+taskselector+tasknum+"' and p_processnumber like '%"+processnum+"%'";
+				}
+				else if(tasknum != null && !tasknum.equals("") && !tasknum.equals("null")) {
 					sql = "select count(*) from product_management where p_proid = ? and p_tasknumber ='"+taskselector+tasknum+"'";
 				}
 				else if(processnum != null && !processnum.equals("") && !processnum.equals("null")) {
-					sql = "select count(*) from product_management where p_proid = ? and p_processnumber like '%"+processnum+"%'";
+					sql = "select count(*) from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%' and p_processnumber like '%"+processnum+"%'";
 				}
 				else if(sdate != null && !sdate.equals("") && fdate != null && !fdate.equals("") && !sdate.equals("null") && !fdate.equals("null")) {
-					sql = "select count(*) from product_management where p_proid = ? and p_regdate between '"+sdate+"' and '"+fdate+"'";
+					sql = "select count(*) from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%' and p_regdate between '"+sdate+"' and '"+fdate+"'";
 				}
 				else{
 					sql = "select count(*) from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%'";

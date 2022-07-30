@@ -33,6 +33,8 @@ insert into task values
     ('I(진수선행도장)'),
     ('J(진수)');
 
+select * from task where t_name > 'A(가공)' order by t_name asc limit 1;
+
 create table if not exists project (
 	pj_id varchar(30) primary key,
     pj_name varchar(50),
@@ -57,7 +59,7 @@ create table if not exists product_management (
 )default charset=utf8mb4;
 select * from product_management;
 
-
+select * from product_management where p_proid = 'PJT-2022-0001' and p_tasknumber ='A01' and p_processnumber like '%A%';
 
 create table if not exists remark(
 	r_id int primary key auto_increment,
@@ -159,9 +161,21 @@ create table if not exists projectcreate(
     pc_dpn varchar(30)
 )default charset=utf8mb4;
 select * from project;
+-- update project set pj_task='J(진수)' WHERE pj_id='PJT-2022-0001';
+
+set SQL_SAFE_UPDATES = 0;
+-- update projectcreate set pc_dpn='3333333333' where pc_name='12443' and pc_propart='B(소조립)';
+select * from projectcreate where pc_name='12443';
+-- update projectcreate set pc_dpn='3333333333' where pc_id='PJT-2022-0001';
 select * from projectcreate where pc_propart='A(가공)' AND pc_id='PJT-2022-0001' order by pc_tasknumber asc, pc_propart asc;
 
+
+select * from projectcreate where pc_name='12443' and pc_dpn='3333333333';
+
+select * from projectcreate where pc_id='PJT-2022-0001' and pc_propart='A(가공)';
+
 select * from projectcreate;
+
 
 select * from notice;
 
