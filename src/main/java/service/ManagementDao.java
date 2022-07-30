@@ -487,7 +487,7 @@ public class ManagementDao {
 	}
 	
 	//프로젝트 공정 현황 뷰 리스트
-	public List<ProductCommand> detailView(String pj_id , int page, String tasknum,String processnum,String sdate,String fdate, int cnt){
+	public List<ProductCommand> detailView(String pj_id , String taskselector,int page, String tasknum, String processnum, String sdate, String fdate, int cnt){
 		
 		if(fdate != null && !fdate.equals("null")) {
 			fdate = String.valueOf(LocalDate.parse(fdate).plusDays(1));   
@@ -498,23 +498,25 @@ public class ManagementDao {
 		String sql = null;
 		
 		if(pj_id != null && !pj_id.equals("")) {
-			sql = "select count(*) from product_management where p_proid = ?";
+			sql = "select count(*) from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%'";
+			
 			int countid = jt.queryForObject(sql, Integer.class, pj_id);
+			
 			if(countid >= 1) {
-				if(tasknum != null && !tasknum.equals("")) {
-					sql = "select * from product_management where p_proid = ? and p_tasknumber like '%"+tasknum+"%' order by p_proid desc limit"+searchPage+","+cnt;
+				if(tasknum != null && !tasknum.equals("") && !tasknum.equals("null")) {
+					sql = "select * from product_management where p_proid = ? and p_tasknumber ='"+taskselector+tasknum+"' order by p_proid desc limit"+searchPage+","+cnt;
 				}
-				else if(processnum != null && !processnum.equals("")) {
+				else if(processnum != null && !processnum.equals("") && !processnum.equals("null")) {
 					sql = "select * from product_management where p_proid = ? and p_processnumber like '%"+processnum+"%' order by p_proid desc limit"+searchPage+","+cnt;
 				}
-				else if(sdate != null && !sdate.equals("") && fdate != null && !fdate.equals("")) {
+				else if(sdate != null && !sdate.equals("") && fdate != null && !fdate.equals("") && !sdate.equals("null") && !fdate.equals("null")) {
 					sql = "select * from product_management where p_proid = ? and p_regdate between '"+sdate+"' and '"+fdate+"' order by p_proid desc limit "+searchPage+", "+cnt;
 				}
 				else{
-					sql = "select * from product_management where p_proid = ?  order by p_proid desc limit "+searchPage+", "+cnt;
+					sql = "select * from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%' order by p_proid desc limit "+searchPage+", "+cnt;
 				}
 			}else{
-				sql = "select * from product_management where p_proid = ? order by p_proid desc limit "+searchPage+", "+cnt;
+				sql = "select * from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%' order by p_proid desc limit "+searchPage+", "+cnt;
 			}
 		}
 		
@@ -534,24 +536,39 @@ public class ManagementDao {
 				return pdc;
 			}
 		},pj_id);
+		
 		return result.isEmpty()? null : result;
 	}
 	
 	
-	public Integer totalpage_detail(String category, String tasknum,String processnum) {
+	public Integer totalpage_detail(String pj_id , String taskselector, String tasknum, String processnum, String sdate, String fdate) {
+		if(fdate != null && !fdate.equals("null")) {
+			fdate = String.valueOf(LocalDate.parse(fdate).plusDays(1));   
+	    }
 		String sql = null;
-		if (category.equals("detail")) {
-			if(tasknum != null && !tasknum.equals("")) {
-				sql = "select count(*) from product_management where p_tasknumber like '%"+tasknum+"%'";
-			}
-			else if(processnum != null && !processnum.equals("")) {
-				sql = "select count(*) from product_management where p_processnumber like '%"+processnum+"%'";
-			}
-			else{
-				sql = "select count(*) from product_management";
+		if(pj_id != null && !pj_id.equals("")) {
+			sql = "select count(*) from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%'";
+			
+			int countid = jt.queryForObject(sql, Integer.class, pj_id);
+			
+			if(countid >= 1) {
+				if(tasknum != null && !tasknum.equals("") && !tasknum.equals("null")) {
+					sql = "select count(*) from product_management where p_proid = ? and p_tasknumber ='"+taskselector+tasknum+"'";
+				}
+				else if(processnum != null && !processnum.equals("") && !processnum.equals("null")) {
+					sql = "select count(*) from product_management where p_proid = ? and p_processnumber like '%"+processnum+"%'";
+				}
+				else if(sdate != null && !sdate.equals("") && fdate != null && !fdate.equals("") && !sdate.equals("null") && !fdate.equals("null")) {
+					sql = "select count(*) from product_management where p_proid = ? and p_regdate between '"+sdate+"' and '"+fdate+"'";
+				}
+				else{
+					sql = "select count(*) from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%'";
+				}
+			}else{
+				sql = "select count(*) from product_management where p_proid = ? and p_tasknumber like '"+taskselector+"%'";
 			}
 		}
-		return jt.queryForObject(sql, Integer.class);
+		return jt.queryForObject(sql, Integer.class, pj_id);
 	}
 	
 	

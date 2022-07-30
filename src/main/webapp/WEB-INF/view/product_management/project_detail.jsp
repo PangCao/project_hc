@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -28,6 +29,8 @@
 	String tasknum = (String)request.getAttribute("tasknum");
 	String pj_id = (String)request.getAttribute("pj_id");
 	String processnum = (String)request.getAttribute("processnum");
+	String taskselector = (String)request.getAttribute("taskselector");
+	DecimalFormat df = new DecimalFormat("00");
 %>
 <body>
 	<section class="layout_main row">
@@ -51,13 +54,42 @@
 						</form>
 					</div>
 					<div class="col-6 d-flex align-items-end flex-column">
-						<form action="project_detail?pj_id=<%=pj_id %>" method="post">
-							<input type="text" name="tasknum" id="tasknum" placeholder="작업번호">
-							<input type="submit"  value="조회">
+						<form action="project_detail?pj_id=<%=pj_id %>" method="post" class="col-6 row">
+							<select name="tasknum" id="tasknum" class="col-12" onchange="tasknumchg(this)" style="height: 32px; padding-top:2px; padding-bottom:2px; margin:5px;">
+							<%
+								if (tasknum != null && !tasknum.equals("") ) {
+							%>
+								<option value="">== 공정번호 ==</option>
+							<%
+								}
+								else {
+							%>
+								<option value="" selected>== 공정번호 ==</option>
+							<%
+								}
+								for(int i = 0; i < 12; i++) {
+									if (tasknum != null && tasknum.equals(String.valueOf(i+1))){
+							%>
+										<option value="<%=i+1%>" selected><%=i+1 %></option>
+							<%
+									}
+									else {
+							%>
+										<option value="<%=i+1%>"><%=i+1 %></option>
+							<%
+									}
+								}
+							%>
+							</select>
+							<script type="text/javascript">
+								function tasknumchg(obj) {
+									location.href="project_detail?page=<%=paging.get("page")%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum="+obj.value+"&processnum=<%=processnum%>&taskselector=<%=taskselector%>"
+								}
+							</script>
 						</form>
-						<form action="project_detail?pj_id=<%=pj_id %>" method="post">
-							<input type="text" name="processnum" id="processnum" placeholder="공정번호">
-							<input type="submit"  value="조회">
+						<form action="project_detail?pj_id=<%=pj_id %>" method="post" class="col-6 row d-flex justify-content-between">
+							<input type="text" name="processnum" id="processnum" placeholder="공정번호" class="col-8">
+							<input type="submit"  value="조회" class="col-3">
 						</form>
 					</div>
 				</div>
@@ -92,9 +124,29 @@
 								<td><%=productcom.getP_proid() %></td>
 								<td><%=productcom.getP_tasknumber() %></td>
 								<td><%=productcom.getP_processnumber() %></td>
-								<td><%=productcom.getP_regdate() %></td>
+								<td><%=productcom.getP_regdate().substring(0,10) %><br><%=productcom.getP_regdate().substring(10) %></td>
+								<%
+									if (!productcom.getP_startdate().equals("-")) {
+								%>
+								<td><%=productcom.getP_startdate().substring(0,10) %><br><%=productcom.getP_startdate().substring(10) %></td>
+								<%
+									}
+									else {
+								%>
 								<td><%=productcom.getP_startdate() %></td>
+								<%
+									}
+									if (!productcom.getP_compledate().equals("-")) {
+								%>
+								<td><%=productcom.getP_compledate().substring(0,10) %><br><%= productcom.getP_compledate().substring(10) %></td>
+								<%
+									}
+									else {
+								%>
 								<td><%=productcom.getP_compledate() %></td>
+								<%
+									}
+								%>
 								<td><%=regnum.get(productcom.getP_regnum()) %></td>
 							</tr>
 						</tbody>
@@ -129,29 +181,29 @@
 					}
 					else {
 				%>
-					<a href="project_detail?page=<%=paging.get("page")-1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+					<a href="project_detail?page=<%=paging.get("page")-1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>&taskselector=<%=taskselector%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
 				<%
 					}
 					for(int i = paging.get("min"); i < paging.get("max"); i++){
 						if (paging.get("page")-1 == i) {
 				%>
-					<a href="project_detail?page=<%=i+1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
+					<a href="project_detail?page=<%=i+1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>&taskselector=<%=taskselector%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
 				<%
 						}
 						else {
 				%>
-					<a href="project_detail?page=<%=i+1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><%=i+1%></a>&nbsp;&nbsp;
+					<a href="project_detail?page=<%=i+1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>&taskselector=<%=taskselector%>"><%=i+1%></a>&nbsp;&nbsp;
 				<%
 						}
 					}
 					if (paging.get("page") * 10 >= paging.get("total")) {
 				%>
-					<a href="#" onclick="lastpage()&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><i class="fa-solid fa-angle-right"></i></a>
+					<a href="#" onclick="lastpage()&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>&taskselector=<%=taskselector%>"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 					else {
 				%>
-					<a href="project_detail?page=<%=paging.get("page")+1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>"><i class="fa-solid fa-angle-right"></i></a>
+					<a href="project_detail?page=<%=paging.get("page")+1%>&pj_id=<%=pj_id %>&sdate=<%=sdate%>&fdate=<%=fdate%>&tasknum=<%=tasknum%>&processnum=<%=processnum%>&taskselector=<%=taskselector%>"><i class="fa-solid fa-angle-right"></i></a>
 				<%
 					}
 					

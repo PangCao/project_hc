@@ -17,6 +17,7 @@
 	request.setCharacterEncoding("utf-8");
 	ArrayList<ProjectCreateCommand> pcclist = (ArrayList<ProjectCreateCommand>)request.getAttribute("pcc");
 	String pj_id = pcclist.get(0).getPc_id();
+	String[] taskString = {"A", "B", "C", "D"};
 	
 %>
 <body>
@@ -37,7 +38,7 @@
 					for (int i = 0; i < 4; i++) {
 				%>
 					<div class="col-3">
-						<a href="project_detail?pj_id=<%=pj_id%>">
+						<a href="project_detail?pj_id=<%=pj_id%>&taskselector=<%=pcclist.get(index).getPc_tasknumber().charAt(0)%>">
 							<table>
 								<tbody>
 								<%
@@ -71,6 +72,7 @@
 								</tbody>
 							</table>
 						</a>
+						<div class="text-center mt-3">&lt;&nbsp;<%=taskString[i]%>&nbsp;&gt;</div>
 					</div>
 				<%
 					}

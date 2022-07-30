@@ -161,6 +161,8 @@ create table if not exists projectcreate(
 select * from project;
 select * from projectcreate where pc_propart='A(가공)' AND pc_id='PJT-2022-0001' order by pc_tasknumber asc, pc_propart asc;
 
-select * from projectcreate where pc_dpn != '0000000000';
+select * from projectcreate;
 
 select * from notice;
+
+select count(*) from product_management where p_proid = 'PJT-2022-0001' and p_tasknumber like 'taskselector%'

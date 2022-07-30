@@ -57,8 +57,9 @@ public class ProductionController {
 			@RequestParam(required = false) String sdate, 
 			@RequestParam(required = false) String fdate,
 			@RequestParam(required = false) String tasknum,
-			@RequestParam(required = false) String processnum, Model model){
-		model.addAttribute("detaillist",dao.detailView(pj_id,page,tasknum,processnum,sdate,fdate,10));
+			@RequestParam(required = false) String processnum,
+			@RequestParam() String taskselector, Model model){
+		model.addAttribute("detaillist",dao.detailView(pj_id,taskselector,page,tasknum,processnum,sdate,fdate,10));
 		model.addAttribute("membermap",dao.membermap());
 		model.addAttribute("sdate", sdate);
 		model.addAttribute("fdate", fdate);
@@ -66,7 +67,8 @@ public class ProductionController {
 		model.addAttribute("processnum", processnum);
 		model.addAttribute("detailpage", (Integer)page);
 		model.addAttribute("pj_id", pj_id);
-  		model.addAttribute("paging",dfdao.paging(dao.totalpage_detail("detail", tasknum, processnum), page));
+		model.addAttribute("taskselector", taskselector);
+  		model.addAttribute("paging",dfdao.paging(dao.totalpage_detail(pj_id,taskselector,tasknum,processnum,sdate,fdate), page));
 		return "product_management/project_detail";
 	}
 	
