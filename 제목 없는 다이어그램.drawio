@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-07-29T13:16:05.019Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36" etag="k8Eyxt68mJeIOcyzChfW" version="20.2.2" type="github">
+<mxfile host="app.diagrams.net" modified="2022-07-30T10:49:43.621Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36" etag="iUTykuLHM6biMDWeMaiI" version="20.2.2" type="github">
   <diagram id="amwM7vuxuhEkEWS197J4" name="페이지-1">
     <mxGraphModel dx="-476" dy="730" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -584,7 +584,7 @@
         <mxCell id="WOBfZaSGtx7cR_Pubv87-6" value="+ issue_del(int) : void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="45lU2zyivyouMbH1mWkE-34" vertex="1">
           <mxGeometry y="424" width="465" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="lmyKUeHLEcJ6BAj5OvpT-1" value="+ issue_input(RemarkCommand, HttpSession, String) : Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="45lU2zyivyouMbH1mWkE-34">
+        <mxCell id="lmyKUeHLEcJ6BAj5OvpT-1" value="+ issue_input(RemarkCommand, HttpSession, String) : Integer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="45lU2zyivyouMbH1mWkE-34" vertex="1">
           <mxGeometry y="450" width="465" height="26" as="geometry" />
         </mxCell>
         <mxCell id="WOBfZaSGtx7cR_Pubv87-8" value="+ issue_input_sub(int, Remark_projectCommand, RemarkCommand) : void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="45lU2zyivyouMbH1mWkE-34" vertex="1">
@@ -638,7 +638,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="WOBfZaSGtx7cR_Pubv87-16" value="service.ManagementDao" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="3420" y="901" width="520" height="710" as="geometry" />
+          <mxGeometry x="3420" y="901" width="520" height="788" as="geometry" />
         </mxCell>
         <mxCell id="WOBfZaSGtx7cR_Pubv87-17" value="- jt : JdbcTemplate" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
           <mxGeometry y="26" width="520" height="26" as="geometry" />
@@ -706,20 +706,29 @@
         <mxCell id="WOBfZaSGtx7cR_Pubv87-40" value="+ ProjectSearch() : List&lt;ProjectCommand&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
           <mxGeometry y="554" width="520" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="WOBfZaSGtx7cR_Pubv87-41" value="+ PccSearch(String) : List&lt;ProjectCreateCommand&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
+        <mxCell id="K0i5n5Or3mkN4wEIQlAQ-3" value="+ progressbar(List&lt;ProjectCommand&gt;) : Map&lt;String, Integer&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="WOBfZaSGtx7cR_Pubv87-16">
           <mxGeometry y="580" width="520" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="WOBfZaSGtx7cR_Pubv87-42" value="+ pcom(String) : List&lt;ProductCommand&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
+        <mxCell id="K0i5n5Or3mkN4wEIQlAQ-2" value="- taskchange(ProjectCommand) : void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="WOBfZaSGtx7cR_Pubv87-16">
           <mxGeometry y="606" width="520" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="WOBfZaSGtx7cR_Pubv87-38" value="+ membermap() : Map&lt;String, String&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
+        <mxCell id="K0i5n5Or3mkN4wEIQlAQ-1" value="+ totalprogressbar(List&lt;ProjectCommand&gt;) : Map&lt;String, Integer&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="WOBfZaSGtx7cR_Pubv87-16">
           <mxGeometry y="632" width="520" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="WOBfZaSGtx7cR_Pubv87-20" value="+ projectlist() : List&lt;ProjectCommand&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
+        <mxCell id="WOBfZaSGtx7cR_Pubv87-41" value="+ PccSearch(String) : List&lt;ProjectCreateCommand&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
           <mxGeometry y="658" width="520" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="WOBfZaSGtx7cR_Pubv87-21" value="+ projectmap() : Map&lt;String, String&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
+        <mxCell id="WOBfZaSGtx7cR_Pubv87-42" value="+ pcom(String) : List&lt;ProductCommand&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
           <mxGeometry y="684" width="520" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="WOBfZaSGtx7cR_Pubv87-38" value="+ membermap() : Map&lt;String, String&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
+          <mxGeometry y="710" width="520" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="WOBfZaSGtx7cR_Pubv87-20" value="+ projectlist() : List&lt;ProjectCommand&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
+          <mxGeometry y="736" width="520" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="WOBfZaSGtx7cR_Pubv87-21" value="+ projectmap() : Map&lt;String, String&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="WOBfZaSGtx7cR_Pubv87-16" vertex="1">
+          <mxGeometry y="762" width="520" height="26" as="geometry" />
         </mxCell>
         <mxCell id="WOBfZaSGtx7cR_Pubv87-99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" parent="1" source="WOBfZaSGtx7cR_Pubv87-45" target="2xltrDt1m4XufCkEdxNc-1" edge="1">
           <mxGeometry relative="1" as="geometry">
