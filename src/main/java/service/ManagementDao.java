@@ -466,23 +466,24 @@ public class ManagementDao {
 	}
 	
 	//ProjectCreate테이블 정보 가져오기(단 프로젝트 아이디가 같을 경우)
-	public List<ProjectCreateCommand> PccSearch(String Sequence){
-		String sql = "select * from projectcreate where pc_id = ?";
+	public List<ProjectCreateCommand> PccSearch(String Sequence, String task){
+		String sql = "select * from projectcreate where pc_id = ? and pc_propart=? order by pc_tasknumber asc";
+		
 		
 		List<ProjectCreateCommand> result = jt.query(sql, new RowMapper<ProjectCreateCommand>() {
 
 			@Override
 			public ProjectCreateCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ProjectCreateCommand pcc = new ProjectCreateCommand();
-				pcc.setPc_id(rs.getString("pc_id"));
-				pcc.setPc_name(rs.getString("pc_name"));
-				pcc.setPc_tasknumber(rs.getString("pc_tasknumber"));
-				pcc.setPc_propart(rs.getString("pc_propart"));
-				pcc.setPc_dpn(rs.getString("pc_dpn"));
-				return pcc;
-			}
-		}, Sequence);
-		return result.isEmpty() ? null : result;
+				ProjectCreateCommand command = new ProjectCreateCommand();
+				command.setPc_id(rs.getString("pc_id"));
+				command.setPc_dpn(rs.getString("pc_dpn"));
+				command.setPc_tasknumber(rs.getString("pc_tasknumber"));
+				command.setPc_propart(rs.getString("pc_propart"));
+				command.setPc_name(rs.getString("pc_name"));
+				return command;
+			}}, Sequence, task);
+		return result;
+
 	}
 	
 	//프로젝트 공정 현황 뷰 리스트

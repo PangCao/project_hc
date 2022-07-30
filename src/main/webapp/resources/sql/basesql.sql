@@ -158,8 +158,9 @@ create table if not exists projectcreate(
     pc_propart varchar(30),
     pc_dpn varchar(30)
 )default charset=utf8mb4;
+select * from project;
+select * from projectcreate where pc_propart='A(가공)' AND pc_id='PJT-2022-0001' order by pc_tasknumber asc, pc_propart asc;
 
 select * from projectcreate where pc_dpn != '0000000000';
 
 select * from notice;
-

@@ -45,9 +45,8 @@ public class ProductionController {
 	
 	//프로잭트 서브
 	@RequestMapping("/project_sub_management")
-	public String sub(@RequestParam String Sequence, Model model){
-		model.addAttribute("pcc", dao.PccSearch(Sequence));
-		model.addAttribute("pj_id",Sequence);
+	public String sub(@RequestParam String Sequence, @RequestParam String propart, Model model){
+		model.addAttribute("pcc", dao.PccSearch(Sequence, propart));
 		return "product_management/project_sub_management";
 	}
 	
