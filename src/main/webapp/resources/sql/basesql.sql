@@ -33,18 +33,15 @@ insert into task values
     ('I(진수선행도장)'),
     ('J(진수)');
 
-select * from task where t_name > 'A(가공)' order by t_name asc limit 1;
-
 create table if not exists project (
 	pj_id varchar(30) primary key,
     pj_name varchar(50),
     pj_regdate datetime,
     pj_eta datetime,
     pj_task varchar(30) default 'A(가공)',
-    pj_progress float default 0.0,
+    pj_current_project boolean default false,
     foreign key(pj_task) references task(t_name)
 )default charset=utf8mb4;
-
 
 create table if not exists product_management (
 	p_num int auto_increment primary key,
@@ -57,9 +54,6 @@ create table if not exists product_management (
     p_regnum varchar(30),
     p_state varchar(50)
 )default charset=utf8mb4;
-select * from product_management;
-
-select * from product_management where p_proid = 'PJT-2022-0001' and p_tasknumber ='A01' and p_processnumber like '%A%';
 
 create table if not exists remark(
 	r_id int primary key auto_increment,
@@ -75,8 +69,6 @@ create table if not exists remark(
     foreign key(r_anthor_id) references member(m_num)
 )default charset=utf8mb4;
 
-select * from remark;
-
 create table if not exists remark_project(
 	rp_num int primary key auto_increment,
     rp_r_id int,
@@ -86,8 +78,6 @@ create table if not exists remark_project(
     foreign key(rp_r_id) references remark(r_id),
     foreign key(rp_proid) references project(pj_id)
 )default charset=utf8mb4;
-
-select * from remark_project;
 
 create table if not exists notice(
 	n_id int primary key auto_increment,
@@ -99,10 +89,6 @@ create table if not exists notice(
     n_anthor_id varchar(30),
     foreign key(n_anthor_id) references member(m_num)
 )default charset=utf8mb4;
-
-select * from notice;
-
-
 
 create table if not exists out_company_list (
 	o_id int primary key auto_increment,
@@ -160,23 +146,14 @@ create table if not exists projectcreate(
     pc_propart varchar(30),
     pc_dpn varchar(30)
 )default charset=utf8mb4;
-select * from project;
--- update project set pj_task='J(진수)' WHERE pj_id='PJT-2022-0001';
 
-set SQL_SAFE_UPDATES = 0;
--- update projectcreate set pc_dpn='3333333333' where pc_name='12443' and pc_propart='B(소조립)';
-select * from projectcreate where pc_name='12443';
--- update projectcreate set pc_dpn='3333333333' where pc_id='PJT-2022-0001';
-select * from projectcreate where pc_propart='A(가공)' AND pc_id='PJT-2022-0001' order by pc_tasknumber asc, pc_propart asc;
-
-
-select * from projectcreate where pc_name='12443' and pc_dpn='3333333333';
-
-select * from projectcreate where pc_id='PJT-2022-0001' and pc_propart='A(가공)';
-
-select * from projectcreate;
-
-
-select * from notice;
-
-select count(*) from product_management where p_proid = 'PJT-2022-0001' and p_tasknumber like 'taskselector%'
+-- select * from project;
+-- select * from project;
+-- select * from product_management;
+-- select * from projectcreate where pc_name='12443';
+-- select * from projectcreate where pc_propart='A(가공)' AND pc_id='PJT-2022-0001' order by pc_tasknumber asc, pc_propart asc;
+-- select * from projectcreate where pc_name='12443' and pc_dpn='3333333333';
+-- select * from projectcreate where pc_id='PJT-2022-0001' and pc_propart='A(가공)';
+-- select * from projectcreate where pc_dpn!='3333333333';
+-- select * from notice;
+-- select count(*) from product_management where p_proid = 'PJT-2022-0001' and p_tasknumber like 'taskselector%'

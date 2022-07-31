@@ -427,7 +427,7 @@ public class CommonDao {
 	
 	//프로젝트 명을 맵으로 가져오는 메서드
 	public Map<String, String> projectmap() {
-		String sql = "select * from project";
+		String sql = "select * from project where pj_current_project=?";
 		Map<String, String> resultmap = new HashMap<String, String>();
 		
 		jt.query(sql, new RowMapper<Object>() {
@@ -436,14 +436,14 @@ public class CommonDao {
 			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 				resultmap.put(rs.getString("pj_id"), rs.getString("pj_name"));
 				return null;
-			}});
+			}}, true);
 		
 		return resultmap;
 	}
 	
 	// 프로젝트 명을 가져오는 메서드
 	public List<ProjectCommand> projectlist() {
-		String sql = "select * from project";
+		String sql = "select * from project where pj_current_project=?";
 		
 		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
 
@@ -453,7 +453,7 @@ public class CommonDao {
 				command.setPj_id(rs.getString("pj_id"));
 				command.setPj_name(rs.getString("pj_name"));
 				return command;
-			}});
+			}}, true);
 		
 		return result;
 	}

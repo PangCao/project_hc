@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import command.ProductCommand;
 import command.ProjectCommand;
 import command.RemarkCommand;
-import service.CommonDao;
 import service.DefaultDao;
 import service.ManagementDao;
 
@@ -26,26 +25,44 @@ public class ProductionController {
 	
 	@Autowired
 	private ManagementDao dao;
-	@Autowired
-	private CommonDao comdao;
-	
+
 	@Autowired
 	private DefaultDao dfdao;
 	
 	@RequestMapping("project_input")
-	public String project_input(@RequestParam(required = false) String name,
-			@RequestParam(required = false) String date, Model model) {
-		dao.ProjectCreate(name,date);
+	public String project_input(@RequestParam String name, @RequestParam String date, RedirectAttributes ra) {
+		Integer chk = dao.project_count();
+		if (chk < 4) {
+			dao.ProjectCreate(name,date);
+		}
+		else {
+			ra.addAttribute("error", "1");
+		}
 		return "redirect:product_management";
 	}
+	
+	@RequestMapping("project_change_input")
+	public String project_change_input(@RequestParam String name, @RequestParam String date, @RequestParam String pj_id, RedirectAttributes ra) {
+		dao.project_close(pj_id);
+		ra.addAttribute("name", name);
+		ra.addAttribute("date", date);
+		return "redirect:project_input";
+	}
 
+	@RequestMapping("projectpopup")
+	public String projectpopup(@RequestParam(required=false)String newproject, @RequestParam(required=false) String pj_id, Model model) {
+		model.addAttribute("newproject", newproject);
+		model.addAttribute("pj_id", pj_id);
+		return "product_management/projectpopup";
+	}
 	//전체 공정 현황
 	@RequestMapping("/product_management")
-	public String product_management(Model model) {
+	public String product_management(@RequestParam(required=false) String error, Model model) {
 		List<ProjectCommand> project_list = (ArrayList<ProjectCommand>)dao.ProjectSearch();
 		model.addAttribute("progressbar", dao.progressbar(project_list));
 		model.addAttribute("totalprogressbar", dao.totalprogressbar(project_list));
 		model.addAttribute("ProCom", project_list);
+		model.addAttribute("error", error);
 		return "product_management/project_management";
 	}
 	

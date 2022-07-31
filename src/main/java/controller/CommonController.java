@@ -101,17 +101,7 @@ public class CommonController {
     
     //이슈관리 페이지
   	@RequestMapping("/issue") // required = false는 null값을 받아도 된다는 설정
-  	public String issue(@RequestParam Map<String, Object> requestValues, Model model) {
-//  	public String issue(@RequestParam(defaultValue = "1") int issuepage,
-//  			@RequestParam(required = false) String search_title, 
-//  			@RequestParam(required = false) String r_class, 
-//  			@RequestParam(required = false) String sdate,
-//  			@RequestParam(required = false) String fdate,
-//  			Model model) {
-//  		model.addAttribute("issuepage", (Integer)issuepage);
-//  		model.addAttribute("issuetotal", dao.totalpage("issue", search_title));
-  		
-  		
+  	public String issue(@RequestParam Map<String, Object> requestValues, Model model) {  		
   		model.addAttribute("sdate", (String)requestValues.get("sdate"));
   		model.addAttribute("fdate", (String)requestValues.get("fdate"));
   		model.addAttribute("issuelist", dao.issueView(requestValues, 10));

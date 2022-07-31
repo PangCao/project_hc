@@ -223,7 +223,7 @@ public class OutsourcingDao {
 	
 	// 프로젝트의 id와 name 값을 command객체에 넣어서 List로 반환하는 메서드
 	public List<ProjectCommand> projectlist() {
-		String sql = "select * from project";
+		String sql = "select * from project where pj_current_project=?";
 		
 		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
 
@@ -233,7 +233,7 @@ public class OutsourcingDao {
 				command.setPj_id(rs.getString("pj_id"));
 				command.setPj_name(rs.getString("pj_name"));
 				return command;
-			}});
+			}}, true);
 		
 		return result;
 	}

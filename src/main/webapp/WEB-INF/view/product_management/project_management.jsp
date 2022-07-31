@@ -18,6 +18,14 @@
 	Map<String, Integer> progressbar = (HashMap<String, Integer>)request.getAttribute("progressbar");
 	Map<String, Integer> totalprogressbar = (HashMap<String, Integer>)request.getAttribute("totalprogressbar");
 	DecimalFormat df = new DecimalFormat("###.##");
+	String error = (String)request.getAttribute("error");
+	if (error != null && error.equals("1")) {
+%>
+<script type="text/javascript">
+alert('이미 프로젝트를 최대 갯수만큼 등록하셨습니다');
+</script>
+<%
+	}
 %>
 <body>
 	<section class="layout_main row">
@@ -35,7 +43,7 @@
 					ProjectCommand dto = procomlist.get(i);
 					if(progressbar.get(dto.getPj_id())/48.0 == 1.0){
 	%>
-				<a class="col-5 comple" href="#" onclick="project_input()">
+				<a class="col-5 comple" href="#" onclick="project_change<%=i%>()">
 					<h3 class="mb-4"><%=dto.getPj_name()%></h3>
 					<div>
 						<div class="d-flex justify-content-between">
@@ -59,6 +67,17 @@
 						</div>
 					</div>
 				</a>
+				<script type="text/javascript">
+					function project_change<%=i%>() {
+						if (confirm('새로운 프로젝트를 등록하시겠습니까?')) {
+							let popwidth = 700;
+							let popheight = 250;
+							let popx = (window.screen.width / 2) - (popwidth / 2);
+							let popy = (window.screen.height / 2) - (popheight / 2);
+							window.open("projectpopup?newproject=true&pj_id=<%=dto.getPj_id()%>","projectpopup","status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
+						}
+					}
+				</script>
 	<%
 				}else{	
 	%>
@@ -111,6 +130,8 @@
 			window.open("projectpopup","projectpopup","status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
 		}
 	}
+	
+	//사이드메뉴 체크상태표시
 	document.getElementById('product_management').checked=true;
 
 </script>

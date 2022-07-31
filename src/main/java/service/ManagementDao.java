@@ -110,14 +110,14 @@ public class ManagementDao {
 		String processnumber = (String)requestValues.get("processnumber");
 		
 		if (category.equals("input")) {
-			sql = "select * from product_management limit "+SearchPage+", 10";
+			sql = "select * from product_management order by p_regdate desc limit "+SearchPage+", 10";
 		}
 		else if (category.equals("complete")) {
 			if (project_id != null && !project_id.equals("null")) {
 				if (tasknumber != null && !tasknumber.equals("")) {
 					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%' limit "+SearchPage+", 10";
 				}
-				else if (processnumber != null && !processnumber.equals("")) {
+				else if (processnumber != null && !processnumber.equals("") && !processnumber.equals("null")) {
 					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%' limit "+SearchPage+", 10";
 				}
 				else {
@@ -125,7 +125,7 @@ public class ManagementDao {
 				}
 			}
 			else {
-				if (tasknumber != null && !tasknumber.equals("")) {
+				if (tasknumber != null && !tasknumber.equals("") && !tasknumber.equals("null")) {
 					sql = "select * from product_management where p_startdate is null and p_compledate is null and p_tasknumber like '%"+tasknumber+"%' limit "+SearchPage+", 10";
 				}
 				else if (processnumber != null && !processnumber.equals("")) {
@@ -138,25 +138,25 @@ public class ManagementDao {
 		}
 		else {
 			if (project_id != null && !project_id.equals("null")) {
-				if (tasknumber != null && !tasknumber.equals("")) {
-					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%' limit "+SearchPage+", 10";
+				if (tasknumber != null && !tasknumber.equals("") && !tasknumber.equals("null")) {
+					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%' order by p_compledate is null desc, p_compledate desc limit "+SearchPage+", 10";
 				}
-				else if (processnumber != null && !processnumber.equals("")) {
-					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%' limit "+SearchPage+", 10";
+				else if (processnumber != null && !processnumber.equals("") && !processnumber.equals("null")) {
+					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%' order by p_compledate is null desc, p_compledate desc limit "+SearchPage+", 10";
 				}
 				else {
-					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' limit "+SearchPage+", 10";
+					sql = "select * from product_management where p_startdate is not null and p_proid='"+project_id+"' order by p_compledate is null desc, p_compledate descc limit "+SearchPage+", 10";
 				}
 			}
 			else {
-				if (tasknumber != null && !tasknumber.equals("")) {
-					sql = "select * from product_management where p_startdate is not null and p_tasknumber like '%"+tasknumber+"%' limit "+SearchPage+", 10";
+				if (tasknumber != null && !tasknumber.equals("") && !tasknumber.equals("null")) {
+					sql = "select * from product_management where p_startdate is not null and p_tasknumber like '%"+tasknumber+"%' order by p_compledate is null desc, p_compledate desc limit "+SearchPage+", 10";
 				}
-				else if (processnumber != null && !processnumber.equals("")) {
-					sql = "select * from product_management where p_startdate is not null and p_processnumber like '%"+processnumber+"%' limit "+SearchPage+", 10";
+				else if (processnumber != null && !processnumber.equals("") && !processnumber.equals("null")) {
+					sql = "select * from product_management where p_startdate is not null and p_processnumber like '%"+processnumber+"%' order by p_compledate is null desc, p_compledate desc limit "+SearchPage+", 10";
 				}
 				else {
-					sql = "select * from product_management where p_startdate is not null limit "+SearchPage+", 10";
+					sql = "select * from product_management where p_startdate is not null order by p_compledate is null desc, p_compledate desc limit "+SearchPage+", 10";
 				}
 			}
 		}
@@ -288,10 +288,10 @@ public class ManagementDao {
 		}
 		else if (category.equals("complete")) {
 			if (project_id != null && !project_id.equals("null")) {
-				if (tasknumber != null && !tasknumber.equals("")) {
+				if (tasknumber != null && !tasknumber.equals("") && !tasknumber.equals("null")) {
 					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%'";
 				}
-				else if (processnumber != null && !processnumber.equals("")) {
+				else if (processnumber != null && !processnumber.equals("") && !processnumber.equals("null")) {
 					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%'";
 				}
 				else {
@@ -299,10 +299,10 @@ public class ManagementDao {
 				}
 			}
 			else {
-				if (tasknumber != null && !tasknumber.equals("")) {
+				if (tasknumber != null && !tasknumber.equals("") && !tasknumber.equals("null")) {
 					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null and p_tasknumber like '%"+tasknumber+"%'";
 				}
-				else if (processnumber != null && !processnumber.equals("")) {
+				else if (processnumber != null && !processnumber.equals("") && !processnumber.equals("null")) {
 					sql = "select count(*) from product_management where p_startdate is null and p_compledate is null and p_processnumber like '%"+processnumber+"%'";
 				}
 				else {
@@ -312,10 +312,10 @@ public class ManagementDao {
 		}
 		else {
 			if (project_id != null && !project_id.equals("null")) {
-				if (tasknumber != null && !tasknumber.equals("")) {
+				if (tasknumber != null && !tasknumber.equals("") && !tasknumber.equals("null")) {
 					sql = "select count(*) from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_tasknumber like '%"+tasknumber+"%'";
 				}
-				else if (processnumber != null && !processnumber.equals("")) {
+				else if (processnumber != null && !processnumber.equals("") && !processnumber.equals("null")) {
 					sql = "select count(*) from product_management where p_startdate is not null and p_proid='"+project_id+"' and p_processnumber like '%"+processnumber+"%'";
 				}
 				else {
@@ -323,10 +323,10 @@ public class ManagementDao {
 				}
 			}
 			else {
-				if (tasknumber != null && !tasknumber.equals("")) {
+				if (tasknumber != null && !tasknumber.equals("") && !tasknumber.equals("null")) {
 					sql = "select count(*) from product_management where p_startdate is not null and p_tasknumber like '%"+tasknumber+"%'";
 				}
-				else if (processnumber != null && !processnumber.equals("")) {
+				else if (processnumber != null && !processnumber.equals("") && !processnumber.equals("null")) {
 					sql = "select count(*) from product_management where p_startdate is not null and p_processnumber like '%"+processnumber+"%'";
 				}
 				else {
@@ -371,6 +371,11 @@ public class ManagementDao {
 		jt.update(sql, LocalDateTime.now(), product_id);
 	}
 	
+	public Integer project_count() {
+		String sql = "select count(*) from  project where pj_current_project=?";
+		Integer result = jt.queryForObject(sql,Integer.class, true);
+		return result;
+	}
 	
 	//프로젝트 생성시 초기 데이터베이스 저장
 	public void  ProjectCreate(String name, String date){
@@ -384,8 +389,8 @@ public class ManagementDao {
 		long cnt = jt.queryForObject(pc_sql, Long.class);
 		String pc_id = "PJT-"+yyyy+"-"+df.format(++cnt);
 		
-		String pj_sql = "insert into project(pj_id, pj_name, pj_regdate, pj_eta) values(?,?,?,?)";
-		jt.update(pj_sql, pc_id, name, LocalDateTime.now(), date);
+		String pj_sql = "insert into project(pj_id, pj_name, pj_regdate, pj_eta, pj_current_project) values(?,?,?,?,?)";
+		jt.update(pj_sql, pc_id, name, LocalDateTime.now(), date, true);
 		
 		String pc_sql1 = "insert into projectcreate(pc_id, pc_name, pc_tasknumber, pc_propart, pc_dpn) values(?,?,?,?,?)";
 		
@@ -401,6 +406,12 @@ public class ManagementDao {
 				}
 			}
 		}
+	}
+	
+	public void project_close(String pj_id) {
+		System.out.println(pj_id);
+		String sql = "update project set pj_current_project=false where pj_id=?";
+		jt.update(sql, pj_id);
 	}
 	
 	public void remark_project_insert(ProductCommand command, RemarkCommand issue, int remarkId, Map<String, Object> requestValues) {
@@ -446,7 +457,7 @@ public class ManagementDao {
 	
 	//project테이블정보 가져오기
 	public List<ProjectCommand> ProjectSearch () {
-		String sql = "select * from project";
+		String sql = "select * from project where pj_current_project=?";
 		
 		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
 
@@ -458,10 +469,10 @@ public class ManagementDao {
 				procom.setPj_regdate(rs.getString("pj_regdate"));
 				procom.setPj_eta(rs.getString("pj_eta").substring(0,11));
 				procom.setPj_task(rs.getString("pj_task"));
-				procom.setPj_progress(rs.getFloat("pj_progress"));
+				procom.setPj_current_project(rs.getBoolean("pj_current_project"));
 				return procom;
 			}
-		});
+		}, true);
 		return result.isEmpty() ? null : result;
 	}
 	
@@ -661,7 +672,7 @@ public class ManagementDao {
 
 	// 프로젝트 명을 가져오는 메서드
 	public List<ProjectCommand> projectlist() {
-		String sql = "select * from project";
+		String sql = "select * from project where pj_current_project=?";
 		
 		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
 	
@@ -671,7 +682,7 @@ public class ManagementDao {
 				command.setPj_id(rs.getString("pj_id"));
 				command.setPj_name(rs.getString("pj_name"));
 				return command;
-			}});
+			}}, true);
 		
 		return result;
 	}
