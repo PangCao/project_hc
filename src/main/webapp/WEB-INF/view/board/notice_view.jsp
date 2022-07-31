@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
 <%@ page import="command.NoticeCommand" %>
-<%@ page import="command.MemberCommand" %>
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="<c:url value='/resources/css/bootstrap.min.css'/>">
@@ -18,7 +17,7 @@
 <%
 	NoticeCommand noticeCommand = (NoticeCommand)request.getAttribute("notice_detail");
 	HashMap<String, Integer> noticemap = (HashMap<String, Integer>)request.getAttribute("paging");
-	MemberCommand memberCommand = (MemberCommand)session.getAttribute("member");
+	String id = (String)session.getAttribute("id");
 %>
 </head>
 <body>
@@ -77,13 +76,11 @@
 				%>
 						<input type="button" value="목록" class="list_btn" onclick="location.href='notice'">
 				<%
-					if (noticeCommand.getAnthor_id() != null && noticeCommand.getAnthor_id().equals(memberCommand.getM_num()) ){
+					if (noticeCommand.getAnthor_id() != null && noticeCommand.getAnthor_id().equals(id) ){
 				%>
 						<input type="button" value="삭제" class="delete_btn" onclick="n_delete()">
 				<%
 					}
-					System.out.println(noticeCommand.getAnthor_id());
-					System.out.println(memberCommand.getM_num());
 				%>
 					</div>
 				</div>

@@ -11,8 +11,6 @@ create table if not exists member(
     m_tel varchar(50)
 )default charset=utf8mb4;
 
-select *from member;
-
 insert into member values ('202207020001', '1234', '김현일', '사장', '사장', '010-2222-2222');
 insert into member values ('202207020002', '1234', '이창기', '고문', '연구개발부', '010-1111-1111');
 insert into member values ('202207020003', '1234', '김사원', '사원', '생산관리부', '010-3333-3333');
@@ -24,33 +22,44 @@ create table if not exists task (
 )default charset=utf8mb4;
 
 insert into task values 
-	('가공'),
-    ('소조립'),
-    ('대조립'),
-    ('선행의장'),
-    ('블럭도장'),
-    ('P.E'),
-    ('탑재'),
-    ('DOCK 의장'),
-    ('진수 선행 도장'),
-    ('진수');
+   ('A(가공)'),
+    ('B(소조립)'),
+    ('C(대조립)'),
+    ('D(선행의장)'),
+    ('E(블럭도장)'),
+    ('F(P.E)'),
+    ('G(탑재)'),
+    ('H(DOCK의장)'),
+    ('I(진수선행도장)'),
+    ('J(진수)');
+
+select * from task where t_name > 'A(가공)' order by t_name asc limit 1;
 
 create table if not exists project (
 	pj_id varchar(30) primary key,
     pj_name varchar(50),
     pj_regdate datetime,
     pj_eta datetime,
-    pj_task varchar(30),
+    pj_task varchar(30) default 'A(가공)',
     pj_progress float default 0.0,
     foreign key(pj_task) references task(t_name)
 )default charset=utf8mb4;
 
-select distinct pj_id, pj_name from project;
 
-insert into project values ('PJT-2022-0001', '유조선-01', '2022-07-20 14:37:10', '2023-12-31 11:59:59', '가공', '0.12');
-insert into project values ('PJT-2022-0002', '여객선-01', '2022-07-19 14:37:10', '2024-12-31 11:59:59', '가공', '0.01');
-insert into project values ('PJT-2022-0003', '컨테이너선-01', '2022-07-21 14:37:10', '2025-12-31 11:59:59', '가공', '0.9');
-insert into project values ('PJT-2022-0004', '쇄빙유조선-01', '2022-07-24 14:37:10', '2024-02-10 10:12:59', '가공', '0.2');
+create table if not exists product_management (
+	p_num int auto_increment primary key,
+    p_proid varchar(30),
+    p_tasknumber varchar(50),
+    p_processnumber varchar(50),
+    p_regdate datetime,
+    p_startdate datetime,
+    p_compledate datetime,
+    p_regnum varchar(30),
+    p_state varchar(50)
+)default charset=utf8mb4;
+select * from product_management;
+
+select * from product_management where p_proid = 'PJT-2022-0001' and p_tasknumber ='A01' and p_processnumber like '%A%';
 
 create table if not exists remark(
 	r_id int primary key auto_increment,
@@ -61,12 +70,27 @@ create table if not exists remark(
     r_view int default 0,
     r_class varchar(50) not null,
     r_anthor_id varchar(30),
+    r_p_num int,
+    foreign key(r_p_num) references product_management(p_num),
     foreign key(r_anthor_id) references member(m_num)
 )default charset=utf8mb4;
 
+select * from remark;
+
+create table if not exists remark_project(
+	rp_num int primary key auto_increment,
+    rp_r_id int,
+    rp_proid varchar(50),
+    rp_task varchar(30),
+    rp_process varchar(50),
+    foreign key(rp_r_id) references remark(r_id),
+    foreign key(rp_proid) references project(pj_id)
+)default charset=utf8mb4;
+
+select * from remark_project;
 
 create table if not exists notice(
-   n_id int primary key auto_increment,
+	n_id int primary key auto_increment,
     n_title varchar(100) not null,
     n_content varchar(2000),
     n_anthor varchar(30),
@@ -78,23 +102,7 @@ create table if not exists notice(
 
 select * from notice;
 
-create table if not exists product_management (
-	p_num int auto_increment primary key,
-    p_proname varchar(50) not null,
-    p_tasknumber varchar(50),
-    p_processnumber varchar(50),
-    p_regdate datetime,
-    p_startdate datetime,
-    p_compledate datetime,
-    p_remarkid varchar(200),
-    p_regnum varchar(30),
-    p_state varchar(50)
-)default charset=utf8mb4;
 
-select * from product_management;
-
-
-select * from project;
 
 create table if not exists out_company_list (
 	o_id int primary key auto_increment,
@@ -103,16 +111,14 @@ create table if not exists out_company_list (
     foreign key(o_task) references task(t_name)
 )default charset=utf8mb4;
 
-select * from notice;
+insert into out_company_list(o_name, o_task) values ('OutCompany', 'A(가공)');
+insert into out_company_list(o_name, o_task) values ('OutCom', 'A(가공)');
+insert into out_company_list(o_name, o_task) values ('Outpany', 'A(가공)');
+insert into out_company_list(o_name, o_task) values ('Company', 'B(소조립)');
+insert into out_company_list(o_name, o_task) values ('OCompany', 'C(대조립)');
+insert into out_company_list(o_name, o_task) values ('aaCompany', 'D(선행의장)');
+insert into out_company_list(o_name, o_task) values ('bbqCompany', 'E(블럭도장)');
 
-insert into out_company_list(o_name, o_task) values ('OutCompany', '가공');
-insert into out_company_list(o_name, o_task) values ('OutCom', '가공');
-insert into out_company_list(o_name, o_task) values ('Outpany', '가공');
-insert into out_company_list(o_name, o_task) values ('Company', '소조립');
-insert into out_company_list(o_name, o_task) values ('OCompany', '대조립');
-insert into out_company_list(o_name, o_task) values ('aaCompany', '선행의장');
-insert into out_company_list(o_name, o_task) values ('bbqCompany', '블럭도장');
-select * from out_company_list;
 
 create table if not exists out_company_progress (
 	ocp_id int primary key auto_increment,
@@ -130,8 +136,6 @@ insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress
 insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values (1, 3, 'OutCompany', '의뢰수락대기');
 insert into out_company_progress(ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values (1, 1, 'OutCompany', '의뢰수락대기');
 
-select * from out_company_progress;
-
 create table if not exists out_product_management (
 	op_num int auto_increment primary key,
     op_ordernumber varchar(40),
@@ -148,13 +152,31 @@ create table if not exists out_product_management (
     foreign key(op_comid) references out_company_list(o_id)
 )default charset=utf8mb4;
 
-drop table out_product_management;
+create table if not exists projectcreate(
+	pc_num int auto_increment primary key,
+	pc_id varchar(30),
+    pc_name varchar(50),
+    pc_tasknumber varchar(50),
+    pc_propart varchar(30),
+    pc_dpn varchar(30)
+)default charset=utf8mb4;
+select * from project;
+-- update project set pj_task='J(진수)' WHERE pj_id='PJT-2022-0001';
 
-insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values
-('OT-001', 'PJT-2022-0001', 2, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020001");
-insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values
-('OT-002', 'PJT-2022-0002', 1, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020003");
-insert into out_product_management(op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values
-('OT-001', 'PJT-2022-0003', 3, '2022-07-21 12:10:20', 'xxx001', 'xl-01', 100, 300000, "202207020002");
+set SQL_SAFE_UPDATES = 0;
+-- update projectcreate set pc_dpn='3333333333' where pc_name='12443' and pc_propart='B(소조립)';
+select * from projectcreate where pc_name='12443';
+-- update projectcreate set pc_dpn='3333333333' where pc_id='PJT-2022-0001';
+select * from projectcreate where pc_propart='A(가공)' AND pc_id='PJT-2022-0001' order by pc_tasknumber asc, pc_propart asc;
 
-select * from out_product_management;
+
+select * from projectcreate where pc_name='12443' and pc_dpn='3333333333';
+
+select * from projectcreate where pc_id='PJT-2022-0001' and pc_propart='A(가공)';
+
+select * from projectcreate;
+
+
+select * from notice;
+
+select count(*) from product_management where p_proid = 'PJT-2022-0001' and p_tasknumber like 'taskselector%'

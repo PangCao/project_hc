@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import service.CommonDao;
+import service.DefaultDao;
 import service.ManagementDao;
 import service.MemberDao;
 import service.OutsourcingDao;
@@ -26,12 +27,12 @@ public class AppConfig {
 	}
 	
 	@Bean
-	public MemberDao loginDao() {
+	public MemberDao memberDao() {
 		return new MemberDao(dataSource());
 	}
 	
 	@Bean
-	public CommonDao boardDao() {
+	public CommonDao commonDao() {
 		return new CommonDao(dataSource());
 	}
 	
@@ -43,6 +44,11 @@ public class AppConfig {
 	@Bean
 	public OutsourcingDao outsourcingDao() {
 		return new OutsourcingDao(dataSource());
+	}
+	
+	@Bean
+	public DefaultDao defaultDao() {
+		return new DefaultDao(dataSource());
 	}
 	
 }

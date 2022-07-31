@@ -31,8 +31,17 @@
 	function pcolse() {
 		let p_name = document.getElementById('name').value;
 		let p_date = document.getElementById('date').value;
+		if (p_name == "") {
+			alert('프로잭트 이름을 입력해주세요.');
+			return false;
+		}
+		if (p_date == "") {
+			alert('날짜를 선택해주세요.');
+			return false;
+		}
+		window.close();
 	    opener.location.replace("project_input?name="+p_name+"&date="+p_date);
-	    window.close();
+	    opener.window.loacation.reload();
 	}
 </script>
 </html>

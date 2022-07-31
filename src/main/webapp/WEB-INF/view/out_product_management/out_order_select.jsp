@@ -119,7 +119,7 @@
 							OutProductCommand command = outlist.get(i);
 					%>
 							<tr>
-								<td><%= paging.get("totalpage") - (paging.get("page")-1)*10 - i %></td>
+								<td><%= paging.get("total") - (paging.get("page")-1)*10 - i %></td>
 								<td><%= command.getOp_ordernumber() %></td>
 								<td><%= command.getOp_proname() %></td>
 								<td><%= comMap.get(String.valueOf(command.getOp_comid())) %></td>

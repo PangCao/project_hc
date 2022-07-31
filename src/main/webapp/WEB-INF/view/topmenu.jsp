@@ -4,10 +4,26 @@
 <div class="d-flex justify-content-end topmenu">
 	<%
 		request.setCharacterEncoding("UTF8");
-		MemberCommand dto = (MemberCommand)session.getAttribute("member");
+		String name = (String)session.getAttribute("name");
+		String department = (String)session.getAttribute("department");
+		if (department == null && name == null) {
+	%>
+	<script type="text/javascript">
+		location.href="main";
+		alert('세션이 만료되어 로그인페이지로 돌아갑니다.');
+	</script>
+	<%
+		}
 	%>
 	<div class="d-flex align-items-center">
-		<p><%=dto.getM_department()%> &nbsp <%=dto.getM_name()%>님</p>
-		<a href="logout">로그아웃</a>
+		<p><%=department%> &nbsp <%=name%>님</p>
+		<a href="#" onclick="logoutbtn()">로그아웃</a>
 	</div>
+	<script type="text/javascript">
+		function logoutbtn() {
+			if (confirm('로그아웃하시겠습니까?')){
+				location.href="logout";
+			}
+		}
+	</script>
 </div>

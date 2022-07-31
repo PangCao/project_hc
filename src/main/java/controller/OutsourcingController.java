@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import command.OutProductCommand;
+import service.DefaultDao;
 import service.OutsourcingDao;
 
 //외주 관리
@@ -18,6 +19,9 @@ public class OutsourcingController {
 	
 	@Autowired
 	private OutsourcingDao dao;
+	
+	@Autowired
+	private DefaultDao dfdao;
 
 	//외주 의뢰 등록
 	@RequestMapping("/out_input")
@@ -26,7 +30,7 @@ public class OutsourcingController {
 		dao.author_select(outlist);
 		dao.project_name_select(outlist);
 		model.addAttribute("outlist", outlist);
-		model.addAttribute("paging", dao.pageConut(dao.totalpage(requestValues), requestValues));
+		model.addAttribute("paging", dfdao.paging(dao.totalpage(requestValues), requestValues));
 		model.addAttribute("projectlist", dao.projectlist());
 		model.addAttribute("project_id", requestValues.get("project_id"));
 		model.addAttribute("comname", requestValues.get("comname"));
@@ -46,7 +50,7 @@ public class OutsourcingController {
 		dao.author_select(outlist);
 		dao.project_name_select(outlist);
 		model.addAttribute("outlist", outlist);
-		model.addAttribute("paging", dao.pageConut(dao.totalpage(requestValues), requestValues));
+		model.addAttribute("paging", dfdao.paging(dao.totalpage(requestValues), requestValues));
 		model.addAttribute("projectlist", dao.projectlist());
 		model.addAttribute("project_id", requestValues.get("project_id"));
 		model.addAttribute("comname", requestValues.get("comname"));
@@ -70,7 +74,7 @@ public class OutsourcingController {
 	//외주 등록 프로세스
 	@RequestMapping("/out_input_popup_input")
 	public String out_input_popup_input(OutProductCommand command, Model model) {
-		dao.out_input(command, dao.commap());
+		dao.out_input(command, dao.commap(), dao.ordernum_create());
 		model.addAttribute("stat", "1");
 		return "closepopup";
 	}
