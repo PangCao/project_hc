@@ -144,8 +144,11 @@ create table if not exists projectcreate(
     pc_name varchar(50),
     pc_tasknumber varchar(50),
     pc_propart varchar(30),
-    pc_dpn varchar(30)
+    pc_dpn varchar(30),
+    foreign key(pc_propart) references task(t_name),
+    foreign key(pc_id) references project(pj_id)
 )default charset=utf8mb4;
+
 
 -- select * from project;
 -- select * from project;

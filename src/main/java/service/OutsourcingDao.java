@@ -70,7 +70,7 @@ public class OutsourcingDao {
 		
 		else if (project_id != null && !project_id.equals("null") && !project_id.equals("all")) {
 			if (comname != null && !comname.equals("null") && !comname.equals("")) {
-				sql = "select * from out_product_management where op_proid = ? and op_comname like '%"+comname+"%' limit "+page+", 10";
+				sql = "select * from out_product_management where op_proid = ? and op_comid in (select o_id from out_company_list where o_name like '%"+comname+"%') limit "+page+", 10";
 			}
 			else if (productname != null && !productname.equals("null") && !productname.equals("")) {
 				sql = "select * from out_product_management where op_proid = ? and op_productname like '%"+productname+"%' limit "+page+", 10";
@@ -119,7 +119,7 @@ public class OutsourcingDao {
 		}
 		else {
 			if (comname != null && !comname.equals("null") && !comname.equals("")) {
-				sql = "select * from out_product_management where op_comname like '%"+comname+"%' limit "+page+", 10";
+				sql = "select * from out_product_management where op_comid in (select o_id from out_company_list where o_name like '%"+comname+"%') limit "+page+", 10";
 			}
 			else if (productname != null && !productname.equals("null") && !productname.equals("")){
 				sql = "select * from out_product_management where op_productname like '%"+productname+"%' limit "+page+", 10";
@@ -299,7 +299,7 @@ public class OutsourcingDao {
 		}
 		else if (project_id != null && !project_id.equals("null") && !project_id.equals("all")) {
 			if (comname != null && !comname.equals("null") && !comname.equals("")) {
-				sql = "select count(*) from out_product_management where op_proid=? and op_comname like '%"+comname+"%'";
+				sql = "select count(*) from out_product_management where op_proid=? and op_comid in (select o_id from out_company_list where o_name like '%"+comname+"%')";
 			}
 			else if (productname != null && !productname.equals("null") && !productname.equals("")){
 				sql = "select count(*) from out_product_management where op_proid=? and op_productname like '%"+productname+"%'";
@@ -315,7 +315,7 @@ public class OutsourcingDao {
 		}
 		else {
 			if (comname != null && !comname.equals("null") && !comname.equals("")) {
-				sql = "select count(*) from out_product_management where op_comname like '%"+comname+"%'";
+				sql = "select count(*) from out_product_management where op_comid in (select o_id from out_company_list where o_name like '%"+comname+"%')";
 			}
 			else if (productname != null && !productname.equals("null") && !productname.equals("")){
 				sql = "select count(*) from out_product_management where op_productname like '%"+productname+"%'";
