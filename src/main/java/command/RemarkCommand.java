@@ -14,5 +14,6 @@ public class RemarkCommand {
 	private int r_view; //조회수
 	private String r_class; //심각도
 	private String r_anthor_id; //등록자 아이디
+	private int r_p_num; // 생산 지시 등록
 	
 }

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
@@ -14,11 +14,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<%
-	ArrayList<NoticeCommand> noticelist = (ArrayList<NoticeCommand>)request.getAttribute("noticelist");
-	Map<String, Integer> paging = (HashMap<String, Integer>)request.getAttribute("paging");
-%>
 </head>
+<%
+	
+%>
 <body>
 	<section class="layout_main row">
 		<section class="layout_left col-2 p-0">
@@ -28,20 +27,16 @@
 			<jsp:include page="/WEB-INF/view/topmenu.jsp"/>
 			<!-- 여기 아래부터 바디 -->
 			<section class="notice">
-				<h2 class="col-6 ml-5 mt-5">공지사항</h2>
-				<form  action="notice" method="post" class="col-12 d-flex justify-content-end">
-					<input type="text" class="col-3" name="search_title">
-					<input type="submit" value="검색" class="col-1 ml-2">
-				</form>
+				<h2 class="col-6 ml-5 mt-5">공정 진행 전체 현황</h2>
 				<div class="col-12">
 					<table class="col-12 table table-hover text-center">
 						<tbody>
 							<tr>
-								<th class="col-1">NO</th>
-								<th class="col-6">제목</th>
-								<th class="col-2">등록자</th>
-								<th class="col-2">등록일</th>
-								<th class="col-1">조회수</th>
+								<th class="col-2">프로젝트ID</th>
+								<th class="col-4">프로젝트명</th>
+								<th class="col-2">작업번호</th>
+								<th class="col-2">공정파트</th>
+								<th class="col-2">세부공정번호</th>
 							</tr>
 					<%
 						if (noticelist != null) {
@@ -49,7 +44,7 @@
 								NoticeCommand dto = noticelist.get(i);
 					%>
 							<tr>
-								<td><%= paging.get("total") - (paging.get("page")-1)* 10 - i%></td>
+								<td><%= paging.get("totalpage") - (paging.get("page")-1)* 10 - i%></td>
 								<td><a href="notice_view?n_id=<%=dto.getN_id()%>"><%= dto.getN_title() %></a></td>
 								<td><%= dto.getN_anthor() %></td>
 								<td><%= dto.getN_date() %></td>
@@ -97,7 +92,7 @@
 				<%
 						}
 					}
-					if (paging.get("page") * 10 >= paging.get("total")) {
+					if (paging.get("page") * 10 >= paging.get("totalpage")) {
 				%>
 					<a href="#" onclick="lastpage()"><i class="fa-solid fa-angle-right"></i></a>
 				<%
@@ -112,4 +107,4 @@
 		</section>
 	</section>
 </body>
-</html>
+</html> --%>

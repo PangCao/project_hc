@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="command.MemberCommand" %>
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
@@ -12,8 +11,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%
-	MemberCommand memberCommand = (MemberCommand)session.getAttribute("member");
-	String[] tel = memberCommand.getM_tel().split("-");
+	String id = (String)session.getAttribute("id");
+	String name = (String)session.getAttribute("name");
+	String department = (String)session.getAttribute("department");
+	String position = (String)session.getAttribute("position");
+	String[] tel = ((String)session.getAttribute("tel")).split("-");
 %>
 </head>
 <body>
@@ -25,11 +27,11 @@
 			<jsp:include page="/WEB-INF/view/topmenu.jsp"/>
 			<!-- 여기 아래부터 바디 -->
 			<section class="user_modify">
-				<form action="" class="col-8">
+				<form action="user_modify_submit" class="col-8" name="modiForm">
 					<h3 class="text-center">개인정보관리</h3>
 					<div class="row form-group">
 						<label for="" class="col-2">사번</label>
-						<input type="text" value="<%=memberCommand.getM_num() %>" name="m_num" disabled class="col-8">
+						<input type="text" value="<%=id %>" name="m_num" disabled class="col-8">
 					</div>
 					<div class="row form-group">
 						<label for="" class="col-2">비밀번호</label>
@@ -41,24 +43,24 @@
 					</div>
 					<div class="row form-group">
 						<label for="" class="col-2">이름</label>
-						<input type="text" value="<%=memberCommand.getM_name() %>" name="m_name" class="col-8">
+						<input type="text" value="<%=name %>" name="m_name" class="col-8">
 					</div>
 					<div class="row form-group">
 						<label for="" class="col-2">부서</label>
-						<input type="text" value="<%=memberCommand.getM_department() %>" name="m_department" class="col-8" disabled>
+						<input type="text" value="<%=department %>" name="m_department" class="col-8" disabled>
 					</div>
 					<div class="row form-group">
 						<label for="" class="col-2">직책</label>
-						<input type="text" value="<%=memberCommand.getM_position() %>" name="m_position" class="col-8" disabled>
+						<input type="text" value="<%=position %>" name="m_position" class="col-8" disabled>
 					</div>
 					<div class="row form-group">
 						<label for="" class="col-2">연락처</label>
 						<div class="col-8 d-flex justify-content-between p-0">
 							<input type="text" name="phone1" class="col-3" value="010" readonly>
 							<span>-</span>
-							<input type="text" name="phone2" id="phone2" class="col-3" value="<%=tel[1]%>">
+							<input type="text" name="phone2" id="phone2" class="col-3" value="<%=tel[1]%>" maxlength="4">
 							<span>-</span>
-							<input type="text" name="phone3" id="phone3" class="col-3" value="<%=tel[2]%>">
+							<input type="text" name="phone3" id="phone3" class="col-3" value="<%=tel[2]%>" maxlength="4">
 						</div>
 					</div>
 					<div class="row form-group">

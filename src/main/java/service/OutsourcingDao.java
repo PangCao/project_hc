@@ -1,7 +1,10 @@
 package service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -10,7 +13,10 @@ import java.util.Map;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.ui.Model;
 
 import command.OutCompanyListCommand;
@@ -64,7 +70,7 @@ public class OutsourcingDao {
 		
 		else if (project_id != null && !project_id.equals("null") && !project_id.equals("all")) {
 			if (comname != null && !comname.equals("null") && !comname.equals("")) {
-				sql = "select * from out_product_management where op_proid = ? and op_comname like '%"+comname+"%' limit "+page+", 10";
+				sql = "select * from out_product_management where op_proid = ? and op_comid in (select o_id from out_company_list where o_name like '%"+comname+"%') limit "+page+", 10";
 			}
 			else if (productname != null && !productname.equals("null") && !productname.equals("")) {
 				sql = "select * from out_product_management where op_proid = ? and op_productname like '%"+productname+"%' limit "+page+", 10";
@@ -113,7 +119,7 @@ public class OutsourcingDao {
 		}
 		else {
 			if (comname != null && !comname.equals("null") && !comname.equals("")) {
-				sql = "select * from out_product_management where op_comname like '%"+comname+"%' limit "+page+", 10";
+				sql = "select * from out_product_management where op_comid in (select o_id from out_company_list where o_name like '%"+comname+"%') limit "+page+", 10";
 			}
 			else if (productname != null && !productname.equals("null") && !productname.equals("")){
 				sql = "select * from out_product_management where op_productname like '%"+productname+"%' limit "+page+", 10";
@@ -142,6 +148,53 @@ public class OutsourcingDao {
 		return 	result;
 	}
 	
+	// 외주 업체 리스트 조회
+	public List<OutCompanyListCommand> out_com_list(Model model) {
+		String sql = "select * from out_company_list";
+		
+		List<OutCompanyListCommand> result = jt.query(sql, new RowMapper<OutCompanyListCommand>() {
+	
+			@Override
+			public OutCompanyListCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
+				OutCompanyListCommand command = new OutCompanyListCommand();
+				command.setO_id(rs.getInt("o_id"));
+				command.setO_name(rs.getString("o_name"));
+				command.setO_task(rs.getString("o_task"));
+				return command;
+			}});
+		
+		return result;
+	}
+
+	// 외주 등록을 하는 메서드로 out_product_management와 out_company_progress 테이블에 같이 등록
+	public void out_input(OutProductCommand command, Map<String, String> commap, String op_ordernumber) {
+		String sql = "insert into out_product_management (op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values (?,?,?,?,?,?,?,?,?)";
+		
+		KeyHolder kh = new GeneratedKeyHolder();
+		jt.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"op_num"});
+				pstmt.setString(1, op_ordernumber);
+				pstmt.setString(2, command.getOp_proid());
+				pstmt.setInt(3, command.getOp_comid());
+				pstmt.setString(4, String.valueOf(LocalDateTime.now()));
+				pstmt.setString(5, command.getOp_productname());
+				pstmt.setString(6, command.getOp_productstandard());
+				pstmt.setInt(7, command.getOp_unit());
+				pstmt.setInt(8, command.getOp_price());
+				pstmt.setString(9, command.getOp_regnum());
+				return pstmt;
+			}
+		}, kh);
+		
+		int kv = kh.getKey().intValue();
+		
+		String sql2 = "insert into out_company_progress (ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values(?,?,?,?)";
+		jt.update(sql2, command.getOp_comid(), kv, commap.get(String.valueOf(command.getOp_comid())), "의뢰수락대기");		
+	}
+
 	// 프로젝트 이름을 조회해서 command에 set하는 메서드
 	public void project_name_select(List<OutProductCommand> outlist) {
 		String sql = null;
@@ -168,90 +221,9 @@ public class OutsourcingDao {
 		}
 	}
 	
-	// 조건에 따라 출력해야할 총 게시물의 수를 받아오는 메서드
-	public Integer totalpage(Map<String, Object> requestValues) {
-		String project_id = (String)requestValues.get("project_id");
-		String sql = null;
-		Integer result = null;
-		String comname = (String)requestValues.get("comname");
-		String productname = (String)requestValues.get("productname");
-		String startDate = (String)requestValues.get("startdate");
-		String endDate = (String)requestValues.get("enddate");
-		if (endDate != null && !endDate.equals("null")) {
-			endDate = String.valueOf(LocalDate.parse(endDate).plusDays(1));
-		}
-			
-		if (project_id != null && !project_id.equals("null") && !project_id.equals("all") && startDate != null && endDate != null && !startDate.equals("null") && !endDate.equals("null")) {
-			sql = "select count(*) from out_product_management where op_proid=? and op_regdate between ? and ?";
-			
-			result = jt.queryForObject(sql, Integer.class, project_id, startDate, endDate);
-		}
-		else if (project_id != null && !project_id.equals("null") && !project_id.equals("all")) {
-			if (comname != null && !comname.equals("null") && !comname.equals("")) {
-				sql = "select count(*) from out_product_management where op_proid=? and op_comname like '%"+comname+"%'";
-			}
-			else if (productname != null && !productname.equals("null") && !productname.equals("")){
-				sql = "select count(*) from out_product_management where op_proid=? and op_productname like '%"+productname+"%'";
-			}
-			else {
-				sql = "select count(*) from out_product_management where op_proid=?";
-			}
-			result = jt.queryForObject(sql, Integer.class, project_id);
-		}
-		else if (startDate != null && endDate != null && !startDate.equals("null") && !endDate.equals("null")) {
-			sql = "select count(*) from out_product_management where op_regdate between ? and ?";
-			result = jt.queryForObject(sql, Integer.class, startDate, endDate);
-		}
-		else {
-			if (comname != null && !comname.equals("null") && !comname.equals("")) {
-				sql = "select count(*) from out_product_management where op_comname like '%"+comname+"%'";
-			}
-			else if (productname != null && !productname.equals("null") && !productname.equals("")){
-				sql = "select count(*) from out_product_management where op_productname like '%"+productname+"%'";
-			}
-			else {
-				sql = "select count(*) from out_product_management";
-			}
-			result = jt.queryForObject(sql, Integer.class);
-		}
-		
-		return result;
-	}
-	
-	// 페이징 처리를 위한 메서드
-	public Map<String, Integer> pageConut(int totalpage, Map<String, Object> requestValues) {
-		int page = requestValues.get("page") == null ? 1 : Integer.valueOf((String)requestValues.get("page"));
-		int min = 0;
-		int max = 5;
-		if (page > 3) {
-			min = page - 3;
-			max = page + 2;
-		}
-		if (max > (totalpage / 10) + 1) {
-			max = (totalpage / 10) + 1;
-		}
-		if (totalpage % 10 == 0) {
-			max -= 1;
-		}
-		if (totalpage == 0) {
-			max = 1;
-		}
-		if (max < 5) {
-			min = 0;
-		}
-		Map<String, Integer> result = new HashMap<String, Integer>();
-	
-		result.put("max", max);
-		result.put("min", min);
-		result.put("totalpage", totalpage);
-		result.put("page", page);
-		return result;
-	}
-	
-	
 	// 프로젝트의 id와 name 값을 command객체에 넣어서 List로 반환하는 메서드
 	public List<ProjectCommand> projectlist() {
-		String sql = "select * from project";
+		String sql = "select * from project where pj_current_project=?";
 		
 		List<ProjectCommand> result = jt.query(sql, new RowMapper<ProjectCommand>() {
 
@@ -261,25 +233,7 @@ public class OutsourcingDao {
 				command.setPj_id(rs.getString("pj_id"));
 				command.setPj_name(rs.getString("pj_name"));
 				return command;
-			}});
-		
-		return result;
-	}
-	
-	// 외주 업체 리스트 조회
-	public List<OutCompanyListCommand> out_com_list(Model model) {
-		String sql = "select * from out_company_list";
-		
-		List<OutCompanyListCommand> result = jt.query(sql, new RowMapper<OutCompanyListCommand>() {
-
-			@Override
-			public OutCompanyListCommand mapRow(ResultSet rs, int rowNum) throws SQLException {
-				OutCompanyListCommand command = new OutCompanyListCommand();
-				command.setO_id(rs.getInt("o_id"));
-				command.setO_name(rs.getString("o_name"));
-				command.setO_task(rs.getString("o_task"));
-				return command;
-			}});
+			}}, true);
 		
 		return result;
 	}
@@ -300,25 +254,13 @@ public class OutsourcingDao {
 		return resultmap;
 	}
 	
-	// 외주 등록을 하는 메서드로 out_product_management와 out_company_progress 테이블에 같이 등록
-	public void out_input(OutProductCommand command, Map<String, String> commap) {
-		String sql = "insert into out_product_management (op_ordernumber, op_proid, op_comid, op_regdate, op_productname, op_productstandard, op_unit, op_price, op_regnum) values (?,?,?,?,?,?,?,?,?)";
-		
-		jt.update(sql, command.getOp_ordernumber(), command.getOp_proid(), command.getOp_comid(), LocalDateTime.now(), command.getOp_productname(), command.getOp_productstandard(), command.getOp_unit(), command.getOp_price(), command.getOp_regnum());
-		
-		sql = "select op_num from out_product_management order by op_num desc";
-		
-		List<Integer> max = jt.query(sql, new RowMapper<Integer>() {
-
-			@Override
-			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				
-				return rs.getInt("op_num");
-			}});
-		
-		
-		sql = "insert into out_company_progress (ocp_comid, ocp_ordernum, ocp_name, ocp_progress) values(?,?,?,?)";
-		jt.update(sql, command.getOp_comid(), max.get(0), commap.get(String.valueOf(command.getOp_comid())), "의뢰수락대기");		
+	public String ordernum_create() {
+		DecimalFormat df = new DecimalFormat("00000");
+		int year = LocalDate.now().getYear();
+		String sql = "select count(*) from out_product_management where op_ordernumber like '%-"+year+"-%'";
+		int ans = jt.queryForObject(sql,Integer.class);
+		String result = "OT-"+year+"-"+df.format(ans+1);
+		return result;
 	}
 	
 	// 외주 업체의 주문번호와 진행상황을 맵으로 만들어주는 메서드
@@ -336,4 +278,55 @@ public class OutsourcingDao {
 		
 		return result;
 	}
+
+	// 조건에 따라 출력해야할 총 게시물의 수를 받아오는 메서드
+	public Integer totalpage(Map<String, Object> requestValues) {
+		String project_id = (String)requestValues.get("project_id");
+		String sql = null;
+		Integer result = null;
+		String comname = (String)requestValues.get("comname");
+		String productname = (String)requestValues.get("productname");
+		String startDate = (String)requestValues.get("startdate");
+		String endDate = (String)requestValues.get("enddate");
+		if (endDate != null && !endDate.equals("null")) {
+			endDate = String.valueOf(LocalDate.parse(endDate).plusDays(1));
+		}
+			
+		if (project_id != null && !project_id.equals("null") && !project_id.equals("all") && startDate != null && endDate != null && !startDate.equals("null") && !endDate.equals("null")) {
+			sql = "select count(*) from out_product_management where op_proid=? and op_regdate between ? and ?";
+			
+			result = jt.queryForObject(sql, Integer.class, project_id, startDate, endDate);
+		}
+		else if (project_id != null && !project_id.equals("null") && !project_id.equals("all")) {
+			if (comname != null && !comname.equals("null") && !comname.equals("")) {
+				sql = "select count(*) from out_product_management where op_proid=? and op_comid in (select o_id from out_company_list where o_name like '%"+comname+"%')";
+			}
+			else if (productname != null && !productname.equals("null") && !productname.equals("")){
+				sql = "select count(*) from out_product_management where op_proid=? and op_productname like '%"+productname+"%'";
+			}
+			else {
+				sql = "select count(*) from out_product_management where op_proid=?";
+			}
+			result = jt.queryForObject(sql, Integer.class, project_id);
+		}
+		else if (startDate != null && endDate != null && !startDate.equals("null") && !endDate.equals("null")) {
+			sql = "select count(*) from out_product_management where op_regdate between ? and ?";
+			result = jt.queryForObject(sql, Integer.class, startDate, endDate);
+		}
+		else {
+			if (comname != null && !comname.equals("null") && !comname.equals("")) {
+				sql = "select count(*) from out_product_management where op_comid in (select o_id from out_company_list where o_name like '%"+comname+"%')";
+			}
+			else if (productname != null && !productname.equals("null") && !productname.equals("")){
+				sql = "select count(*) from out_product_management where op_productname like '%"+productname+"%'";
+			}
+			else {
+				sql = "select count(*) from out_product_management";
+			}
+			result = jt.queryForObject(sql, Integer.class);
+		}
+		
+		return result;
+	}
+
 }

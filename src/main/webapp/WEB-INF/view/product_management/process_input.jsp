@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -9,6 +10,7 @@
 <link rel="stylesheet" href="<c:url value='/resources/css/all.css'/>">
 <!-- 여기 아래 css가 계속 교체 -->
 <link rel="stylesheet" href="<c:url value='/resources/css/process_input.css'/>">
+<script type="text/javascript" src="<c:url value='/resources/js/common.js'/>"></script>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -17,6 +19,12 @@
 	String stat = (String)request.getAttribute("stat");
 	ArrayList<ProductCommand> productlist = (ArrayList<ProductCommand>)request.getAttribute("productlist");
 	Map<String, String> memberMap = (HashMap<String, String>)request.getAttribute("membermap");
+	Map<String, Integer> paging = (HashMap<String, Integer>)request.getAttribute("paging");
+	Map<String,String> projectmap = (HashMap<String, String>)request.getAttribute("projectmap");
+	Map<String, ArrayList<Integer>> product_issuelist = (HashMap<String, ArrayList<Integer>>)request.getAttribute("product_issuelist");
+	
+	DecimalFormat df = new DecimalFormat("00");
+	
 	if (stat != null && stat.equals("2")) {
 %>
 <script type="text/javascript">
@@ -61,7 +69,7 @@
 							<%
 								for(int i = 0; i < 12; i++) {
 							%>
-								<option value="<%=i+1%>"><%=i+1%></option>
+								<option value="<%=df.format(i+1)%>"><%=df.format(i+1)%></option>
 							<%
 								}
 							%>
@@ -76,6 +84,7 @@
 						<tbody>
 							<tr>
 								<th>No</th>
+								<th>프로젝트명</th>
 								<th>작업번호</th>
 								<th>공정번호</th>
 								<th>등록일</th>
@@ -95,15 +104,18 @@
 					<%
 						for(int i = 0; i < productlist.size(); i++) {
 							ProductCommand command = productlist.get(i);
+							System.out.println(command.getP_proid());
 					%>
 							<tr>
 								<td><%=i+1 %></td>
+								<td><%=projectmap.get(command.getP_proid()) %></td>
 								<td><%= command.getP_tasknumber()%></td>
 								<td><%= command.getP_processnumber() %></td>
-								<td><%= command.getP_regdate() %></td>
-								<td><%= command.getP_startdate() %></td>
-								<td><%= command.getP_compledate() %></td>
-								<td>이슈가 총 <a href="#" onclick="issueup<%=i%>()" style="color:red;"><%= command.getP_remarkid().split(",").length %></a>개 존재합니다.</td>
+								<td><%= command.getP_regdate().substring(0, 10) %><br><%=command.getP_regdate().substring(10) %></td>
+								<td><%= command.getP_startdate().length() >10 ? command.getP_startdate().substring(0, 10):"-" %><br><%=command.getP_startdate().length() >10 ? command.getP_startdate().substring(10):"" %></td>
+								<td><%= command.getP_compledate().length() >10 ?command.getP_compledate().substring(0,10):"-" %><br><%=command.getP_compledate().length() >10 ? command.getP_compledate().substring(10):"" %></td>
+								<td><a href="#" onclick="issueup<%=i%>()" style="color:black;">이슈가 총 <span style="color:red;"><%= product_issuelist.get(String.valueOf(command.getP_num())).size()%></span>개 존재합니다.</a></td>
+								
 								<td><%= memberMap.get(command.getP_regnum()) %></td>
 							</tr>
 							<script type="text/javascript">
@@ -112,7 +124,7 @@
 									let popheight = 720;
 									let popx = (window.screen.width / 2) - (popwidth / 2);
 									let popy = (window.screen.height / 2) - (popheight / 2);
-									window.open("issue_popup?issueids=<%=command.getP_remarkid()%>" ,"issuepop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
+									window.open("issue_popup?p_num=<%=command.getP_num()%>" ,"issuepop", "status=no, width="+popwidth+", height="+popheight+", left="+popx+", top="+popy);
 								}
 							</script>
 					<%
@@ -124,7 +136,40 @@
 			</section>
 
 			<div class="d-flex justify-content-center mt-5">
-				<p>&lt; 1 2 3 &gt;</p>
+				<%
+					if(paging.get("page") == 1){	
+				%>
+					<a href="#" onclick="firstpage()"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+				<%
+					}
+					else {
+				%>
+					<a href="input?page=<%=paging.get("page")-1%>"><i class="fa-solid fa-angle-left"></i></a>&nbsp;&nbsp;
+				<%
+					}
+					for(int i = paging.get("min"); i < paging.get("max"); i++){
+						if (paging.get("page")-1 == i) {
+				%>
+					<a href="input?page=<%=i+1%>" style="color:red;"><%=i+1%></a>&nbsp;&nbsp;
+				<%
+						}
+						else {
+				%>
+					<a href="input?page=<%=i+1%>"><%=i+1%></a>&nbsp;&nbsp;
+				<%
+						}
+					}
+					if (paging.get("page") * 10 >= paging.get("total")) {
+				%>
+					<a href="#" onclick="lastpage()"><i class="fa-solid fa-angle-right"></i></a>
+				<%
+					}
+					else {
+				%>
+					<a href="input?page=<%=paging.get("page")+1%>"><i class="fa-solid fa-angle-right"></i></a>
+				<%
+					}
+				%>
 			</div>
 		</section>
 	</section>
