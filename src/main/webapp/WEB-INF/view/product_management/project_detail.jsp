@@ -228,6 +228,7 @@
 	</section>
 </body>
 <script type="text/javascript">
+	document.getElementById('product_management').checked=true;
 	function SearchDate(){
 		let sdates = document.getElementById("sdate").value;
 		let fdates = document.getElementById("fdate").value;

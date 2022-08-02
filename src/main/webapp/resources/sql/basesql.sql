@@ -106,6 +106,7 @@ insert into out_company_list(o_name, o_task) values ('aaCompany', 'D(선행의�
 insert into out_company_list(o_name, o_task) values ('bbqCompany', 'E(블럭도장)');
 
 
+
 create table if not exists out_company_progress (
 	ocp_id int primary key auto_increment,
     ocp_comid int,
